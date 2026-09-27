@@ -31,12 +31,12 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400 font-bold" data-i18n="authSubtitle">تسجيل الدخول لحفظ أفكارك ومهامك</p>
             </div>
 
-            <button onclick="handleGoogleLogin()" class="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-100 py-2.5 rounded-2xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition">
+            <button onclick="playUiSound(); handleGoogleLogin()" class="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-100 py-2.5 rounded-2xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition">
                 <svg class="w-4 h-4" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                 </svg>
                 <span data-i18n="googleLoginBtn">التسجيل عبر Google</span>
             </button>
@@ -50,11 +50,11 @@
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="email" id="authEmail" required placeholder="البريد الإلكتروني..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="emailPlaceholder">
                 <input type="password" id="authPassword" required placeholder="كلمة المرور..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="passPlaceholder">
-                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-2xl text-xs font-black shadow-md transition" data-i18n="loginBtn">دخول / إنشاء حساب</button>
+                <button type="submit" onclick="playUiSound()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-2xl text-xs font-black shadow-md transition" data-i18n="loginBtn">دخول / إنشاء حساب</button>
             </form>
 
             <div class="text-center pt-1 border-t border-purple-50 dark:border-slate-700">
-                <button onclick="continueAsGuest()" class="text-xs text-slate-400 hover:text-purple-600 font-extrabold" data-i18n="guestBtn">متابعة كزائر (بدون حساب)</button>
+                <button onclick="playUiSound(); continueAsGuest()" class="text-xs text-slate-400 hover:text-purple-600 font-extrabold" data-i18n="guestBtn">متابعة كزائر (بدون حساب)</button>
             </div>
         </div>
     </div>
@@ -66,8 +66,8 @@
             <h3 class="font-black text-slate-800 dark:text-slate-100 text-base" data-i18n="confirmDeleteTitle">تأكيد الحذف</h3>
             <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.</p>
             <div class="flex gap-2 pt-2">
-                <button onclick="closeConfirmModal()" class="w-1/2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancel">إلغاء</button>
-                <button id="btnExecuteDelete" class="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="confirmDeleteBtn">نعم، احذف</button>
+                <button onclick="playUiSound(); closeConfirmModal()" class="w-1/2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancel">إلغاء</button>
+                <button id="btnExecuteDelete" onclick="playUiSound()" class="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="confirmDeleteBtn">نعم، احذف</button>
             </div>
         </div>
     </div>
@@ -81,11 +81,11 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <button onclick="toggleTheme()" class="bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 p-2 rounded-2xl text-sm font-bold shadow-sm">
+                <button onclick="playUiSound(); toggleTheme()" class="bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 p-2 rounded-2xl text-sm font-bold shadow-sm">
                     <span id="themeIcon">☀️</span>
                 </button>
 
-                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-100 dark:bg-slate-700 text-purple-900 dark:text-purple-200 text-xs font-bold px-2 py-2 rounded-2xl border-none focus:outline-none">
+                <select id="langSelect" onchange="playUiSound(); changeLanguage(this.value)" class="bg-purple-100 dark:bg-slate-700 text-purple-900 dark:text-purple-200 text-xs font-bold px-2 py-2 rounded-2xl border-none focus:outline-none">
                     <option value="ar">AR 🇸🇦</option>
                     <option value="ary">الدارجة 🇲🇦</option>
                     <option value="es">ES 🇪🇸</option>
@@ -93,7 +93,7 @@
                     <option value="en">EN 🇺🇸</option>
                 </select>
 
-                <button onclick="openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-sm" title="الحساب">
+                <button onclick="playUiSound(); openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-sm" title="الحساب">
                     👤
                 </button>
             </div>
@@ -105,10 +105,10 @@
 
         <!-- Action Floating Buttons (+ Task & + Project) -->
         <div class="flex gap-3">
-            <button onclick="openAddTaskModal()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
+            <button onclick="playUiSound(); openAddTaskModal()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
                 <span class="text-lg">+</span> <span data-i18n="btnAddTask">+ إضافة مهمة</span>
             </button>
-            <button onclick="openAddProjectModal()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
+            <button onclick="playUiSound(); openAddProjectModal()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
                 <span class="text-lg">+</span> <span data-i18n="btnAddProject">+ إضافة مشروع</span>
             </button>
         </div>
@@ -149,7 +149,7 @@
         <div id="viewSpaces" class="space-y-5 hidden">
             <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700">
                 <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاصة بك 📂</h2>
-                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-600 text-white font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-purple-700 transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
+                <button onclick="playUiSound(); openNewSpaceModal()" class="text-xs bg-purple-600 text-white font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-purple-700 transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
             </div>
 
             <!-- Spaces List Grid -->
@@ -163,7 +163,10 @@
                     <h3 class="text-sm font-black text-purple-900 dark:text-purple-300 flex items-center gap-2">
                         <span>📂</span> <span id="spaceDetailTitle">المساحة المحددة</span>
                     </h3>
-                    <button id="btnDeleteSpace" onclick="askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1" title="حذف المساحة">🗑️ <span data-i18n="deleteSpace">حذف المساحة</span></button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="playUiSound(); editCurrentSpace()" class="text-slate-500 hover:text-purple-600 text-xs font-extrabold p-1" title="تعديل المساحة">✏️ <span data-i18n="editSpace">تعديل</span></button>
+                        <button id="btnDeleteSpace" onclick="playUiSound(); askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1" title="حذف المساحة">🗑️ <span data-i18n="deleteSpace">حذف</span></button>
+                    </div>
                 </div>
 
                 <div id="spaceInnerContent" class="space-y-4">
@@ -209,19 +212,19 @@
     <!-- Navigation Bar at Bottom -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-800/80 glass border-t border-purple-100 dark:border-slate-700 px-6 py-3 z-30">
         <div class="max-w-md mx-auto flex justify-between items-center text-slate-400">
-            <button onclick="switchView('home')" id="navHome" class="flex flex-col items-center gap-1 text-purple-600">
+            <button onclick="playUiSound(); switchView('home')" id="navHome" class="flex flex-col items-center gap-1 text-purple-600">
                 <span class="text-xl">🏠</span>
                 <span class="text-[11px] font-extrabold" data-i18n="navHome">الرئيسية</span>
             </button>
-            <button onclick="switchView('spaces')" id="navSpaces" class="flex flex-col items-center gap-1 hover:text-purple-600">
+            <button onclick="playUiSound(); switchView('spaces')" id="navSpaces" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">📂</span>
                 <span class="text-[11px] font-extrabold" data-i18n="navSpaces">المساحات</span>
             </button>
-            <button onclick="switchView('today')" id="navToday" class="flex flex-col items-center gap-1 hover:text-purple-600">
+            <button onclick="playUiSound(); switchView('today')" id="navToday" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">☀️</span>
                 <span class="text-[11px] font-extrabold" data-i18n="navToday">اليوم</span>
             </button>
-            <button onclick="switchView('calendar')" id="navCalendar" class="flex flex-col items-center gap-1 hover:text-purple-600">
+            <button onclick="playUiSound(); switchView('calendar')" id="navCalendar" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">📅</span>
                 <span class="text-[11px] font-extrabold" data-i18n="navCalendar">التقويم</span>
             </button>
@@ -237,10 +240,10 @@
                 
                 <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="taskTitlePlaceholder">
                 
-                <!-- Target Space Selector (إدخال وإخراج المهمة من المساحات) -->
+                <!-- Target Space Selector -->
                 <div>
                     <label class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 block mb-1" data-i18n="targetSpaceLabel">مساحة العمل:</label>
-                    <select id="taskSpaceSelect" onchange="updateProjectDropdownForSpace(this.value)" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
+                    <select id="taskSpaceSelect" onchange="playUiSound(); updateProjectDropdownForSpace(this.value)" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
                         <!-- Populated dynamically -->
                     </select>
                 </div>
@@ -280,10 +283,10 @@
                 <div class="space-y-2 pt-1">
                     <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block" data-i18n="colorLabel">لون المهمة:</label>
                     <div class="flex gap-2 items-center">
-                        <button type="button" onclick="selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
+                        <button type="button" onclick="playUiSound(); selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-purple-200"></button>
+                        <button type="button" onclick="playUiSound(); selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-purple-200"></button>
+                        <button type="button" onclick="playUiSound(); selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-purple-200"></button>
+                        <button type="button" onclick="playUiSound(); selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
                         <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-7 h-7 rounded-full cursor-pointer border-0 bg-transparent p-0">
                     </div>
                     <div class="flex items-center gap-2 pt-1">
@@ -293,8 +296,8 @@
                 </div>
 
                 <div class="flex gap-2 justify-end pt-2">
-                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
-                    <button type="submit" class="px-5 py-2 bg-purple-600 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="saveTask">حفظ</button>
+                    <button type="button" onclick="playUiSound(); closeTaskModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
+                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-purple-600 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="saveTask">حفظ</button>
                 </div>
             </form>
         </div>
@@ -303,7 +306,7 @@
     <!-- MODAL: ADD / EDIT PROJECT -->
     <div id="projectModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-purple-100 dark:border-slate-700 space-y-4">
-            <h3 class="font-black text-base text-purple-900 dark:text-purple-300" data-i18n="tabAddProject">إضافة مشروع جديد 📁</h3>
+            <h3 class="font-black text-base text-purple-900 dark:text-purple-300" id="projectModalTitle" data-i18n="tabAddProject">إضافة مشروع جديد 📁</h3>
             <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-3">
                 <input type="hidden" id="editingProjectId" value="">
                 <input type="text" id="projectTitle" placeholder="اسم المشروع..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="projectTitlePlaceholder">
@@ -316,8 +319,8 @@
                 </div>
 
                 <div class="flex gap-2 justify-end">
-                    <button type="button" onclick="closeProjectModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
-                    <button type="submit" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">إنشاء / حفظ</button>
+                    <button type="button" onclick="playUiSound(); closeProjectModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
+                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">إنشاء / حفظ</button>
                 </div>
             </form>
         </div>
@@ -331,29 +334,34 @@
             <p class="text-sm font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-slate-700 p-2.5 rounded-2xl" id="overdueTaskName">اسم المهمة</p>
             <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="overdueQuestion">يبدو أن وقتها قد مضى، ماذا تفضل أن تفعل بها؟</p>
             <div class="flex flex-col gap-2">
-                <button onclick="handleOverdueAction('complete')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="markCompleted">اعتبارها أنجزت ✅</button>
+                <button onclick="playUiSound(); handleOverdueAction('complete')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="markCompleted">اعتبارها أنجزت ✅</button>
                 <div class="flex gap-2">
-                    <button onclick="handleOverdueAction('postpone')" class="w-1/2 bg-amber-400 hover:bg-amber-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="postponeTask">تأجيل وتعديل ⏳</button>
-                    <button onclick="handleOverdueAction('cancel')" class="w-1/2 bg-red-400 hover:bg-red-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="cancelTask">إلغاؤها ❌</button>
+                    <button onclick="playUiSound(); handleOverdueAction('postpone')" class="w-1/2 bg-amber-400 hover:bg-amber-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="postponeTask">تأجيل وتعديل ⏳</button>
+                    <button onclick="playUiSound(); handleOverdueAction('cancel')" class="w-1/2 bg-red-400 hover:bg-red-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="cancelTask">إلغاؤها ❌</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: NEW SPACE -->
+    <!-- MODAL: ADD / EDIT SPACE -->
     <div id="spaceModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-xs w-full shadow-xl space-y-3">
-            <h3 class="font-black text-sm text-purple-900 dark:text-purple-300" data-i18n="newSpaceTitle">مساحة عمل جديدة 📂</h3>
-            <input type="text" id="spaceNameInput" placeholder="اسم المساحة..." class="w-full px-3 py-2 rounded-2xl border border-purple-100 dark:border-slate-600 dark:bg-slate-700 text-xs focus:outline-none font-bold" data-i18n-ph="spaceNamePlaceholder">
+            <h3 class="font-black text-sm text-purple-900 dark:text-purple-300" id="spaceModalTitle" data-i18n="newSpaceTitle">مساحة عمل جديدة 📂</h3>
+            <input type="hidden" id="editingSpaceId" value="">
+            <div class="flex gap-2">
+                <input type="text" id="spaceIconInput" placeholder="🌸" value="📂" class="w-12 text-center py-2 rounded-2xl border border-purple-100 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                <input type="text" id="spaceNameInput" placeholder="اسم المساحة..." class="flex-1 px-3 py-2 rounded-2xl border border-purple-100 dark:border-slate-600 dark:bg-slate-700 text-xs focus:outline-none font-bold" data-i18n-ph="spaceNamePlaceholder">
+            </div>
             <div class="flex gap-2 justify-end">
-                <button onclick="closeNewSpaceModal()" class="px-3 py-1.5 text-xs text-slate-400 font-extrabold" data-i18n="cancel">إلغاء</button>
-                <button onclick="saveNewSpace()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-extrabold rounded-2xl" data-i18n="save">حفظ</button>
+                <button onclick="playUiSound(); closeNewSpaceModal()" class="px-3 py-1.5 text-xs text-slate-400 font-extrabold" data-i18n="cancel">إلغاء</button>
+                <button onclick="playUiSound(); saveNewSpace()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-extrabold rounded-2xl" data-i18n="save">حفظ</button>
             </div>
         </div>
     </div>
 
     <!-- Application Script -->
     <script>
+        // Sound Effects Engine
         function playBellSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -370,20 +378,36 @@
             } catch(e) {}
         }
 
+        function playUiSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch(e) {}
+        }
+
         const i18n = {
             ar: {
                 authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)", googleLoginBtn: "التسجيل عبر Google", or: "أو",
                 btnAddTask: "+ إضافة مهمة", btnAddProject: "+ إضافة مشروع",
-                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاصة بك 📂", deleteSpace: "حذف المساحة",
+                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاصة بك 📂", deleteSpace: "حذف المساحة", editSpace: "تعديل", editProject: "تعديل المشروع",
                 statTasks: "المهام", statProjects: "المشاريع", statProgress: "الإنجاز",
-                tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة مشروع 📁", targetSpaceLabel: "مساحة العمل (إدخال/نقل):",
+                tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة / تعديل مشروع 📁", targetSpaceLabel: "مساحة العمل:",
                 taskTitlePlaceholder: "عنوان المهمة...", projectTitlePlaceholder: "اسم المشروع...",
                 noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:", duration: "المدة:",
                 statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "حفظ المهمة", updateTask: "تحديث المهمة",
                 cancel: "إلغاء", createProject: "إنشاء / حفظ", standaloneTasks: "مهام مستقلة 🌸",
                 todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅",
                 tasksForDate: "مهام اليوم المحدد (مرتبة أوقاتاً):", navHome: "الرئيسية", navSpaces: "المساحات", navToday: "اليوم", navCalendar: "التقويم",
-                newSpaceTitle: "مساحة عمل جديدة 📂", spaceNamePlaceholder: "اسم المساحة...", save: "حفظ",
+                newSpaceTitle: "مساحة عمل جديدة 📂", editSpaceTitle: "تعديل مساحة العمل 📂", spaceNamePlaceholder: "اسم المساحة...", save: "حفظ",
                 statusPending: "⏳ لم تنجز بعد", statusInProgress: "🔄 قيد الإنجاز", statusDone: "✅ أنجزت", statusCancelled: "❌ ملغية",
                 noTasksInSpace: "لا توجد مهام حرة 🌸", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", noTasksForSelectedDate: "لا توجد مهام مجدولة في هذا اليوم 📅",
                 overdueTitle: "انتهى الوقت المحدد للمهمة!", overdueQuestion: "يبدو أن وقتها قد مضى، ماذا تفضل أن تفعل بها؟",
@@ -394,16 +418,16 @@
             ary: {
                 authSubtitle: "سجّل الدخول باش تبقى تحفظ الشغل ديالك", emailPlaceholder: "الإيميل ديالك...", passPlaceholder: "الكود السري...", loginBtn: "دخل / دير حساب جديد", guestBtn: "كمل كزائر (بلا حساب)", googleLoginBtn: "دخل بـ Google", or: "ولا",
                 btnAddTask: "+ زِد مهمة", btnAddProject: "+ زِد مشروع",
-                currentSpace: "البلاصة الحالية", addSpaceBtn: "+ بلاصة جديدة", spacesTitle: "البلايص ديال الخدمة ديالك 📂", deleteSpace: "مسح هاد البلاصة",
+                currentSpace: "البلاصة الحالية", addSpaceBtn: "+ بلاصة جديدة", spacesTitle: "البلايص ديال الخدمة ديالك 📂", deleteSpace: "مسح هاد البلاصة", editSpace: "بدّل", editProject: "بدّل المشروع",
                 statTasks: "المهمات", statProjects: "المشاريع", statProgress: "نسبة النجاح",
-                tabAddTask: "زيد مهمة 📝", tabAddProject: "زيد مشروع 📁", targetSpaceLabel: "البلاصة ديال الخدمة:",
+                tabAddTask: "زيد مهمة 📝", tabAddProject: "زيد / بدّل مشروع 📁", targetSpaceLabel: "البلاصة ديال الخدمة:",
                 taskTitlePlaceholder: "شنو بغيتي تدير؟...", projectTitlePlaceholder: "سمية المشروع...",
                 noProjectOption: "ديريكت فالبلاصة (بلا مشروع)", from: "من:", to: "حتى لـ:", duration: "الوقت:",
                 statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "سجل المهمة", updateTask: "بدّل المهمة",
                 cancel: "إلغاء", createProject: "صاوب / سجّل", standaloneTasks: "مهمات فردية 🌸",
                 todayTitle: "شنو عندك اليوم ☀️", calendarTitle: "الروزنامة الشهرية 📅",
                 tasksForDate: "مهمات هاد النهار (مرتبين بالوقت):", navHome: "الدار", navSpaces: "البلايص", navToday: "اليوم", navCalendar: "الروزنامة",
-                newSpaceTitle: "بلاصة خدمة جديدة 📂", spaceNamePlaceholder: "سمية البلاصة...", save: "سجّل",
+                newSpaceTitle: "بلاصة خدمة جديدة 📂", editSpaceTitle: "بدّل بلاصة الخدمة 📂", spaceNamePlaceholder: "سمية البلاصة...", save: "سجّل",
                 statusPending: "⏳ مزال مادرتهاش", statusInProgress: "🔄 خدام عليها", statusDone: "✅ كملات", statusCancelled: "❌ ملغية",
                 noTasksInSpace: "ماكاين حتى مهمة خاوية 🌸", noTasksToday: "ماكاين والو المبرمج لليوم ☀️", noTasksForSelectedDate: "ماكاين والو فـ هاد النهار 📅",
                 overdueTitle: "فوتّي الوقت ديال المهمة!", overdueQuestion: "الوقت ديالها سالا، شنو بغيتي تدير بيها؟",
@@ -414,16 +438,16 @@
             es: {
                 authSubtitle: "Inicia sesión para guardar tus tareas y proyectos", emailPlaceholder: "Correo electrónico...", passPlaceholder: "Contraseña...", loginBtn: "Iniciar Sesión / Registrarse", guestBtn: "Continuar como invitado", googleLoginBtn: "Continuar con Google", or: "o",
                 btnAddTask: "+ Añadir Tarea", btnAddProject: "+ Añadir Proyecto",
-                currentSpace: "Espacio Actual", addSpaceBtn: "+ Nuevo Espacio", spacesTitle: "Tus Espacios de Trabajo 📂", deleteSpace: "Eliminar Espacio",
+                currentSpace: "Espacio Actual", addSpaceBtn: "+ Nuevo Espacio", spacesTitle: "Tus Espacios de Trabajo 📂", deleteSpace: "Eliminar Espacio", editSpace: "Editar", editProject: "Editar Proyecto",
                 statTasks: "Tareas", statProjects: "Proyectos", statProgress: "Progreso",
-                tabAddTask: "Añadir Tarea 📝", tabAddProject: "Añadir Proyecto 📁", targetSpaceLabel: "Espacio de trabajo:",
+                tabAddTask: "Añadir Tarea 📝", tabAddProject: "Añadir / Editar Proyecto 📁", targetSpaceLabel: "Espacio de trabajo:",
                 taskTitlePlaceholder: "Título de la tarea...", projectTitlePlaceholder: "Nombre del proyecto...",
                 noProjectOption: "Directamente en el espacio", from: "Desde:", to: "Hasta:", duration: "Duración:",
                 statusLabel: "Estado:", colorLabel: "Color:", saveTask: "Guardar Tarea", updateTask: "Actualizar Tarea",
                 cancel: "Cancelar", createProject: "Crear / Guardar", standaloneTasks: "Tareas Independientes 🌸",
                 todayTitle: "Programa de Hoy ☀️", calendarTitle: "Calendario Mensual 📅",
                 tasksForDate: "Tareas ordenadas por hora:", navHome: "Inicio", navSpaces: "Espacios", navToday: "Hoy", navCalendar: "Calendario",
-                newSpaceTitle: "Nuevo Espacio 📂", spaceNamePlaceholder: "Nombre del espacio...", save: "Guardar",
+                newSpaceTitle: "Nuevo Espacio 📂", editSpaceTitle: "Editar Espacio 📂", spaceNamePlaceholder: "Nombre del espacio...", save: "Guardar",
                 statusPending: "⏳ Pendiente", statusInProgress: "🔄 En Proceso", statusDone: "✅ Completada", statusCancelled: "❌ Cancelada",
                 noTasksInSpace: "No hay tareas independientes 🌸", noTasksToday: "No hay tareas programadas para hoy ☀️", noTasksForSelectedDate: "No hay tareas para esta fecha 📅",
                 overdueTitle: "¡Tiempo agotado!", overdueQuestion: "¿Qué deseas hacer con esta tarea?",
@@ -434,16 +458,16 @@
             fr: {
                 authSubtitle: "Connectez-vous pour sauvegarder vos tâches", emailPlaceholder: "E-mail...", passPlaceholder: "Mot de passe...", loginBtn: "Connexion / S'inscrire", guestBtn: "Continuer comme invité", googleLoginBtn: "Continuer avec Google", or: "ou",
                 btnAddTask: "+ Ajouter Tâche", btnAddProject: "+ Ajouter Projet",
-                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace", spacesTitle: "Vos Espaces de Travail 📂", deleteSpace: "Supprimer L'espace",
+                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace", spacesTitle: "Vos Espaces de Travail 📂", deleteSpace: "Supprimer L'espace", editSpace: "Modifier", editProject: "Modifier le Projet",
                 statTasks: "Tâches", statProjects: "Projets", statProgress: "Progrès",
-                tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter Projet 📁", targetSpaceLabel: "Espace de travail:",
+                tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter / Modifier Projet 📁", targetSpaceLabel: "Espace de travail:",
                 taskTitlePlaceholder: "Titre de la tâche...", projectTitlePlaceholder: "Nom du projet...",
                 noProjectOption: "Directement dans l'espace", from: "De:", to: "À:", duration: "Durée:",
                 statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", updateTask: "Mettre à jour",
                 cancel: "Annuler", createProject: "Créer / Sauvegarder", standaloneTasks: "Tâches Indépendantes 🌸",
                 todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅",
                 tasksForDate: "Tâches triées par heure:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier",
-                newSpaceTitle: "Nouvel Espace 📂", spaceNamePlaceholder: "Nom de l'espace...", save: "Enregistrer",
+                newSpaceTitle: "Nouvel Espace 📂", editSpaceTitle: "Modifier L'espace 📂", spaceNamePlaceholder: "Nom de l'espace...", save: "Enregistrer",
                 statusPending: "⏳ En attente", statusInProgress: "🔄 En cours", statusDone: "✅ Terminée", statusCancelled: "❌ Annulée",
                 noTasksInSpace: "Aucune tâche libre 🌸", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", noTasksForSelectedDate: "Aucune tâche pour cette date 📅",
                 overdueTitle: "Temps écoulé!", overdueQuestion: "Que souhaitez-vous faire avec cette tâche?",
@@ -454,16 +478,16 @@
             en: {
                 authSubtitle: "Log in to save your tasks & projects", emailPlaceholder: "Email...", passPlaceholder: "Password...", loginBtn: "Login / Register", guestBtn: "Continue as Guest", googleLoginBtn: "Sign in with Google", or: "or",
                 btnAddTask: "+ Add Task", btnAddProject: "+ Add Project",
-                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space", spacesTitle: "Your Workspaces 📂", deleteSpace: "Delete Space",
+                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space", spacesTitle: "Your Workspaces 📂", deleteSpace: "Delete Space", editSpace: "Edit", editProject: "Edit Project",
                 statTasks: "Tasks", statProjects: "Projects", statProgress: "Progress",
-                tabAddTask: "Add Task 📝", tabAddProject: "Add Project 📁", targetSpaceLabel: "Workspace:",
+                tabAddTask: "Add Task 📝", tabAddProject: "Add / Edit Project 📁", targetSpaceLabel: "Workspace:",
                 taskTitlePlaceholder: "Task title...", projectTitlePlaceholder: "Project name...",
                 noProjectOption: "Directly in Space (No project)", from: "From:", to: "To:", duration: "Duration:",
                 statusLabel: "Status:", colorLabel: "Color:", saveTask: "Save Task", updateTask: "Update Task",
                 cancel: "Cancel", createProject: "Create / Save", standaloneTasks: "Standalone Tasks 🌸",
                 todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅",
                 tasksForDate: "Tasks sorted by time:", navHome: "Home", navSpaces: "Spaces", navToday: "Today", navCalendar: "Calendar",
-                newSpaceTitle: "New Workspace 📂", spaceNamePlaceholder: "Space name...", save: "Save",
+                newSpaceTitle: "New Workspace 📂", editSpaceTitle: "Edit Workspace 📂", spaceNamePlaceholder: "Space name...", save: "Save",
                 statusPending: "⏳ Pending", statusInProgress: "🔄 In Progress", statusDone: "✅ Completed", statusCancelled: "❌ Cancelled",
                 noTasksInSpace: "No standalone tasks 🌸", noTasksToday: "No tasks scheduled for today ☀️", noTasksForSelectedDate: "No tasks for this date 📅",
                 overdueTitle: "Time's up!", overdueQuestion: "What would you like to do with this task?",
@@ -631,6 +655,8 @@
         }
         function openAddProjectModal() { 
             populateSpaceDropdowns();
+            document.getElementById('editingProjectId').value = '';
+            document.getElementById('formProject').reset();
             document.getElementById('projectModal').classList.remove('hidden'); 
         }
         function closeProjectModal() { document.getElementById('projectModal').classList.add('hidden'); }
@@ -659,16 +685,41 @@
             saveData();
         }
 
-        function openNewSpaceModal() { document.getElementById('spaceModal').classList.remove('hidden'); }
+        function openNewSpaceModal() { 
+            document.getElementById('editingSpaceId').value = '';
+            document.getElementById('spaceNameInput').value = '';
+            document.getElementById('spaceIconInput').value = '📂';
+            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].newSpaceTitle;
+            document.getElementById('spaceModal').classList.remove('hidden'); 
+        }
+
         function closeNewSpaceModal() { document.getElementById('spaceModal').classList.add('hidden'); }
 
+        function editCurrentSpace() {
+            const activeSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
+            if(!activeSpace) return;
+
+            document.getElementById('editingSpaceId').value = activeSpace.id;
+            document.getElementById('spaceNameInput').value = activeSpace.name;
+            document.getElementById('spaceIconInput').value = activeSpace.icon || '📂';
+            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].editSpaceTitle;
+            document.getElementById('spaceModal').classList.remove('hidden');
+        }
+
         function saveNewSpace() {
+            const editingId = document.getElementById('editingSpaceId').value;
             const name = document.getElementById('spaceNameInput').value.trim();
+            const icon = document.getElementById('spaceIconInput').value.trim() || '📂';
             if(!name) return;
-            const newSpace = { id: 'space_' + Date.now(), name, icon: '📂' };
-            appData.spaces.push(newSpace);
-            appData.currentSpaceId = newSpace.id;
-            document.getElementById('spaceNameInput').value = '';
+
+            if(editingId) {
+                appData.spaces = appData.spaces.map(s => s.id === editingId ? { ...s, name, icon } : s);
+            } else {
+                const newSpace = { id: 'space_' + Date.now(), name, icon };
+                appData.spaces.push(newSpace);
+                appData.currentSpaceId = newSpace.id;
+            }
+
             closeNewSpaceModal();
             saveData();
         }
@@ -748,12 +799,29 @@
             selectColor('#F3E8FF');
         }
 
+        function editProject(id) {
+            const proj = appData.projects.find(p => p.id === id);
+            if(!proj) return;
+
+            populateSpaceDropdowns();
+            document.getElementById('editingProjectId').value = proj.id;
+            document.getElementById('projectTitle').value = proj.title;
+            document.getElementById('projectSpaceSelect').value = proj.spaceId || appData.currentSpaceId;
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
         function handleAddProject(e) {
             e.preventDefault();
+            const editingId = document.getElementById('editingProjectId').value;
             const title = document.getElementById('projectTitle').value.trim();
             const targetSpaceId = document.getElementById('projectSpaceSelect').value || appData.currentSpaceId;
             
-            appData.projects.push({ id: 'proj_' + Date.now(), spaceId: targetSpaceId, title });
+            if(editingId) {
+                appData.projects = appData.projects.map(p => p.id === editingId ? { ...p, title, spaceId: targetSpaceId } : p);
+            } else {
+                appData.projects.push({ id: 'proj_' + Date.now(), spaceId: targetSpaceId, title });
+            }
+
             document.getElementById('formProject').reset();
             closeProjectModal();
             saveData();
@@ -831,7 +899,8 @@
                             <span class="font-extrabold text-sm text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
-                                <button onclick="deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-sm font-bold p-1">🗑️</button>
+                                <button onclick="playUiSound(); editProject('${proj.id}')" class="text-slate-400 hover:text-purple-600 text-xs font-bold p-1" title="تعديل المشروع">✏️</button>
+                                <button onclick="playUiSound(); deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-xs font-bold p-1" title="حذف المشروع">🗑️</button>
                             </div>
                         </div>
                         <div class="w-full bg-purple-50 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
@@ -849,7 +918,7 @@
             const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
             standaloneTasksContainer.innerHTML = standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-4">${t.noTasksInSpace}</p>`;
 
-            // Render SPACES VIEW Grid Cards & Details
+            // Render SPACES VIEW
             renderSpacesView();
 
             // Today Tasks
@@ -871,7 +940,7 @@
                 const spProjs = appData.projects.filter(p => p.spaceId === sp.id);
 
                 return `
-                    <div onclick="changeSpace('${sp.id}')" class="p-4 rounded-3xl cursor-pointer transition border ${isSelected ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-400 border-purple-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-purple-100 dark:border-slate-700 hover:bg-purple-50'}">
+                    <div onclick="playUiSound(); changeSpace('${sp.id}')" class="p-4 rounded-3xl cursor-pointer transition border ${isSelected ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-400 border-purple-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-purple-100 dark:border-slate-700 hover:bg-purple-50'}">
                         <div class="text-2xl mb-1">${sp.icon || '📂'}</div>
                         <h4 class="font-black text-sm truncate">${sp.name}</h4>
                         <div class="text-[10px] font-bold opacity-80 mt-2 flex justify-between">
@@ -909,7 +978,11 @@
                     <div class="bg-purple-50/50 dark:bg-slate-700/50 rounded-2xl p-3 border border-purple-100 dark:border-slate-600 space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="font-extrabold text-xs text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
-                            <span class="text-[10px] font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[10px] font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
+                                <button onclick="playUiSound(); editProject('${proj.id}')" class="text-slate-400 hover:text-purple-600 text-xs font-bold p-0.5" title="تعديل المشروع">✏️</button>
+                                <button onclick="playUiSound(); deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-xs font-bold p-0.5" title="حذف المشروع">🗑️</button>
+                            </div>
                         </div>
                         <div class="space-y-1.5 pt-1">
                             ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-[10px] text-slate-300 text-center py-1">-</p>`}
@@ -963,15 +1036,15 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 ml-2">
-                        <select onchange="changeTaskStatus('${tk.id}', this.value)" class="text-xs font-black rounded-xl px-1.5 py-1 bg-white/90 border border-purple-100 text-slate-700 focus:outline-none">
+                        <select onchange="playUiSound(); changeTaskStatus('${tk.id}', this.value)" class="text-xs font-black rounded-xl px-1.5 py-1 bg-white/90 border border-purple-100 text-slate-700 focus:outline-none">
                             <option value="pending" ${tk.status === 'pending' ? 'selected' : ''}>⏳</option>
                             <option value="in_progress" ${tk.status === 'in_progress' ? 'selected' : ''}>🔄</option>
                             <option value="done" ${tk.status === 'done' ? 'selected' : ''}>✅</option>
                             <option value="cancelled" ${tk.status === 'cancelled' ? 'selected' : ''}>❌</option>
                         </select>
 
-                        <button onclick="editTask('${tk.id}')" class="text-slate-500 hover:text-purple-700 text-sm p-1 font-bold" title="تعديل">✏️</button>
-                        <button onclick="deleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold" title="حذف">🗑️</button>
+                        <button onclick="playUiSound(); editTask('${tk.id}')" class="text-slate-500 hover:text-purple-700 text-sm p-1 font-bold" title="تعديل">✏️</button>
+                        <button onclick="playUiSound(); deleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold" title="حذف">🗑️</button>
                     </div>
                 </div>
             `;
@@ -998,7 +1071,7 @@
                 const isSelected = selectedCalendarDate === dateStr;
 
                 grid.innerHTML += `
-                    <div onclick="selectCalendarDate('${dateStr}')" class="p-2.5 rounded-2xl cursor-pointer transition ${isSelected ? 'ring-2 ring-purple-600 bg-purple-200 dark:bg-purple-900 font-black text-purple-900 dark:text-purple-100' : hasTasks ? 'bg-purple-100 dark:bg-slate-700 font-extrabold text-purple-800 dark:text-purple-300' : 'bg-purple-50/50 dark:bg-slate-800/50 text-slate-500 hover:bg-purple-100'}">
+                    <div onclick="playUiSound(); selectCalendarDate('${dateStr}')" class="p-2.5 rounded-2xl cursor-pointer transition ${isSelected ? 'ring-2 ring-purple-600 bg-purple-200 dark:bg-purple-900 font-black text-purple-900 dark:text-purple-100' : hasTasks ? 'bg-purple-100 dark:bg-slate-700 font-extrabold text-purple-800 dark:text-purple-300' : 'bg-purple-50/50 dark:bg-slate-800/50 text-slate-500 hover:bg-purple-100'}">
                         <span>${i}</span>
                         ${hasTasks ? '<span class="block w-2 h-2 bg-purple-600 rounded-full mx-auto mt-1"></span>' : ''}
                     </div>
