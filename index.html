@@ -31,7 +31,6 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400 font-bold" data-i18n="authSubtitle">تسجيل الدخول لحفظ أفكارك ومهامك</p>
             </div>
 
-            <!-- Google Login Button -->
             <button onclick="handleGoogleLogin()" class="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-100 py-2.5 rounded-2xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition">
                 <svg class="w-4 h-4" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -60,7 +59,7 @@
         </div>
     </div>
 
-    <!-- CONFIRMATION MODAL FOR DELETIONS (نافذة التأكيد على الحذف) -->
+    <!-- CONFIRMATION MODAL FOR DELETIONS -->
     <div id="confirmDeleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-red-100 dark:border-slate-700 space-y-4 text-center">
             <div class="text-4xl text-red-500">⚠️</div>
@@ -82,19 +81,18 @@
             </div>
             
             <div class="flex items-center gap-2">
-                <!-- Theme Toggle Button -->
                 <button onclick="toggleTheme()" class="bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 p-2 rounded-2xl text-sm font-bold shadow-sm">
                     <span id="themeIcon">☀️</span>
                 </button>
 
-                <!-- Language Selector -->
-                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-100 dark:bg-slate-700 text-purple-900 dark:text-purple-200 text-xs font-bold px-2.5 py-2 rounded-2xl border-none focus:outline-none">
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-100 dark:bg-slate-700 text-purple-900 dark:text-purple-200 text-xs font-bold px-2 py-2 rounded-2xl border-none focus:outline-none">
                     <option value="ar">AR 🇸🇦</option>
+                    <option value="ary">الدارجة 🇲🇦</option>
+                    <option value="es">ES 🇪🇸</option>
                     <option value="fr">FR 🇫🇷</option>
                     <option value="en">EN 🇺🇸</option>
                 </select>
 
-                <!-- User Account Button -->
                 <button onclick="openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-sm" title="الحساب">
                     👤
                 </button>
@@ -148,26 +146,29 @@
         </div>
 
         <!-- 2. SPACES VIEW -->
-        <div id="viewSpaces" class="space-y-4 hidden">
-            <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 flex justify-between items-center">
-                <div class="flex items-center gap-3 flex-1">
-                    <span class="text-3xl" id="currentSpaceIcon">📂</span>
-                    <div class="flex-1">
-                        <span class="text-xs text-purple-500 font-bold block" data-i18n="currentSpace">المساحة الحالية</span>
-                        <div class="flex items-center gap-2">
-                            <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-black text-slate-800 dark:text-slate-100 focus:outline-none text-base">
-                                <!-- Populated dynamically -->
-                            </select>
-                            <!-- Space Delete Button -->
-                            <button id="btnDeleteSpace" onclick="askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-sm font-bold p-1" title="حذف المساحة">🗑️</button>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 font-extrabold px-3.5 py-2 rounded-2xl transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
+        <div id="viewSpaces" class="space-y-5 hidden">
+            <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700">
+                <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاصة بك 📂</h2>
+                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-600 text-white font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-purple-700 transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
             </div>
 
-            <div id="spaceDetailsContainer" class="space-y-4">
-                <!-- Dynamic Content of Selected Space -->
+            <!-- Spaces List Grid -->
+            <div id="spacesCardsGrid" class="grid grid-cols-2 gap-3">
+                <!-- Dynamic Space Cards -->
+            </div>
+
+            <!-- Selected Space Dynamic Details View -->
+            <div id="selectedSpaceDetails" class="bg-white/90 dark:bg-slate-800/90 p-4 rounded-3xl border border-purple-100 dark:border-slate-700 space-y-4">
+                <div class="flex justify-between items-center border-b border-purple-100 dark:border-slate-700 pb-2">
+                    <h3 class="text-sm font-black text-purple-900 dark:text-purple-300 flex items-center gap-2">
+                        <span>📂</span> <span id="spaceDetailTitle">المساحة المحددة</span>
+                    </h3>
+                    <button id="btnDeleteSpace" onclick="askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1" title="حذف المساحة">🗑️ <span data-i18n="deleteSpace">حذف المساحة</span></button>
+                </div>
+
+                <div id="spaceInnerContent" class="space-y-4">
+                    <!-- Content inside selected space -->
+                </div>
             </div>
         </div>
 
@@ -191,7 +192,7 @@
                 </div>
             </div>
 
-            <!-- Tasks for Selected Date (Sorted by Time) -->
+            <!-- Tasks for Selected Date -->
             <div class="bg-white/90 dark:bg-slate-800/90 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
                 <h3 class="text-xs font-extrabold text-purple-900 dark:text-purple-300 border-b border-purple-100 dark:border-slate-700 pb-2 flex justify-between items-center">
                     <span data-i18n="tasksForDate">مهام اليوم المحدد (مرتبة أوقاتاً):</span>
@@ -236,6 +237,14 @@
                 
                 <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="taskTitlePlaceholder">
                 
+                <!-- Target Space Selector (إدخال وإخراج المهمة من المساحات) -->
+                <div>
+                    <label class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 block mb-1" data-i18n="targetSpaceLabel">مساحة العمل:</label>
+                    <select id="taskSpaceSelect" onchange="updateProjectDropdownForSpace(this.value)" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
                 <div class="flex gap-2">
                     <select id="taskProjectSelect" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:outline-none">
                         <!-- Populated dynamically -->
@@ -267,7 +276,7 @@
                     </select>
                 </div>
 
-                <!-- Color Selection & Hex Code Input -->
+                <!-- Color Selection -->
                 <div class="space-y-2 pt-1">
                     <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block" data-i18n="colorLabel">لون المهمة:</label>
                     <div class="flex gap-2 items-center">
@@ -277,7 +286,6 @@
                         <button type="button" onclick="selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
                         <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-7 h-7 rounded-full cursor-pointer border-0 bg-transparent p-0">
                     </div>
-                    <!-- HEX Input -->
                     <div class="flex items-center gap-2 pt-1">
                         <span class="text-[11px] font-bold text-slate-400">HEX:</span>
                         <input type="text" id="hexColorInput" oninput="selectColor(this.value)" placeholder="#F3E8FF" class="w-24 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold dark:bg-slate-700">
@@ -292,21 +300,30 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD PROJECT -->
+    <!-- MODAL: ADD / EDIT PROJECT -->
     <div id="projectModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-purple-100 dark:border-slate-700 space-y-4">
             <h3 class="font-black text-base text-purple-900 dark:text-purple-300" data-i18n="tabAddProject">إضافة مشروع جديد 📁</h3>
             <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-3">
+                <input type="hidden" id="editingProjectId" value="">
                 <input type="text" id="projectTitle" placeholder="اسم المشروع..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="projectTitlePlaceholder">
+                
+                <div>
+                    <label class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 block mb-1" data-i18n="targetSpaceLabel">مساحة العمل:</label>
+                    <select id="projectSpaceSelect" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
                 <div class="flex gap-2 justify-end">
                     <button type="button" onclick="closeProjectModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
-                    <button type="submit" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">إنشاء</button>
+                    <button type="submit" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">إنشاء / حفظ</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- OVERDUE POPUP MODAL (تنبيه انتهاء الوقت) -->
+    <!-- OVERDUE POPUP MODAL -->
     <div id="overdueModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-pink-200 dark:border-slate-700 space-y-4 text-center">
             <div class="text-5xl">⏰</div>
@@ -337,7 +354,6 @@
 
     <!-- Application Script -->
     <script>
-        // Sound Effect
         function playBellSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -354,18 +370,17 @@
             } catch(e) {}
         }
 
-        // Translations Dictionary
         const i18n = {
             ar: {
                 authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)", googleLoginBtn: "التسجيل عبر Google", or: "أو",
                 btnAddTask: "+ إضافة مهمة", btnAddProject: "+ إضافة مشروع",
-                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة",
+                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاصة بك 📂", deleteSpace: "حذف المساحة",
                 statTasks: "المهام", statProjects: "المشاريع", statProgress: "الإنجاز",
-                tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة مشروع 📁",
+                tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة مشروع 📁", targetSpaceLabel: "مساحة العمل (إدخال/نقل):",
                 taskTitlePlaceholder: "عنوان المهمة...", projectTitlePlaceholder: "اسم المشروع...",
                 noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:", duration: "المدة:",
                 statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "حفظ المهمة", updateTask: "تحديث المهمة",
-                cancel: "إلغاء", createProject: "إنشاء المشروع", standaloneTasks: "مهام مستقلة 🌸",
+                cancel: "إلغاء", createProject: "إنشاء / حفظ", standaloneTasks: "مهام مستقلة 🌸",
                 todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅",
                 tasksForDate: "مهام اليوم المحدد (مرتبة أوقاتاً):", navHome: "الرئيسية", navSpaces: "المساحات", navToday: "اليوم", navCalendar: "التقويم",
                 newSpaceTitle: "مساحة عمل جديدة 📂", spaceNamePlaceholder: "اسم المساحة...", save: "حفظ",
@@ -376,16 +391,56 @@
                 confirmDeleteTitle: "تأكيد الحذف ⚠️", confirmDeleteMsg: "هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.", confirmDeleteBtn: "نعم، احذف",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
+            ary: {
+                authSubtitle: "سجّل الدخول باش تبقى تحفظ الشغل ديالك", emailPlaceholder: "الإيميل ديالك...", passPlaceholder: "الكود السري...", loginBtn: "دخل / دير حساب جديد", guestBtn: "كمل كزائر (بلا حساب)", googleLoginBtn: "دخل بـ Google", or: "ولا",
+                btnAddTask: "+ زِد مهمة", btnAddProject: "+ زِد مشروع",
+                currentSpace: "البلاصة الحالية", addSpaceBtn: "+ بلاصة جديدة", spacesTitle: "البلايص ديال الخدمة ديالك 📂", deleteSpace: "مسح هاد البلاصة",
+                statTasks: "المهمات", statProjects: "المشاريع", statProgress: "نسبة النجاح",
+                tabAddTask: "زيد مهمة 📝", tabAddProject: "زيد مشروع 📁", targetSpaceLabel: "البلاصة ديال الخدمة:",
+                taskTitlePlaceholder: "شنو بغيتي تدير؟...", projectTitlePlaceholder: "سمية المشروع...",
+                noProjectOption: "ديريكت فالبلاصة (بلا مشروع)", from: "من:", to: "حتى لـ:", duration: "الوقت:",
+                statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "سجل المهمة", updateTask: "بدّل المهمة",
+                cancel: "إلغاء", createProject: "صاوب / سجّل", standaloneTasks: "مهمات فردية 🌸",
+                todayTitle: "شنو عندك اليوم ☀️", calendarTitle: "الروزنامة الشهرية 📅",
+                tasksForDate: "مهمات هاد النهار (مرتبين بالوقت):", navHome: "الدار", navSpaces: "البلايص", navToday: "اليوم", navCalendar: "الروزنامة",
+                newSpaceTitle: "بلاصة خدمة جديدة 📂", spaceNamePlaceholder: "سمية البلاصة...", save: "سجّل",
+                statusPending: "⏳ مزال مادرتهاش", statusInProgress: "🔄 خدام عليها", statusDone: "✅ كملات", statusCancelled: "❌ ملغية",
+                noTasksInSpace: "ماكاين حتى مهمة خاوية 🌸", noTasksToday: "ماكاين والو المبرمج لليوم ☀️", noTasksForSelectedDate: "ماكاين والو فـ هاد النهار 📅",
+                overdueTitle: "فوتّي الوقت ديال المهمة!", overdueQuestion: "الوقت ديالها سالا، شنو بغيتي تدير بيها؟",
+                markCompleted: "حسبها كملات ✅", postponeTask: "أجّلها وبدّل الوقت ⏳", cancelTask: "لغيها ❌",
+                confirmDeleteTitle: "تأكيد المَسح ⚠️", confirmDeleteMsg: "واش متأكد بغيتي تمسحها؟ راه ماتقدرش ترجعها من بعد.", confirmDeleteBtn: "إيه، مسح",
+                days: ["أح", "ات", "تلا", "أر", "خـ", "جم", "سب"]
+            },
+            es: {
+                authSubtitle: "Inicia sesión para guardar tus tareas y proyectos", emailPlaceholder: "Correo electrónico...", passPlaceholder: "Contraseña...", loginBtn: "Iniciar Sesión / Registrarse", guestBtn: "Continuar como invitado", googleLoginBtn: "Continuar con Google", or: "o",
+                btnAddTask: "+ Añadir Tarea", btnAddProject: "+ Añadir Proyecto",
+                currentSpace: "Espacio Actual", addSpaceBtn: "+ Nuevo Espacio", spacesTitle: "Tus Espacios de Trabajo 📂", deleteSpace: "Eliminar Espacio",
+                statTasks: "Tareas", statProjects: "Proyectos", statProgress: "Progreso",
+                tabAddTask: "Añadir Tarea 📝", tabAddProject: "Añadir Proyecto 📁", targetSpaceLabel: "Espacio de trabajo:",
+                taskTitlePlaceholder: "Título de la tarea...", projectTitlePlaceholder: "Nombre del proyecto...",
+                noProjectOption: "Directamente en el espacio", from: "Desde:", to: "Hasta:", duration: "Duración:",
+                statusLabel: "Estado:", colorLabel: "Color:", saveTask: "Guardar Tarea", updateTask: "Actualizar Tarea",
+                cancel: "Cancelar", createProject: "Crear / Guardar", standaloneTasks: "Tareas Independientes 🌸",
+                todayTitle: "Programa de Hoy ☀️", calendarTitle: "Calendario Mensual 📅",
+                tasksForDate: "Tareas ordenadas por hora:", navHome: "Inicio", navSpaces: "Espacios", navToday: "Hoy", navCalendar: "Calendario",
+                newSpaceTitle: "Nuevo Espacio 📂", spaceNamePlaceholder: "Nombre del espacio...", save: "Guardar",
+                statusPending: "⏳ Pendiente", statusInProgress: "🔄 En Proceso", statusDone: "✅ Completada", statusCancelled: "❌ Cancelada",
+                noTasksInSpace: "No hay tareas independientes 🌸", noTasksToday: "No hay tareas programadas para hoy ☀️", noTasksForSelectedDate: "No hay tareas para esta fecha 📅",
+                overdueTitle: "¡Tiempo agotado!", overdueQuestion: "¿Qué deseas hacer con esta tarea?",
+                markCompleted: "Marcar Completada ✅", postponeTask: "Posponer y Editar ⏳", cancelTask: "Cancelar ❌",
+                confirmDeleteTitle: "Confirmar eliminación ⚠️", confirmDeleteMsg: "¿Estás seguro de que deseas eliminar este elemento?", confirmDeleteBtn: "Sí, eliminar",
+                days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
+            },
             fr: {
                 authSubtitle: "Connectez-vous pour sauvegarder vos tâches", emailPlaceholder: "E-mail...", passPlaceholder: "Mot de passe...", loginBtn: "Connexion / S'inscrire", guestBtn: "Continuer comme invité", googleLoginBtn: "Continuer avec Google", or: "ou",
                 btnAddTask: "+ Ajouter Tâche", btnAddProject: "+ Ajouter Projet",
-                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace",
+                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace", spacesTitle: "Vos Espaces de Travail 📂", deleteSpace: "Supprimer L'espace",
                 statTasks: "Tâches", statProjects: "Projets", statProgress: "Progrès",
-                tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter Projet 📁",
+                tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter Projet 📁", targetSpaceLabel: "Espace de travail:",
                 taskTitlePlaceholder: "Titre de la tâche...", projectTitlePlaceholder: "Nom du projet...",
                 noProjectOption: "Directement dans l'espace", from: "De:", to: "À:", duration: "Durée:",
                 statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", updateTask: "Mettre à jour",
-                cancel: "Annuler", createProject: "Créer le Projet", standaloneTasks: "Tâches Indépendantes 🌸",
+                cancel: "Annuler", createProject: "Créer / Sauvegarder", standaloneTasks: "Tâches Indépendantes 🌸",
                 todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅",
                 tasksForDate: "Tâches triées par heure:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier",
                 newSpaceTitle: "Nouvel Espace 📂", spaceNamePlaceholder: "Nom de l'espace...", save: "Enregistrer",
@@ -399,13 +454,13 @@
             en: {
                 authSubtitle: "Log in to save your tasks & projects", emailPlaceholder: "Email...", passPlaceholder: "Password...", loginBtn: "Login / Register", guestBtn: "Continue as Guest", googleLoginBtn: "Sign in with Google", or: "or",
                 btnAddTask: "+ Add Task", btnAddProject: "+ Add Project",
-                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space",
+                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space", spacesTitle: "Your Workspaces 📂", deleteSpace: "Delete Space",
                 statTasks: "Tasks", statProjects: "Projects", statProgress: "Progress",
-                tabAddTask: "Add Task 📝", tabAddProject: "Add Project 📁",
+                tabAddTask: "Add Task 📝", tabAddProject: "Add Project 📁", targetSpaceLabel: "Workspace:",
                 taskTitlePlaceholder: "Task title...", projectTitlePlaceholder: "Project name...",
                 noProjectOption: "Directly in Space (No project)", from: "From:", to: "To:", duration: "Duration:",
                 statusLabel: "Status:", colorLabel: "Color:", saveTask: "Save Task", updateTask: "Update Task",
-                cancel: "Cancel", createProject: "Create Project", standaloneTasks: "Standalone Tasks 🌸",
+                cancel: "Cancel", createProject: "Create / Save", standaloneTasks: "Standalone Tasks 🌸",
                 todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅",
                 tasksForDate: "Tasks sorted by time:", navHome: "Home", navSpaces: "Spaces", navToday: "Today", navCalendar: "Calendar",
                 newSpaceTitle: "New Workspace 📂", spaceNamePlaceholder: "Space name...", save: "Save",
@@ -421,7 +476,7 @@
         let currentLang = 'ar';
         let currentUserEmail = localStorage.getItem('bloom_current_user') || null;
         let currentOverdueTaskId = null;
-        let pendingDeleteAction = null; // Callback for confirm modal
+        let pendingDeleteAction = null;
 
         function getUserStorageKey() {
             return currentUserEmail ? `bloom_app_data_${currentUserEmail}` : 'bloom_app_data_guest';
@@ -442,7 +497,6 @@
             render();
         }
 
-        // Auth Logic
         function handleAuth(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value.trim().toLowerCase();
@@ -488,7 +542,6 @@
             document.getElementById('authModal').classList.remove('hidden');
         }
 
-        // CONFIRM DELETE MODAL LOGIC
         function promptConfirmDelete(msg, actionCallback) {
             document.getElementById('confirmDeleteMsg').innerText = msg || i18n[currentLang].confirmDeleteMsg;
             pendingDeleteAction = actionCallback;
@@ -505,7 +558,6 @@
             pendingDeleteAction = null;
         }
 
-        // Theme Toggle
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -517,10 +569,9 @@
             }
         }
 
-        // Language Switcher
         function changeLanguage(lang) {
             currentLang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.dir = (lang === 'ar' || lang === 'ary') ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -542,7 +593,6 @@
             document.getElementById('hexColorInput').value = color;
         }
 
-        // Calculate Duration
         function calculateDuration() {
             const start = document.getElementById('taskStartTime').value;
             const end = document.getElementById('taskEndTime').value;
@@ -571,14 +621,38 @@
             }
         }
 
-        // Modals Controls
-        function openAddTaskModal() { document.getElementById('taskModal').classList.remove('hidden'); }
+        function openAddTaskModal() { 
+            populateSpaceDropdowns();
+            document.getElementById('taskModal').classList.remove('hidden'); 
+        }
         function closeTaskModal() { 
             document.getElementById('taskModal').classList.add('hidden');
             cancelEditTask();
         }
-        function openAddProjectModal() { document.getElementById('projectModal').classList.remove('hidden'); }
+        function openAddProjectModal() { 
+            populateSpaceDropdowns();
+            document.getElementById('projectModal').classList.remove('hidden'); 
+        }
         function closeProjectModal() { document.getElementById('projectModal').classList.add('hidden'); }
+
+        function populateSpaceDropdowns() {
+            const taskSpaceSelect = document.getElementById('taskSpaceSelect');
+            const projSpaceSelect = document.getElementById('projectSpaceSelect');
+            
+            const options = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
+            
+            if(taskSpaceSelect) taskSpaceSelect.innerHTML = options;
+            if(projSpaceSelect) projSpaceSelect.innerHTML = options;
+
+            updateProjectDropdownForSpace(appData.currentSpaceId);
+        }
+
+        function updateProjectDropdownForSpace(spaceId) {
+            const projectSelect = document.getElementById('taskProjectSelect');
+            const currentProjects = appData.projects.filter(p => p.spaceId === spaceId);
+            projectSelect.innerHTML = `<option value="">${i18n[currentLang].noProjectOption}</option>` + 
+                currentProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+        }
 
         function changeSpace(id) {
             appData.currentSpaceId = id;
@@ -615,11 +689,11 @@
             });
         }
 
-        // Save Task
         function handleSaveTask(e) {
             e.preventDefault();
             const editingId = document.getElementById('editingTaskId').value;
             const title = document.getElementById('taskTitle').value.trim();
+            const targetSpaceId = document.getElementById('taskSpaceSelect').value || appData.currentSpaceId;
             const projectId = document.getElementById('taskProjectSelect').value || null;
             const date = document.getElementById('taskDate').value || null;
             const startTime = document.getElementById('taskStartTime').value || null;
@@ -629,14 +703,14 @@
             if(editingId) {
                 appData.tasks = appData.tasks.map(t => {
                     if(t.id === editingId) {
-                        return { ...t, title, projectId, date, startTime, endTime, status, color: activeColor };
+                        return { ...t, title, spaceId: targetSpaceId, projectId, date, startTime, endTime, status, color: activeColor };
                     }
                     return t;
                 });
             } else {
                 const newTask = {
                     id: 'task_' + Date.now(),
-                    spaceId: appData.currentSpaceId,
+                    spaceId: targetSpaceId,
                     projectId, title, date, startTime, endTime, status, color: activeColor
                 };
                 appData.tasks.push(newTask);
@@ -650,8 +724,12 @@
             const task = appData.tasks.find(t => t.id === id);
             if(!task) return;
 
+            populateSpaceDropdowns();
+
             document.getElementById('editingTaskId').value = task.id;
             document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskSpaceSelect').value = task.spaceId || appData.currentSpaceId;
+            updateProjectDropdownForSpace(task.spaceId || appData.currentSpaceId);
             document.getElementById('taskProjectSelect').value = task.projectId || '';
             document.getElementById('taskDate').value = task.date || '';
             document.getElementById('taskStartTime').value = task.startTime || '';
@@ -673,13 +751,14 @@
         function handleAddProject(e) {
             e.preventDefault();
             const title = document.getElementById('projectTitle').value.trim();
-            appData.projects.push({ id: 'proj_' + Date.now(), spaceId: appData.currentSpaceId, title });
+            const targetSpaceId = document.getElementById('projectSpaceSelect').value || appData.currentSpaceId;
+            
+            appData.projects.push({ id: 'proj_' + Date.now(), spaceId: targetSpaceId, title });
             document.getElementById('formProject').reset();
             closeProjectModal();
             saveData();
         }
 
-        // Toggle Quick Complete
         function toggleQuickComplete(id) {
             appData.tasks = appData.tasks.map(t => {
                 if(t.id === id) {
@@ -726,31 +805,11 @@
             });
         }
 
-        // Render UI
         function render() {
             const t = i18n[currentLang];
 
-            // Space Select
-            const spaceSelect = document.getElementById('spaceSelect');
-            spaceSelect.innerHTML = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
-
-            // Hide Space Delete if only 1 space exists
-            const btnDeleteSpace = document.getElementById('btnDeleteSpace');
-            if(btnDeleteSpace) {
-                if(appData.spaces.length <= 1) {
-                    btnDeleteSpace.classList.add('hidden');
-                } else {
-                    btnDeleteSpace.classList.remove('hidden');
-                }
-            }
-
-            // Project Select in Modal
-            const projectSelect = document.getElementById('taskProjectSelect');
-            const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
-            projectSelect.innerHTML = `<option value="">${t.noProjectOption}</option>` + 
-                currentProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
-
             const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
+            const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
 
             // Stats
             document.getElementById('statTasksCount').innerText = currentTasks.length;
@@ -759,7 +818,7 @@
             const progress = currentTasks.length ? Math.round((completedCount / currentTasks.length) * 100) : 0;
             document.getElementById('statProgress').innerText = progress + '%';
 
-            // Render Projects
+            // Projects Render
             const projectsContainer = document.getElementById('projectsContainer');
             projectsContainer.innerHTML = currentProjects.map(proj => {
                 const projTasks = currentTasks.filter(task => task.projectId === proj.id);
@@ -790,13 +849,8 @@
             const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
             standaloneTasksContainer.innerHTML = standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-4">${t.noTasksInSpace}</p>`;
 
-            // Render Space View Details
-            document.getElementById('spaceDetailsContainer').innerHTML = projectsContainer.innerHTML + `
-                <div class="pt-2">
-                    <h4 class="text-xs font-extrabold text-purple-900 dark:text-purple-300 mb-2">${t.standaloneTasks}</h4>
-                    <div class="space-y-2.5">${standaloneTasksContainer.innerHTML}</div>
-                </div>
-            `;
+            // Render SPACES VIEW Grid Cards & Details
+            renderSpacesView();
 
             // Today Tasks
             const todayStr = new Date().toISOString().split('T')[0];
@@ -808,7 +862,68 @@
             checkOverdueTasks();
         }
 
-        // Render Individual Task Card
+        // Render Spaces View Interactive Cards
+        function renderSpacesView() {
+            const cardsGrid = document.getElementById('spacesCardsGrid');
+            cardsGrid.innerHTML = appData.spaces.map(sp => {
+                const isSelected = sp.id === appData.currentSpaceId;
+                const spTasks = appData.tasks.filter(t => t.spaceId === sp.id);
+                const spProjs = appData.projects.filter(p => p.spaceId === sp.id);
+
+                return `
+                    <div onclick="changeSpace('${sp.id}')" class="p-4 rounded-3xl cursor-pointer transition border ${isSelected ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-400 border-purple-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-purple-100 dark:border-slate-700 hover:bg-purple-50'}">
+                        <div class="text-2xl mb-1">${sp.icon || '📂'}</div>
+                        <h4 class="font-black text-sm truncate">${sp.name}</h4>
+                        <div class="text-[10px] font-bold opacity-80 mt-2 flex justify-between">
+                            <span>${spTasks.length} مهمة</span>
+                            <span>${spProjs.length} مشروع</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Details of Selected Space
+            const activeSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
+            document.getElementById('spaceDetailTitle').innerText = activeSpace ? activeSpace.name : '';
+
+            const btnDeleteSpace = document.getElementById('btnDeleteSpace');
+            if(btnDeleteSpace) {
+                if(appData.spaces.length <= 1) {
+                    btnDeleteSpace.classList.add('hidden');
+                } else {
+                    btnDeleteSpace.classList.remove('hidden');
+                }
+            }
+
+            const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
+            const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
+            const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
+
+            const spaceInnerContent = document.getElementById('spaceInnerContent');
+            spaceInnerContent.innerHTML = currentProjects.map(proj => {
+                const projTasks = currentTasks.filter(task => task.projectId === proj.id);
+                const projDone = projTasks.filter(task => task.status === 'done').length;
+                const projPct = projTasks.length ? Math.round((projDone / projTasks.length) * 100) : 0;
+
+                return `
+                    <div class="bg-purple-50/50 dark:bg-slate-700/50 rounded-2xl p-3 border border-purple-100 dark:border-slate-600 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-extrabold text-xs text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
+                            <span class="text-[10px] font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-[10px] text-slate-300 text-center py-1">-</p>`}
+                        </div>
+                    </div>
+                `;
+            }).join('') + `
+                <div class="pt-2">
+                    <h4 class="text-xs font-extrabold text-purple-900 dark:text-purple-300 mb-2">${i18n[currentLang].standaloneTasks}</h4>
+                    <div class="space-y-2.5">${standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksInSpace}</p>`}</div>
+                </div>
+            `;
+        }
+
         function renderTaskCard(tk) {
             const isCompletedOrCancelled = tk.status === 'done' || tk.status === 'cancelled';
             
@@ -862,7 +977,6 @@
             `;
         }
 
-        // Calendar Logic
         function renderCalendar() {
             const headerDays = document.getElementById('calendarHeaderDays');
             headerDays.innerHTML = i18n[currentLang].days.map(d => `<span>${d}</span>`).join('');
@@ -898,7 +1012,6 @@
             renderSelectedDateTasks();
         }
 
-        // Render Tasks Sorted chronologically by Start Time
         function renderSelectedDateTasks() {
             document.getElementById('selectedDateDisplay').innerText = selectedCalendarDate || '-';
             let tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate);
@@ -913,7 +1026,6 @@
             container.innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksForSelectedDate}</p>`;
         }
 
-        // Check Overdue Tasks Automatically
         function checkOverdueTasks() {
             const now = new Date();
             const overdueTask = appData.tasks.find(tk => {
@@ -950,7 +1062,6 @@
             }
         }
 
-        // Navigation Views
         function switchView(view) {
             ['Home', 'Spaces', 'Today', 'Calendar'].forEach(v => {
                 document.getElementById('view' + v).classList.add('hidden');
