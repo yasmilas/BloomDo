@@ -4,150 +4,474 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloomDo - Cute Pastel To-Do</title>
-    <!-- ربط ملف الـ PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#c084fc">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', sans-serif; background-color: #faf5ff; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); }
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e9d5ff; border-radius: 10px; }
     </style>
 </head>
-<body class="text-slate-700 pb-20">
+<body class="text-slate-700 pb-24 select-none">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-30 glass border-b border-purple-100 p-4 shadow-sm mb-6">
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 glass border-b border-purple-100 p-4 shadow-sm">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-purple-600 flex items-center gap-2">
-                <span>🌸</span> BloomDo
-            </h1>
-            <button onclick="openAIModal()" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-md transition flex items-center gap-1">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🌸</span>
+                <h1 class="text-xl font-bold text-purple-700 tracking-wide">BloomDo</h1>
+            </div>
+            <button onclick="toggleAIModal()" class="bg-gradient-to-r from-purple-400 to-pink-400 text-white px-3.5 py-1.5 rounded-full text-xs font-bold shadow-md hover:opacity-90 transition flex items-center gap-1">
                 <span>✨</span> رتّب يومي
             </button>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-md mx-auto px-4">
-        
-        <!-- Quick Add Section -->
-        <div class="bg-white rounded-3xl p-5 shadow-sm border border-purple-100 mb-6">
-            <h2 class="text-lg font-bold text-purple-900 mb-3">مهمة جديدة ✨</h2>
-            <form id="taskForm" onsubmit="handleAddTask(event)" class="space-y-3">
-                <input type="text" id="taskTitle" placeholder="ماذا تريد أن تفعل اليوم؟" required class="w-full px-4 py-2.5 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 bg-purple-50/30 text-sm">
-                
-                <div class="flex gap-2">
-                    <input type="date" id="taskDate" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/30">
-                    <input type="time" id="taskTime" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/30">
-                </div>
+    <!-- Main Container -->
+    <main class="max-w-md mx-auto px-4 pt-4">
 
-                <div class="flex justify-between items-center pt-1">
-                    <div class="flex gap-1.5" id="colorPicker">
-                        <button type="button" onclick="selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-transparent focus:ring-pink-400"></button>
-                        <button type="button" onclick="selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-transparent focus:ring-purple-400"></button>
-                        <button type="button" onclick="selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-transparent focus:ring-indigo-400"></button>
-                        <button type="button" onclick="selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-transparent focus:ring-amber-400"></button>
+        <!-- Views Container -->
+        <!-- 1. HOME VIEW -->
+        <div id="viewHome" class="space-y-5">
+            <!-- Space Switcher Banner -->
+            <div class="bg-white/80 rounded-3xl p-4 shadow-sm border border-purple-100 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl" id="currentSpaceIcon">📂</span>
+                    <div>
+                        <span class="text-[10px] text-purple-400 font-bold block">مساحة العمل الحالية</span>
+                        <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-bold text-slate-800 focus:outline-none text-sm">
+                            <!-- Populated dynamically -->
+                        </select>
                     </div>
-                    <button type="submit" class="bg-purple-600 text-white px-5 py-2 rounded-2xl font-medium text-sm hover:bg-purple-700 transition">إضافة</button>
                 </div>
-            </form>
+                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold px-3 py-1.5 rounded-2xl transition">+ مساحة</button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-purple-100/60 p-3 rounded-2xl">
+                    <span class="block text-xs text-purple-600 font-bold">المهام</span>
+                    <span class="text-base font-extrabold text-purple-800" id="statTasksCount">0</span>
+                </div>
+                <div class="bg-pink-100/60 p-3 rounded-2xl">
+                    <span class="block text-xs text-pink-600 font-bold">المشاريع</span>
+                    <span class="text-base font-extrabold text-pink-800" id="statProjectsCount">0</span>
+                </div>
+                <div class="bg-indigo-100/60 p-3 rounded-2xl">
+                    <span class="block text-xs text-indigo-600 font-bold">الإنجاز</span>
+                    <span class="text-base font-extrabold text-indigo-800" id="statProgress">0%</span>
+                </div>
+            </div>
+
+            <!-- Create New Task/Project Section -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
+                <div class="flex border-b border-purple-50 pb-2 gap-4">
+                    <button onclick="setAddType('task')" id="tabAddTask" class="text-xs font-bold text-purple-600 border-b-2 border-purple-500 pb-1">إضافة مهمة 📝</button>
+                    <button onclick="setAddType('project')" id="tabAddProject" class="text-xs font-bold text-slate-400 pb-1">إضافة مشروع 📁</button>
+                </div>
+
+                <!-- Form Task -->
+                <form id="formTask" onsubmit="handleAddTask(event)" class="space-y-3">
+                    <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 bg-purple-50/20 text-xs">
+                    <div class="flex gap-2">
+                        <select id="taskProjectSelect" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20 focus:outline-none">
+                            <option value="">مباشرة في المساحة (بدون مشروع)</option>
+                        </select>
+                        <input type="date" id="taskDate" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <input type="time" id="taskTime" class="px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20">
+                        <!-- Colors -->
+                        <div class="flex gap-1.5">
+                            <button type="button" onclick="selectColor('#FCE7F3')" class="w-5 h-5 rounded-full bg-pink-200 border-2 border-white ring-1 ring-purple-200"></button>
+                            <button type="button" onclick="selectColor('#F3E8FF')" class="w-5 h-5 rounded-full bg-purple-200 border-2 border-white ring-1 ring-purple-200"></button>
+                            <button type="button" onclick="selectColor('#E0E7FF')" class="w-5 h-5 rounded-full bg-indigo-200 border-2 border-white ring-1 ring-purple-200"></button>
+                            <button type="button" onclick="selectColor('#FEF3C7')" class="w-5 h-5 rounded-full bg-amber-200 border-2 border-white ring-1 ring-purple-200"></button>
+                        </div>
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-2xl font-bold text-xs transition">حفظ</button>
+                    </div>
+                </form>
+
+                <!-- Form Project -->
+                <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-3 hidden">
+                    <input type="text" id="projectTitle" placeholder="اسم المشروع الجديد..." required class="w-full px-4 py-2 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 bg-purple-50/20 text-xs">
+                    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-2xl font-bold text-xs transition">إنشاء المشروع</button>
+                </form>
+            </div>
+
+            <!-- Projects Section -->
+            <div id="projectsContainer" class="space-y-3">
+                <!-- Projects Rendered Here -->
+            </div>
+
+            <!-- Standalone Tasks Section -->
+            <div>
+                <h3 class="text-xs font-bold text-purple-900 mb-2 px-1">مهام مستقلة 🌸</h3>
+                <div id="standaloneTasksContainer" class="space-y-2">
+                    <!-- Tasks Rendered Here -->
+                </div>
+            </div>
         </div>
 
-        <!-- Task List -->
-        <div class="space-y-3" id="taskList">
-            <!-- Tasks rendered dynamically -->
+        <!-- 2. TODAY VIEW -->
+        <div id="viewToday" class="space-y-4 hidden">
+            <h2 class="text-base font-bold text-purple-900">جدول مهام اليوم ☀️</h2>
+            <div id="todayTasksContainer" class="space-y-2">
+                <!-- Today Tasks Rendered Here -->
+            </div>
         </div>
+
+        <!-- 3. CALENDAR VIEW -->
+        <div id="viewCalendar" class="space-y-4 hidden">
+            <h2 class="text-base font-bold text-purple-900">التقويم الشهري 📅</h2>
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100">
+                <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-purple-400 mb-2">
+                    <span>ح</span><span>ن</span><span>ث</span><span>ع</span><span>خ</span><span>ج</span><span>س</span>
+                </div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center text-xs">
+                    <!-- Dynamic Calendar -->
+                </div>
+            </div>
+            <div id="calendarSelectedDateTasks" class="space-y-2 pt-2">
+                <!-- Selected Date Tasks -->
+            </div>
+        </div>
+
     </main>
 
-    <!-- AI Suggestion Modal -->
-    <div id="aiModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-xl border border-purple-100 space-y-4 text-center">
-            <div class="text-4xl">✨</div>
-            <h3 class="font-bold text-lg text-purple-900">اقتراح الذكاء الاصطناعي لتنظيم يومك</h3>
-            <p class="text-xs text-slate-500 leading-relaxed" id="aiText">
-                ابدأ بالمهمة الأكثر أهمية صباحاً، ولا تنسَ أخذ استراحة لمدة 15 دقيقة بعد إنجاز المهام الكبيرة! 🌸
-            </p>
-            <button onclick="closeAIModal()" class="w-full bg-purple-600 text-white py-2.5 rounded-2xl font-medium text-sm">فهمت ذلك!</button>
+    <!-- Navigation Bar at Bottom -->
+    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-purple-100 px-6 py-3 z-30">
+        <div class="max-w-md mx-auto flex justify-between items-center text-slate-400">
+            <button onclick="switchView('home')" id="navHome" class="flex flex-col items-center gap-1 text-purple-600">
+                <span class="text-lg">🏠</span>
+                <span class="text-[10px] font-bold">الرئيسية</span>
+            </button>
+            <button onclick="switchView('today')" id="navToday" class="flex flex-col items-center gap-1 hover:text-purple-600">
+                <span class="text-lg">☀️</span>
+                <span class="text-[10px] font-bold">اليوم</span>
+            </button>
+            <button onclick="switchView('calendar')" id="navCalendar" class="flex flex-col items-center gap-1 hover:text-purple-600">
+                <span class="text-lg">📅</span>
+                <span class="text-[10px] font-bold">التقويم</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- OVERDUE POPUP MODAL -->
+    <div id="overdueModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-pink-100 space-y-4 text-center">
+            <div class="text-4xl">⏰</div>
+            <h3 class="font-extrabold text-slate-800 text-base">فات وقت المهمة!</h3>
+            <p class="text-xs text-slate-500 leading-relaxed" id="overdueTaskName">اسم المهمة المفقودة</p>
+            <p class="text-xs font-bold text-purple-600">ماذا تحب أن تفعل بها؟</p>
+            <div class="flex gap-2">
+                <button onclick="handleOverdueAction('postpone')" class="w-1/2 bg-amber-400 hover:bg-amber-500 text-white py-2 rounded-2xl text-xs font-bold shadow-sm">تأجيل ⏳</button>
+                <button onclick="handleOverdueAction('cancel')" class="w-1/2 bg-red-400 hover:bg-red-500 text-white py-2 rounded-2xl text-xs font-bold shadow-sm">إلغاء ✕</button>
+            </div>
         </div>
     </div>
 
-    <!-- Script for Logic and PWA Register -->
-    <script>
-        let selectedColor = '#F3E8FF';
-        let tasks = JSON.parse(localStorage.getItem('bloom_tasks') || '[]');
+    <!-- NEW SPACE MODAL -->
+    <div id="spaceModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-5 max-w-xs w-full shadow-xl space-y-3">
+            <h3 class="font-bold text-sm text-purple-900">مساحة عمل جديدة 📂</h3>
+            <input type="text" id="spaceNameInput" placeholder="اسم المساحة (مثلاً: الدراسة، العمل)..." class="w-full px-3 py-2 rounded-2xl border border-purple-100 text-xs focus:outline-none">
+            <div class="flex gap-2 justify-end">
+                <button onclick="closeNewSpaceModal()" class="px-3 py-1.5 text-xs text-slate-400 font-bold">إلغاء</button>
+                <button onclick="saveNewSpace()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-bold rounded-2xl">حفظ</button>
+            </div>
+        </div>
+    </div>
 
-        function selectColor(color) {
-            selectedColor = color;
+    <!-- AI SUGGESTIONS MODAL -->
+    <div id="aiModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-purple-100 space-y-4 text-center">
+            <div class="text-4xl">✨</div>
+            <h3 class="font-bold text-base text-purple-900">مقترح الذكاء الاصطناعي اليومي</h3>
+            <p class="text-xs text-slate-600 leading-relaxed" id="aiSuggestionText">جاري كتابة المقترح...</p>
+            <button onclick="toggleAIModal()" class="w-full bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-bold">شكراً، فهمت!</button>
+        </div>
+    </div>
+
+    <!-- App Logic Script -->
+    <script>
+        // Initial Data Structure & LocalStorage
+        let appData = JSON.parse(localStorage.getItem('bloom_app_data') || JSON.stringify({
+            currentSpaceId: 'default',
+            spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
+            projects: [],
+            tasks: []
+        }));
+
+        let activeColor = '#F3E8FF';
+        let currentOverdueTaskId = null;
+
+        function saveData() {
+            localStorage.setItem('bloom_app_data', JSON.stringify(appData));
+            render();
         }
 
+        function selectColor(color) { activeColor = color; }
+
+        function setAddType(type) {
+            const formTask = document.getElementById('formTask');
+            const formProject = document.getElementById('formProject');
+            const tabTask = document.getElementById('tabAddTask');
+            const tabProject = document.getElementById('tabAddProject');
+
+            if(type === 'task') {
+                formTask.classList.remove('hidden');
+                formProject.classList.add('hidden');
+                tabTask.className = "text-xs font-bold text-purple-600 border-b-2 border-purple-500 pb-1";
+                tabProject.className = "text-xs font-bold text-slate-400 pb-1";
+            } else {
+                formTask.classList.add('hidden');
+                formProject.classList.remove('hidden');
+                tabProject.className = "text-xs font-bold text-pink-600 border-b-2 border-pink-500 pb-1";
+                tabTask.className = "text-xs font-bold text-slate-400 pb-1";
+            }
+        }
+
+        // Space Management
+        function changeSpace(id) {
+            appData.currentSpaceId = id;
+            saveData();
+        }
+
+        function openNewSpaceModal() { document.getElementById('spaceModal').classList.remove('hidden'); }
+        function closeNewSpaceModal() { document.getElementById('spaceModal').classList.add('hidden'); }
+
+        function saveNewSpace() {
+            const name = document.getElementById('spaceNameInput').value.trim();
+            if(!name) return;
+            const newSpace = { id: 'space_' + Date.now(), name, icon: '📂' };
+            appData.spaces.push(newSpace);
+            appData.currentSpaceId = newSpace.id;
+            document.getElementById('spaceNameInput').value = '';
+            closeNewSpaceModal();
+            saveData();
+        }
+
+        // Adding Tasks & Projects
         function handleAddTask(e) {
             e.preventDefault();
-            const title = document.getElementById('taskTitle').value;
+            const title = document.getElementById('taskTitle').value.trim();
+            const projectId = document.getElementById('taskProjectSelect').value || null;
             const date = document.getElementById('taskDate').value;
             const time = document.getElementById('taskTime').value;
 
             const newTask = {
-                id: Date.now(),
+                id: 'task_' + Date.now(),
+                spaceId: appData.currentSpaceId,
+                projectId: projectId,
                 title,
                 date,
                 time,
-                color: selectedColor,
-                status: 'pending'
+                color: activeColor,
+                status: 'pending' // pending, done, postponed, cancelled
             };
 
-            tasks.push(newTask);
-            saveAndRender();
-            document.getElementById('taskForm').reset();
+            appData.tasks.push(newTask);
+            document.getElementById('formTask').reset();
+            saveData();
         }
 
-        function toggleTask(id) {
-            tasks = tasks.map(t => {
+        function handleAddProject(e) {
+            e.preventDefault();
+            const title = document.getElementById('projectTitle').value.trim();
+            const newProject = {
+                id: 'proj_' + Date.now(),
+                spaceId: appData.currentSpaceId,
+                title
+            };
+            appData.projects.push(newProject);
+            document.getElementById('formProject').reset();
+            setAddType('task');
+            saveData();
+        }
+
+        function toggleTaskStatus(id) {
+            appData.tasks = appData.tasks.map(t => {
                 if(t.id === id) {
-                    const newStatus = t.status === 'done' ? 'pending' : 'done';
-                    if(newStatus === 'done') confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
-                    return { ...t, status: newStatus };
+                    const next = t.status === 'done' ? 'pending' : 'done';
+                    if(next === 'done') confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
+                    return { ...t, status: next };
                 }
                 return t;
             });
-            saveAndRender();
+            saveData();
         }
 
         function deleteTask(id) {
-            tasks = tasks.filter(t => t.id !== id);
-            saveAndRender();
+            appData.tasks = appData.tasks.filter(t => t.id !== id);
+            saveData();
         }
 
-        function saveAndRender() {
-            localStorage.setItem('bloom_tasks', JSON.stringify(tasks));
-            const list = document.getElementById('taskList');
-            list.innerHTML = tasks.map(t => `
-                <div class="p-4 rounded-3xl shadow-sm border border-purple-100/50 flex items-center justify-between transition hover:shadow-md" style="background-color: ${t.color}">
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="toggleTask(${t.id})" class="w-5 h-5 accent-purple-600 rounded-lg cursor-pointer">
-                        <div>
-                            <p class="font-medium text-sm ${t.status === 'done' ? 'line-through text-slate-400' : 'text-slate-800'}">${t.title}</p>
-                            ${t.date ? `<span class="text-[10px] text-slate-500">📅 ${t.date}${t.time || ''}</span>` : ''}
+        function deleteProject(id) {
+            appData.projects = appData.projects.filter(p => p.id !== id);
+            appData.tasks = appData.tasks.filter(t => t.projectId !== id);
+            saveData();
+        }
+
+        // Render Functions
+        function render() {
+            // Render Space Select
+            const spaceSelect = document.getElementById('spaceSelect');
+            spaceSelect.innerHTML = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
+
+            // Render Task Project Select Dropdown
+            const projectSelect = document.getElementById('taskProjectSelect');
+            const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
+            projectSelect.innerHTML = `<option value="">مباشرة في المساحة (بدون مشروع)</option>` + 
+                currentProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+
+            // Filter current Space Data
+            const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
+            
+            // Render Stats
+            document.getElementById('statTasksCount').innerText = currentTasks.length;
+            document.getElementById('statProjectsCount').innerText = currentProjects.length;
+            const completedCount = currentTasks.filter(t => t.status === 'done').length;
+            const progress = currentTasks.length ? Math.round((completedCount / currentTasks.length) * 100) : 0;
+            document.getElementById('statProgress').innerText = progress + '%';
+
+            // Render Projects & Sub-tasks
+            const projectsContainer = document.getElementById('projectsContainer');
+            projectsContainer.innerHTML = currentProjects.map(proj => {
+                const projTasks = currentTasks.filter(t => t.projectId === proj.id);
+                const projDone = projTasks.filter(t => t.status === 'done').length;
+                const projPct = projTasks.length ? Math.round((projDone / projTasks.length) * 100) : 0;
+
+                return `
+                    <div class="bg-white/90 rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xs text-purple-900">📁 ${proj.title}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-purple-500">${projPct}%</span>
+                                <button onclick="deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-400 text-xs">✕</button>
+                            </div>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-purple-50 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-purple-500 h-1.5 rounded-full transition-all duration-300" style="width: ${projPct}%"></div>
+                        </div>
+                        <!-- Sub Tasks -->
+                        <div class="space-y-1.5 pt-1">
+                            ${projTasks.map(t => renderTaskHTML(t)).join('') || '<p class="text-[10px] text-slate-300 text-center py-1">لا توجد فرعيات بعد</p>'}
                         </div>
                     </div>
-                    <button onclick="deleteTask(${t.id})" class="text-slate-400 hover:text-red-500 text-xs p-1">✕</button>
+                `;
+            }).join('');
+
+            // Render Standalone Tasks
+            const standaloneTasksContainer = document.getElementById('standaloneTasksContainer');
+            const standaloneTasks = currentTasks.filter(t => !t.projectId);
+            standaloneTasksContainer.innerHTML = standaloneTasks.map(t => renderTaskHTML(t)).join('') || '<p class="text-xs text-slate-400 text-center py-3">لا توجد مهام حرة 🌸</p>';
+
+            // Render Today Tasks
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = appData.tasks.filter(t => t.date === todayStr);
+            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(t => renderTaskHTML(t)).join('') || '<p class="text-xs text-slate-400 text-center py-4">لا توجد مهام مجدولة لليوم ☀️</p>';
+
+            // Check Overdue Tasks
+            checkOverdueTasks();
+            renderCalendar();
+        }
+
+        function renderTaskHTML(t) {
+            const statusTag = t.status === 'postponed' ? '<span class="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-bold">مؤجلة</span>' :
+                              t.status === 'cancelled' ? '<span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold">ملغاة</span>' : '';
+            return `
+                <div class="p-3 rounded-2xl flex items-center justify-between shadow-sm transition" style="background-color: ${t.color}">
+                    <div class="flex items-center gap-2.5">
+                        <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="toggleTaskStatus('${t.id}')" class="w-4 h-4 accent-purple-600 rounded cursor-pointer">
+                        <div>
+                            <p class="font-bold text-xs ${t.status === 'done' ? 'line-through text-slate-400' : 'text-slate-800'}">${t.title} ${statusTag}</p>
+                            ${t.date ? `<span class="text-[9px] text-slate-500 font-medium">📅 ${t.date}${t.time || ''}</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="deleteTask('${t.id}')" class="text-slate-300 hover:text-red-500 text-xs">✕</button>
                 </div>
-            `).join('');
+            `;
         }
 
-        function openAIModal() { document.getElementById('aiModal').classList.remove('hidden'); }
-        function closeAIModal() { document.getElementById('aiModal').classList.add('hidden'); }
-
-        // Initial render
-        saveAndRender();
-
-        // تسجيل الـ Service Worker ليعمل بدون إنترنت
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
+        // Views Switcher
+        function switchView(view) {
+            ['Home', 'Today', 'Calendar'].forEach(v => {
+                document.getElementById('view' + v).classList.add('hidden');
+                document.getElementById('nav' + v).className = "flex flex-col items-center gap-1 text-slate-400";
+            });
+            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('hidden');
+            document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1)).className = "flex flex-col items-center gap-1 text-purple-600 font-bold";
         }
+
+        // Calendar Render
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=30; i++) {
+                const dayStr = `2026-09-${i < 10 ? '0'+i : i}`;
+                const hasTask = appData.tasks.some(t => t.date === dayStr);
+                grid.innerHTML += `
+                    <div class="p-2 rounded-2xl ${hasTask ? 'bg-purple-200 font-bold text-purple-800' : 'bg-purple-50/50 text-slate-500'}">
+                        ${i}
+                        ${hasTask ? '<span class="block w-1 h-1 bg-purple-600 rounded-full mx-auto mt-0.5"></span>' : ''}
+                    </div>
+                `;
+            }
+        }
+
+        // Overdue Check Logic
+        function checkOverdueTasks() {
+            const now = new Date();
+            const overdue = appData.tasks.find(t => {
+                if (t.status !== 'pending' || !t.date || !t.time) return false;
+                const taskDateTime = new Date(`${t.date}T${t.time}`);
+                return taskDateTime < now;
+            });
+
+            if (overdue && currentOverdueTaskId !== overdue.id) {
+                currentOverdueTaskId = overdue.id;
+                document.getElementById('overdueTaskName').innerText = `"${overdue.title}"`;
+                document.getElementById('overdueModal').classList.remove('hidden');
+            }
+        }
+
+        function handleOverdueAction(action) {
+            appData.tasks = appData.tasks.map(t => {
+                if (t.id === currentOverdueTaskId) {
+                    return { ...t, status: action === 'postpone' ? 'postponed' : 'cancelled' };
+                }
+                return t;
+            });
+            document.getElementById('overdueModal').classList.add('hidden');
+            currentOverdueTaskId = null;
+            saveData();
+        }
+
+        // AI Modal
+        function toggleAIModal() {
+            const modal = document.getElementById('aiModal');
+            if(modal.classList.contains('hidden')) {
+                const suggestions = [
+                    "🌸 ابدأ بإنجاز المهام الصغيرة المسجلة في المساحة لتكسب طاقة لإنجاز باقي مشروعك!",
+                    "✨ لديك عدة مهام اليوم! خذ استراحة لمدة 10 دقائق بعد كل مهمة مكتملة.",
+                    "🌷 نقترح البدء بالمهمة الأكثر إلحاحاً أولاً، ثم ترتيب المشاريع بعد الظهر."
+                ];
+                document.getElementById('aiSuggestionText').innerText = suggestions[Math.floor(Math.random() * suggestions.length)];
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Initial Render & Service Worker
+        render();
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
     </script>
 </body>
 </html>
