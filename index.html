@@ -10,104 +10,110 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Tajawal', 'Poppins', sans-serif; background-color: #faf5ff; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e9d5ff; border-radius: 10px; }
+        body { font-family: 'Tajawal', 'Poppins', sans-serif; background-color: #faf5ff; font-size: 15px; }
+        .glass { background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(14px); }
+        .strike-through { text-decoration: line-through; opacity: 0.6; }
     </style>
 </head>
-<body class="text-slate-700 pb-24 select-none">
+<body class="text-slate-800 pb-28 select-none">
 
     <!-- Header Navigation -->
     <header class="sticky top-0 z-30 glass border-b border-purple-100 p-4 shadow-sm">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <span class="text-2xl">🌸</span>
-                <h1 class="text-xl font-bold text-purple-700 tracking-wide">BloomDo</h1>
+                <span class="text-3xl">🌸</span>
+                <h1 class="text-2xl font-black text-purple-700 tracking-wide">BloomDo</h1>
             </div>
             
             <div class="flex items-center gap-2">
                 <!-- Language Selector -->
-                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1.5 rounded-xl border-none focus:ring-2 focus:ring-purple-300">
+                <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-100 text-purple-900 text-sm font-bold px-3 py-1.5 rounded-2xl border-none focus:ring-2 focus:ring-purple-300">
                     <option value="ar">AR 🇸🇦</option>
                     <option value="fr">FR 🇫🇷</option>
                     <option value="en">EN 🇺🇸</option>
                 </select>
 
-                <button onclick="toggleAIModal()" class="bg-gradient-to-r from-purple-400 to-pink-400 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-md hover:opacity-90 transition flex items-center gap-1">
-                    <span>✨</span> <span data-i18n="aiBtn">رتّب يومي</span>
+                <button onclick="toggleAIModal()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-xs font-extrabold shadow-md hover:opacity-90 transition flex items-center gap-1.5">
+                    <span class="text-base">✨</span> <span data-i18n="aiBtn">رتّب يومي</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-md mx-auto px-4 pt-4">
+    <main class="max-w-md mx-auto px-4 pt-5 space-y-6">
 
         <!-- 1. HOME VIEW -->
-        <div id="viewHome" class="space-y-5">
+        <div id="viewHome" class="space-y-6">
             <!-- Space Switcher Banner -->
-            <div class="bg-white/80 rounded-3xl p-4 shadow-sm border border-purple-100 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl" id="currentSpaceIcon">📂</span>
+            <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl" id="currentSpaceIcon">📂</span>
                     <div>
-                        <span class="text-[10px] text-purple-400 font-bold block" data-i18n="currentSpace">مساحة العمل الحالية</span>
-                        <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-bold text-slate-800 focus:outline-none text-sm">
+                        <span class="text-xs text-purple-500 font-bold block" data-i18n="currentSpace">مساحة العمل الحالية</span>
+                        <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-black text-slate-800 focus:outline-none text-base">
                             <!-- Populated dynamically -->
                         </select>
                     </div>
                 </div>
-                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold px-3 py-1.5 rounded-2xl transition" data-i18n="addSpaceBtn">+ مساحة</button>
+                <button onclick="openNewSpaceModal()" class="text-xs bg-purple-100 hover:bg-purple-200 text-purple-800 font-extrabold px-3.5 py-2 rounded-2xl transition" data-i18n="addSpaceBtn">+ مساحة</button>
             </div>
 
             <!-- Stats Bar -->
-            <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-purple-100/60 p-3 rounded-2xl">
-                    <span class="block text-xs text-purple-600 font-bold" data-i18n="statTasks">المهام</span>
-                    <span class="text-base font-extrabold text-purple-800" id="statTasksCount">0</span>
+            <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-purple-100/70 p-3.5 rounded-2xl">
+                    <span class="block text-xs text-purple-700 font-extrabold" data-i18n="statTasks">المهام</span>
+                    <span class="text-lg font-black text-purple-900" id="statTasksCount">0</span>
                 </div>
-                <div class="bg-pink-100/60 p-3 rounded-2xl">
-                    <span class="block text-xs text-pink-600 font-bold" data-i18n="statProjects">المشاريع</span>
-                    <span class="text-base font-extrabold text-pink-800" id="statProjectsCount">0</span>
+                <div class="bg-pink-100/70 p-3.5 rounded-2xl">
+                    <span class="block text-xs text-pink-700 font-extrabold" data-i18n="statProjects">المشاريع</span>
+                    <span class="text-lg font-black text-pink-900" id="statProjectsCount">0</span>
                 </div>
-                <div class="bg-indigo-100/60 p-3 rounded-2xl">
-                    <span class="block text-xs text-indigo-600 font-bold" data-i18n="statProgress">الإنجاز</span>
-                    <span class="text-base font-extrabold text-indigo-800" id="statProgress">0%</span>
+                <div class="bg-indigo-100/70 p-3.5 rounded-2xl">
+                    <span class="block text-xs text-indigo-700 font-extrabold" data-i18n="statProgress">الإنجاز</span>
+                    <span class="text-lg font-black text-indigo-900" id="statProgress">0%</span>
                 </div>
             </div>
 
-            <!-- Create / Edit Task/Project Form Container -->
-            <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
-                <div class="flex border-b border-purple-50 pb-2 gap-4">
-                    <button onclick="setAddType('task')" id="tabAddTask" class="text-xs font-bold text-purple-600 border-b-2 border-purple-500 pb-1" data-i18n="tabAddTask">إضافة مهمة 📝</button>
-                    <button onclick="setAddType('project')" id="tabAddProject" class="text-xs font-bold text-slate-400 pb-1" data-i18n="tabAddProject">إضافة مشروع 📁</button>
+            <!-- Create / Edit Form Container -->
+            <div class="bg-white rounded-3xl p-5 shadow-sm border border-purple-100 space-y-4">
+                <div class="flex border-b border-purple-100 pb-3 gap-5">
+                    <button onclick="setAddType('task')" id="tabAddTask" class="text-sm font-extrabold text-purple-600 border-b-2 border-purple-600 pb-1" data-i18n="tabAddTask">إضافة مهمة 📝</button>
+                    <button onclick="setAddType('project')" id="tabAddProject" class="text-sm font-extrabold text-slate-400 pb-1" data-i18n="tabAddProject">إضافة مشروع 📁</button>
                 </div>
 
                 <!-- Form Task -->
-                <form id="formTask" onsubmit="handleSaveTask(event)" class="space-y-3">
+                <form id="formTask" onsubmit="handleSaveTask(event)" class="space-y-4">
                     <input type="hidden" id="editingTaskId" value="">
                     
-                    <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 bg-purple-50/20 text-xs" data-i18n-ph="taskTitlePlaceholder">
+                    <div>
+                        <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-3 rounded-2xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300 bg-purple-50/20 text-sm font-bold" data-i18n-ph="taskTitlePlaceholder">
+                    </div>
                     
                     <div class="flex gap-2">
-                        <select id="taskProjectSelect" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20 focus:outline-none">
+                        <select id="taskProjectSelect" class="w-1/2 px-3 py-2.5 rounded-2xl border border-purple-200 text-xs text-slate-700 font-bold bg-purple-50/20 focus:outline-none">
                             <!-- Populated dynamically -->
                         </select>
-                        <input type="date" id="taskDate" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20">
+                        <input type="date" id="taskDate" class="w-1/2 px-3 py-2.5 rounded-2xl border border-purple-200 text-xs font-bold text-slate-700 bg-purple-50/20">
                     </div>
 
-                    <!-- Time Range Inputs -->
-                    <div class="flex items-center gap-2 bg-purple-50/30 p-2 rounded-2xl border border-purple-100 text-xs">
-                        <span class="text-slate-500 font-bold text-[10px]" data-i18n="from">من:</span>
-                        <input type="time" id="taskStartTime" class="w-1/2 bg-white px-2 py-1 rounded-xl border border-purple-100 text-slate-600 text-xs">
-                        <span class="text-slate-500 font-bold text-[10px]" data-i18n="to">إلى:</span>
-                        <input type="time" id="taskEndTime" class="w-1/2 bg-white px-2 py-1 rounded-xl border border-purple-100 text-slate-600 text-xs">
+                    <!-- Time Range & Duration -->
+                    <div class="space-y-2 bg-purple-50/40 p-3 rounded-2xl border border-purple-100">
+                        <div class="flex items-center gap-2 text-xs font-bold">
+                            <span class="text-slate-600" data-i18n="from">من:</span>
+                            <input type="time" id="taskStartTime" onchange="calculateDuration()" class="w-1/2 bg-white px-2.5 py-1.5 rounded-xl border border-purple-200 text-slate-700 text-xs font-bold">
+                            <span class="text-slate-600" data-i18n="to">إلى:</span>
+                            <input type="time" id="taskEndTime" onchange="calculateDuration()" class="w-1/2 bg-white px-2.5 py-1.5 rounded-xl border border-purple-200 text-slate-700 text-xs font-bold">
+                        </div>
+                        <div id="durationDisplay" class="text-center text-xs font-extrabold text-purple-700 hidden">
+                            ⏳ <span data-i18n="duration">المدة:</span> <span id="durationText">-</span>
+                        </div>
                     </div>
 
                     <!-- Status Selection -->
                     <div class="flex items-center gap-2">
-                        <label class="text-[11px] font-bold text-slate-500" data-i18n="statusLabel">الحالة:</label>
-                        <select id="taskStatusSelect" class="flex-1 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs bg-purple-50/20 text-slate-700 font-bold focus:outline-none">
+                        <label class="text-xs font-extrabold text-slate-600" data-i18n="statusLabel">الحالة:</label>
+                        <select id="taskStatusSelect" class="flex-1 px-3 py-2 rounded-2xl border border-purple-200 text-xs bg-purple-50/20 text-slate-800 font-bold focus:outline-none">
                             <option value="pending" data-i18n="statusPending">⏳ لم تنجز بعد</option>
                             <option value="in_progress" data-i18n="statusInProgress">🔄 قيد الإنجاز</option>
                             <option value="done" data-i18n="statusDone">✅ أنجزت / اكتملت</option>
@@ -118,40 +124,39 @@
                     <!-- Color Picker Section -->
                     <div class="flex items-center justify-between pt-1">
                         <div class="flex items-center gap-2">
-                            <span class="text-[11px] font-bold text-slate-500" data-i18n="colorLabel">اللون:</span>
-                            <div class="flex gap-1.5 items-center">
-                                <button type="button" onclick="selectColor('#FCE7F3')" class="w-5 h-5 rounded-full bg-pink-200 border-2 border-white ring-1 ring-purple-200"></button>
-                                <button type="button" onclick="selectColor('#F3E8FF')" class="w-5 h-5 rounded-full bg-purple-200 border-2 border-white ring-1 ring-purple-200"></button>
-                                <button type="button" onclick="selectColor('#E0E7FF')" class="w-5 h-5 rounded-full bg-indigo-200 border-2 border-white ring-1 ring-purple-200"></button>
-                                <button type="button" onclick="selectColor('#FEF3C7')" class="w-5 h-5 rounded-full bg-amber-200 border-2 border-white ring-1 ring-purple-200"></button>
-                                <!-- Custom Color Input -->
-                                <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-6 h-6 rounded-full cursor-pointer border-0 bg-transparent p-0" title="اختر لوناً مخصصاً">
+                            <span class="text-xs font-extrabold text-slate-600" data-i18n="colorLabel">اللون:</span>
+                            <div class="flex gap-2 items-center">
+                                <button type="button" onclick="selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-purple-200"></button>
+                                <button type="button" onclick="selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-purple-200"></button>
+                                <button type="button" onclick="selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-purple-200"></button>
+                                <button type="button" onclick="selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
+                                <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-7 h-7 rounded-full cursor-pointer border-0 bg-transparent p-0">
                             </div>
                         </div>
 
-                        <div class="flex gap-1">
-                            <button type="button" id="btnCancelEdit" onclick="cancelEditTask()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-2xl font-bold text-xs transition" data-i18n="cancel">إلغاء</button>
-                            <button type="submit" id="btnSaveTask" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-1.5 rounded-2xl font-bold text-xs transition" data-i18n="saveTask">حفظ المهمة</button>
+                        <div class="flex gap-2">
+                            <button type="button" id="btnCancelEdit" onclick="cancelEditTask()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-2 rounded-2xl font-extrabold text-xs transition" data-i18n="cancel">إلغاء</button>
+                            <button type="submit" id="btnSaveTask" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-2xl font-extrabold text-xs transition shadow-sm" data-i18n="saveTask">حفظ المهمة</button>
                         </div>
                     </div>
                 </form>
 
                 <!-- Form Project -->
-                <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-3 hidden">
-                    <input type="text" id="projectTitle" placeholder="اسم المشروع الجديد..." required class="w-full px-4 py-2 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 bg-purple-50/20 text-xs" data-i18n-ph="projectTitlePlaceholder">
-                    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2 rounded-2xl font-bold text-xs transition" data-i18n="createProject">إنشاء المشروع</button>
+                <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-4 hidden">
+                    <input type="text" id="projectTitle" placeholder="اسم المشروع الجديد..." required class="w-full px-4 py-3 rounded-2xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-300 bg-purple-50/20 text-sm font-bold" data-i18n-ph="projectTitlePlaceholder">
+                    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-2xl font-extrabold text-xs transition shadow-sm" data-i18n="createProject">إنشاء المشروع</button>
                 </form>
             </div>
 
             <!-- Projects Section -->
-            <div id="projectsContainer" class="space-y-3">
+            <div id="projectsContainer" class="space-y-4">
                 <!-- Projects Rendered Here -->
             </div>
 
             <!-- Standalone Tasks Section -->
             <div>
-                <h3 class="text-xs font-bold text-purple-900 mb-2 px-1" data-i18n="standaloneTasks">مهام مستقلة 🌸</h3>
-                <div id="standaloneTasksContainer" class="space-y-2">
+                <h3 class="text-sm font-extrabold text-purple-900 mb-3 px-1" data-i18n="standaloneTasks">مهام مستقلة 🌸</h3>
+                <div id="standaloneTasksContainer" class="space-y-2.5">
                     <!-- Tasks Rendered Here -->
                 </div>
             </div>
@@ -159,31 +164,31 @@
 
         <!-- 2. TODAY VIEW -->
         <div id="viewToday" class="space-y-4 hidden">
-            <h2 class="text-base font-bold text-purple-900" data-i18n="todayTitle">جدول مهام اليوم ☀️</h2>
-            <div id="todayTasksContainer" class="space-y-2">
+            <h2 class="text-lg font-black text-purple-900" data-i18n="todayTitle">جدول مهام اليوم ☀️</h2>
+            <div id="todayTasksContainer" class="space-y-2.5">
                 <!-- Today Tasks Rendered Here -->
             </div>
         </div>
 
         <!-- 3. CALENDAR VIEW -->
         <div id="viewCalendar" class="space-y-4 hidden">
-            <h2 class="text-base font-bold text-purple-900" data-i18n="calendarTitle">التقويم الشهري 📅</h2>
+            <h2 class="text-lg font-black text-purple-900" data-i18n="calendarTitle">التقويم الشهري 📅</h2>
             <div class="bg-white rounded-3xl p-4 shadow-sm border border-purple-100">
-                <div class="grid grid-cols-7 gap-1 text-center font-bold text-xs text-purple-400 mb-2" id="calendarHeaderDays">
+                <div class="grid grid-cols-7 gap-1 text-center font-extrabold text-xs text-purple-500 mb-2" id="calendarHeaderDays">
                     <!-- Day names -->
                 </div>
-                <div id="calendarGrid" class="grid grid-cols-7 gap-1 text-center text-xs">
+                <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold">
                     <!-- Dynamic Calendar Grid -->
                 </div>
             </div>
 
             <!-- Tasks for Selected Date -->
-            <div class="bg-white/80 rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
-                <h3 class="text-xs font-bold text-purple-900 border-b border-purple-50 pb-2 flex justify-between items-center">
+            <div class="bg-white/90 rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
+                <h3 class="text-xs font-extrabold text-purple-900 border-b border-purple-100 pb-2 flex justify-between items-center">
                     <span data-i18n="tasksForDate">مهام اليوم المحدد:</span>
-                    <span id="selectedDateDisplay" class="text-purple-600 font-extrabold">-</span>
+                    <span id="selectedDateDisplay" class="text-purple-600 font-black text-sm">-</span>
                 </h3>
-                <div id="calendarSelectedDateTasks" class="space-y-2">
+                <div id="calendarSelectedDateTasks" class="space-y-2.5">
                     <!-- Selected Date Tasks Rendered Here -->
                 </div>
             </div>
@@ -192,31 +197,48 @@
     </main>
 
     <!-- Navigation Bar at Bottom -->
-    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-purple-100 px-6 py-3 z-30">
+    <nav class="fixed bottom-0 left-0 right-0 glass border-t border-purple-100 px-8 py-3.5 z-30">
         <div class="max-w-md mx-auto flex justify-between items-center text-slate-400">
             <button onclick="switchView('home')" id="navHome" class="flex flex-col items-center gap-1 text-purple-600">
-                <span class="text-lg">🏠</span>
-                <span class="text-[10px] font-bold" data-i18n="navHome">الرئيسية</span>
+                <span class="text-2xl">🏠</span>
+                <span class="text-xs font-extrabold" data-i18n="navHome">الرئيسية</span>
             </button>
             <button onclick="switchView('today')" id="navToday" class="flex flex-col items-center gap-1 hover:text-purple-600">
-                <span class="text-lg">☀️</span>
-                <span class="text-[10px] font-bold" data-i18n="navToday">اليوم</span>
+                <span class="text-2xl">☀️</span>
+                <span class="text-xs font-extrabold" data-i18n="navToday">اليوم</span>
             </button>
             <button onclick="switchView('calendar')" id="navCalendar" class="flex flex-col items-center gap-1 hover:text-purple-600">
-                <span class="text-lg">📅</span>
-                <span class="text-[10px] font-bold" data-i18n="navCalendar">التقويم</span>
+                <span class="text-2xl">📅</span>
+                <span class="text-xs font-extrabold" data-i18n="navCalendar">التقويم</span>
             </button>
         </div>
     </nav>
 
+    <!-- OVERDUE POPUP MODAL (إشعار التنبيه الذكي) -->
+    <div id="overdueModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-pink-200 space-y-4 text-center">
+            <div class="text-5xl">⏰</div>
+            <h3 class="font-black text-slate-800 text-base" data-i18n="overdueTitle">انتهى وقت المهمة!</h3>
+            <p class="text-sm font-bold text-purple-700 bg-purple-50 p-2.5 rounded-2xl" id="overdueTaskName">اسم المهمة</p>
+            <p class="text-xs font-bold text-slate-500" data-i18n="overdueQuestion">لم تسجل إنجازها بعد، ماذا تحب أن تفعل الآن؟</p>
+            <div class="flex flex-col gap-2">
+                <button onclick="handleOverdueAction('complete')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="markCompleted">اعتبارها مكتملة ✅</button>
+                <div class="flex gap-2">
+                    <button onclick="handleOverdueAction('postpone')" class="w-1/2 bg-amber-400 hover:bg-amber-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="postponeTask">تأجيل وتعديل ⏳</button>
+                    <button onclick="handleOverdueAction('cancel')" class="w-1/2 bg-red-400 hover:bg-red-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="cancelTask">إلغاؤها ❌</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: NEW SPACE -->
     <div id="spaceModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-5 max-w-xs w-full shadow-xl space-y-3">
-            <h3 class="font-bold text-sm text-purple-900" data-i18n="newSpaceTitle">مساحة عمل جديدة 📂</h3>
-            <input type="text" id="spaceNameInput" placeholder="اسم المساحة..." class="w-full px-3 py-2 rounded-2xl border border-purple-100 text-xs focus:outline-none" data-i18n-ph="spaceNamePlaceholder">
+            <h3 class="font-black text-sm text-purple-900" data-i18n="newSpaceTitle">مساحة عمل جديدة 📂</h3>
+            <input type="text" id="spaceNameInput" placeholder="اسم المساحة..." class="w-full px-3 py-2 rounded-2xl border border-purple-100 text-xs focus:outline-none font-bold" data-i18n-ph="spaceNamePlaceholder">
             <div class="flex gap-2 justify-end">
-                <button onclick="closeNewSpaceModal()" class="px-3 py-1.5 text-xs text-slate-400 font-bold" data-i18n="cancel">إلغاء</button>
-                <button onclick="saveNewSpace()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-bold rounded-2xl" data-i18n="save">حفظ</button>
+                <button onclick="closeNewSpaceModal()" class="px-3 py-1.5 text-xs text-slate-400 font-extrabold" data-i18n="cancel">إلغاء</button>
+                <button onclick="saveNewSpace()" class="px-4 py-1.5 bg-purple-600 text-white text-xs font-extrabold rounded-2xl" data-i18n="save">حفظ</button>
             </div>
         </div>
     </div>
@@ -225,9 +247,9 @@
     <div id="aiModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-purple-100 space-y-4 text-center">
             <div class="text-4xl">✨</div>
-            <h3 class="font-bold text-base text-purple-900" data-i18n="aiModalTitle">مقترح الذكاء الاصطناعي اليومي</h3>
-            <p class="text-xs text-slate-600 leading-relaxed" id="aiSuggestionText">...</p>
-            <button onclick="toggleAIModal()" class="w-full bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-bold" data-i18n="thanks">شكراً، فهمت!</button>
+            <h3 class="font-black text-base text-purple-900" data-i18n="aiModalTitle">مقترح الذكاء الاصطناعي اليومي</h3>
+            <p class="text-xs font-bold text-slate-600 leading-relaxed" id="aiSuggestionText">...</p>
+            <button onclick="toggleAIModal()" class="w-full bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-black" data-i18n="thanks">شكراً، فهمت!</button>
         </div>
     </div>
 
@@ -240,7 +262,7 @@
                 statTasks: "المهام", statProjects: "المشاريع", statProgress: "الإنجاز",
                 tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة مشروع 📁",
                 taskTitlePlaceholder: "عنوان المهمة...", projectTitlePlaceholder: "اسم المشروع الجديد...",
-                noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:",
+                noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:", duration: "المدة:",
                 statusLabel: "الحالة:", colorLabel: "اللون:", saveTask: "حفظ المهمة", updateTask: "تحديث المهمة",
                 cancel: "إلغاء", createProject: "إنشاء المشروع", standaloneTasks: "مهام مستقلة 🌸",
                 todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅",
@@ -249,6 +271,8 @@
                 aiModalTitle: "مقترح الذكاء الاصطناعي اليومي", thanks: "شكراً، فهمت!",
                 statusPending: "⏳ لم تنجز بعد", statusInProgress: "🔄 قيد الإنجاز", statusDone: "✅ أنجزت / اكتملت", statusCancelled: "❌ ملغية",
                 noTasksInSpace: "لا توجد مهام حرة 🌸", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", noTasksForSelectedDate: "لا توجد مهام مجدولة في هذا اليوم 📅",
+                overdueTitle: "انتهى وقت المهمة!", overdueQuestion: "لم تسجل إنجازها بعد، ماذا تحب أن تفعل الآن؟",
+                markCompleted: "اعتبارها مكتملة ✅", postponeTask: "تأجيل وتعديل ⏳", cancelTask: "إلغاؤها ❌",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             fr: {
@@ -256,7 +280,7 @@
                 statTasks: "Tâches", statProjects: "Projets", statProgress: "Progrès",
                 tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter Projet 📁",
                 taskTitlePlaceholder: "Titre de la tâche...", projectTitlePlaceholder: "Nom du projet...",
-                noProjectOption: "Directement dans l'espace (Sans projet)", from: "De:", to: "À:",
+                noProjectOption: "Directement dans l'espace (Sans projet)", from: "De:", to: "À:", duration: "Durée:",
                 statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", updateTask: "Mettre à jour",
                 cancel: "Annuler", createProject: "Créer le Projet", standaloneTasks: "Tâches Indépendantes 🌸",
                 todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅",
@@ -265,6 +289,8 @@
                 aiModalTitle: "Suggestion de l'IA", thanks: "Merci, compris!",
                 statusPending: "⏳ En attente", statusInProgress: "🔄 En cours", statusDone: "✅ Terminée", statusCancelled: "❌ Annulée",
                 noTasksInSpace: "Aucune tâche libre 🌸", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", noTasksForSelectedDate: "Aucune tâche pour cette date 📅",
+                overdueTitle: "Temps écoulé!", overdueQuestion: "Que souhaitez-vous faire avec cette tâche?",
+                markCompleted: "Terminer ✅", postponeTask: "Reporter ⏳", cancelTask: "Annuler ❌",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
@@ -272,7 +298,7 @@
                 statTasks: "Tasks", statProjects: "Projects", statProgress: "Progress",
                 tabAddTask: "Add Task 📝", tabAddProject: "Add Project 📁",
                 taskTitlePlaceholder: "Task title...", projectTitlePlaceholder: "Project name...",
-                noProjectOption: "Directly in space (No project)", from: "From:", to: "To:",
+                noProjectOption: "Directly in space (No project)", from: "From:", to: "To:", duration: "Duration:",
                 statusLabel: "Status:", colorLabel: "Color:", saveTask: "Save Task", updateTask: "Update Task",
                 cancel: "Cancel", createProject: "Create Project", standaloneTasks: "Standalone Tasks 🌸",
                 todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅",
@@ -281,14 +307,16 @@
                 aiModalTitle: "Daily AI Suggestion", thanks: "Thanks, got it!",
                 statusPending: "⏳ Pending", statusInProgress: "🔄 In Progress", statusDone: "✅ Completed", statusCancelled: "❌ Cancelled",
                 noTasksInSpace: "No standalone tasks 🌸", noTasksToday: "No tasks scheduled for today ☀️", noTasksForSelectedDate: "No tasks for this date 📅",
+                overdueTitle: "Time's up!", overdueQuestion: "What would you like to do with this task?",
+                markCompleted: "Mark Done ✅", postponeTask: "Postpone ⏳", cancelTask: "Cancel ❌",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
 
         let currentLang = 'ar';
+        let currentOverdueTaskId = null;
 
-        // Local Storage State
-        let appData = JSON.parse(localStorage.getItem('bloom_app_data_v2') || JSON.stringify({
+        let appData = JSON.parse(localStorage.getItem('bloom_app_data_v3') || JSON.stringify({
             currentSpaceId: 'default',
             spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
             projects: [],
@@ -299,17 +327,16 @@
         let selectedCalendarDate = new Date().toISOString().split('T')[0];
 
         function saveData() {
-            localStorage.setItem('bloom_app_data_v2', JSON.stringify(appData));
+            localStorage.setItem('bloom_app_data_v3', JSON.stringify(appData));
             render();
         }
 
-        // Language Switching
+        // Language Switcher
         function changeLanguage(lang) {
             currentLang = lang;
             document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
             
-            // Translate static elements
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(i18n[lang][key]) el.innerText = i18n[lang][key];
@@ -328,6 +355,35 @@
             document.getElementById('customColorPicker').value = color;
         }
 
+        // Calculate Duration
+        function calculateDuration() {
+            const start = document.getElementById('taskStartTime').value;
+            const end = document.getElementById('taskEndTime').value;
+            const display = document.getElementById('durationDisplay');
+            const text = document.getElementById('durationText');
+
+            if (start && end) {
+                const [sH, sM] = start.split(':').map(Number);
+                const [eH, eM] = end.split(':').map(Number);
+
+                let diffMins = (eH * 60 + eM) - (sH * 60 + sM);
+                if (diffMins < 0) diffMins += 24 * 60; // Crosses midnight
+
+                const hrs = Math.floor(diffMins / 60);
+                const mins = diffMins % 60;
+
+                let str = '';
+                if (hrs > 0) str += `${hrs} ساعة `;
+                if (mins > 0) str += `${mins} دقيقة`;
+                if (!str) str = 'أقل من دقيقة';
+
+                text.innerText = str;
+                display.classList.remove('hidden');
+            } else {
+                display.classList.add('hidden');
+            }
+        }
+
         function setAddType(type) {
             const formTask = document.getElementById('formTask');
             const formProject = document.getElementById('formProject');
@@ -337,13 +393,13 @@
             if(type === 'task') {
                 formTask.classList.remove('hidden');
                 formProject.classList.add('hidden');
-                tabTask.className = "text-xs font-bold text-purple-600 border-b-2 border-purple-500 pb-1";
-                tabProject.className = "text-xs font-bold text-slate-400 pb-1";
+                tabTask.className = "text-sm font-extrabold text-purple-600 border-b-2 border-purple-600 pb-1";
+                tabProject.className = "text-sm font-extrabold text-slate-400 pb-1";
             } else {
                 formTask.classList.add('hidden');
                 formProject.classList.remove('hidden');
-                tabProject.className = "text-xs font-bold text-pink-600 border-b-2 border-pink-500 pb-1";
-                tabTask.className = "text-xs font-bold text-slate-400 pb-1";
+                tabProject.className = "text-sm font-extrabold text-pink-600 border-b-2 border-pink-600 pb-1";
+                tabTask.className = "text-sm font-extrabold text-slate-400 pb-1";
             }
         }
 
@@ -366,7 +422,7 @@
             saveData();
         }
 
-        // Add or Update Task
+        // Save Task
         function handleSaveTask(e) {
             e.preventDefault();
             const editingId = document.getElementById('editingTaskId').value;
@@ -378,7 +434,6 @@
             const status = document.getElementById('taskStatusSelect').value;
 
             if(editingId) {
-                // Edit existing
                 appData.tasks = appData.tasks.map(t => {
                     if(t.id === editingId) {
                         return { ...t, title, projectId, date, startTime, endTime, status, color: activeColor };
@@ -386,7 +441,6 @@
                     return t;
                 });
             } else {
-                // Add new
                 const newTask = {
                     id: 'task_' + Date.now(),
                     spaceId: appData.currentSpaceId,
@@ -411,6 +465,7 @@
             document.getElementById('taskEndTime').value = task.endTime || '';
             document.getElementById('taskStatusSelect').value = task.status || 'pending';
             selectColor(task.color || '#F3E8FF');
+            calculateDuration();
 
             document.getElementById('btnSaveTask').innerText = i18n[currentLang].updateTask;
             document.getElementById('btnCancelEdit').classList.remove('hidden');
@@ -421,6 +476,7 @@
         function cancelEditTask() {
             document.getElementById('formTask').reset();
             document.getElementById('editingTaskId').value = '';
+            document.getElementById('durationDisplay').classList.add('hidden');
             document.getElementById('btnSaveTask').innerText = i18n[currentLang].saveTask;
             document.getElementById('btnCancelEdit').classList.add('hidden');
             selectColor('#F3E8FF');
@@ -435,11 +491,26 @@
             saveData();
         }
 
+        // Toggle Done directly with Circle Button ⭕
+        function toggleQuickComplete(id) {
+            appData.tasks = appData.tasks.map(t => {
+                if(t.id === id) {
+                    const nextStatus = t.status === 'done' ? 'pending' : 'done';
+                    if(nextStatus === 'done') {
+                        confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+                    }
+                    return { ...t, status: nextStatus };
+                }
+                return t;
+            });
+            saveData();
+        }
+
         function changeTaskStatus(id, newStatus) {
             appData.tasks = appData.tasks.map(t => {
                 if(t.id === id) {
                     if(newStatus === 'done' && t.status !== 'done') {
-                        confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
+                        confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
                     }
                     return { ...t, status: newStatus };
                 }
@@ -459,21 +530,20 @@
             saveData();
         }
 
-        // Render Application UI
+        // Render UI
         function render() {
             const t = i18n[currentLang];
 
-            // Render Space Select
+            // Space Select
             const spaceSelect = document.getElementById('spaceSelect');
             spaceSelect.innerHTML = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
 
-            // Render Project Select
+            // Project Select
             const projectSelect = document.getElementById('taskProjectSelect');
             const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
             projectSelect.innerHTML = `<option value="">${t.noProjectOption}</option>` + 
                 currentProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
 
-            // Filter Current Space Tasks
             const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
 
             // Stats
@@ -483,7 +553,7 @@
             const progress = currentTasks.length ? Math.round((completedCount / currentTasks.length) * 100) : 0;
             document.getElementById('statProgress').innerText = progress + '%';
 
-            // Projects Render
+            // Render Projects
             const projectsContainer = document.getElementById('projectsContainer');
             projectsContainer.innerHTML = currentProjects.map(proj => {
                 const projTasks = currentTasks.filter(task => task.projectId === proj.id);
@@ -491,19 +561,19 @@
                 const projPct = projTasks.length ? Math.round((projDone / projTasks.length) * 100) : 0;
 
                 return `
-                    <div class="bg-white/90 rounded-3xl p-4 shadow-sm border border-purple-100 space-y-3">
+                    <div class="bg-white/95 rounded-3xl p-4.5 shadow-sm border border-purple-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <span class="font-bold text-xs text-purple-900">📁 ${proj.title}</span>
+                            <span class="font-extrabold text-sm text-purple-900">📁 ${proj.title}</span>
                             <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold text-purple-500">${projPct}%</span>
-                                <button onclick="deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-400 text-xs">✕</button>
+                                <span class="text-xs font-black text-purple-600">${projPct}%</span>
+                                <button onclick="deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-sm font-bold p-1">🗑️</button>
                             </div>
                         </div>
-                        <div class="w-full bg-purple-50 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-purple-500 h-1.5 rounded-full transition-all duration-300" style="width: ${projPct}%"></div>
+                        <div class="w-full bg-purple-50 rounded-full h-2 overflow-hidden">
+                            <div class="bg-purple-500 h-2 rounded-full transition-all duration-300" style="width: ${projPct}%"></div>
                         </div>
-                        <div class="space-y-1.5 pt-1">
-                            ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-[10px] text-slate-300 text-center py-1">-</p>`}
+                        <div class="space-y-2 pt-1">
+                            ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs text-slate-300 text-center py-1">-</p>`}
                         </div>
                     </div>
                 `;
@@ -512,41 +582,62 @@
             // Standalone Tasks
             const standaloneTasksContainer = document.getElementById('standaloneTasksContainer');
             const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
-            standaloneTasksContainer.innerHTML = standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs text-slate-400 text-center py-3">${t.noTasksInSpace}</p>`;
+            standaloneTasksContainer.innerHTML = standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-4">${t.noTasksInSpace}</p>`;
 
             // Today Tasks
             const todayStr = new Date().toISOString().split('T')[0];
             const todayTasks = appData.tasks.filter(tk => tk.date === todayStr);
-            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs text-slate-400 text-center py-4">${t.noTasksToday}</p>`;
+            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">${t.noTasksToday}</p>`;
 
             renderCalendar();
             renderSelectedDateTasks();
+            checkOverdueTasks();
         }
 
-        // Render Task Card with Status Switcher and Edit Button
+        // Render Individual Task Card
         function renderTaskCard(tk) {
-            const t = i18n[currentLang];
-
+            const isCompletedOrCancelled = tk.status === 'done' || tk.status === 'cancelled';
+            
+            // Format Time and Duration String
             let timeStr = '';
             if(tk.startTime || tk.endTime) {
                 timeStr = `⏰ ${tk.startTime || ''} ${tk.endTime ? '→ ' + tk.endTime : ''}`;
             }
 
+            let durStr = '';
+            if (tk.startTime && tk.endTime) {
+                const [sH, sM] = tk.startTime.split(':').map(Number);
+                const [eH, eM] = tk.endTime.split(':').map(Number);
+                let diff = (eH * 60 + eM) - (sH * 60 + sM);
+                if (diff < 0) diff += 24 * 60;
+                const h = Math.floor(diff / 60);
+                const m = diff % 60;
+                durStr = `(${h > 0 ? h + 'س ' : ''}${m}د)`;
+            }
+
             return `
-                <div class="p-3 rounded-2xl flex items-center justify-between shadow-sm border border-black/5" style="background-color: ${tk.color || '#F3E8FF'}">
-                    <div class="flex items-center gap-2.5 flex-1">
-                        <div>
-                            <p class="font-bold text-xs ${tk.status === 'done' ? 'line-through text-slate-400' : 'text-slate-800'}">${tk.title}</p>
-                            <div class="flex flex-wrap gap-2 text-[9px] text-slate-500 font-medium mt-0.5">
+                <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all" style="background-color: ${tk.color || '#F3E8FF'}">
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <!-- Circle Button ⭕ for Quick Completion -->
+                        <button onclick="toggleQuickComplete('${tk.id}')" class="text-xl hover:scale-110 transition focus:outline-none">
+                            ${tk.status === 'done' ? '✅' : '⭕'}
+                        </button>
+
+                        <div class="truncate">
+                            <p class="font-extrabold text-sm ${isCompletedOrCancelled ? 'strike-through text-slate-500' : 'text-slate-800'} truncate">
+                                ${tk.title}
+                            </p>
+                            <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 mt-0.5">
                                 ${tk.date ? `<span>📅 ${tk.date}</span>` : ''}
                                 ${timeStr ? `<span>${timeStr}</span>` : ''}
+                                ${durStr ? `<span class="text-purple-700 font-black">${durStr}</span>` : ''}
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-1.5">
-                        <!-- Status Selector Dropdown -->
-                        <select onchange="changeTaskStatus('${tk.id}', this.value)" class="text-[10px] font-bold rounded-xl px-1.5 py-1 bg-white/80 border border-purple-100 text-slate-700 focus:outline-none">
+                    <div class="flex items-center gap-1.5 ml-2">
+                        <!-- Status Selector -->
+                        <select onchange="changeTaskStatus('${tk.id}', this.value)" class="text-xs font-black rounded-xl px-1.5 py-1 bg-white/90 border border-purple-100 text-slate-700 focus:outline-none">
                             <option value="pending" ${tk.status === 'pending' ? 'selected' : ''}>⏳</option>
                             <option value="in_progress" ${tk.status === 'in_progress' ? 'selected' : ''}>🔄</option>
                             <option value="done" ${tk.status === 'done' ? 'selected' : ''}>✅</option>
@@ -554,10 +645,10 @@
                         </select>
 
                         <!-- Edit Button -->
-                        <button onclick="editTask('${tk.id}')" class="text-slate-400 hover:text-purple-600 text-xs p-1" title="تعديل">✏️</button>
+                        <button onclick="editTask('${tk.id}')" class="text-slate-500 hover:text-purple-700 text-sm p-1 font-bold" title="تعديل">✏️</button>
                         
-                        <!-- Delete Button -->
-                        <button onclick="deleteTask('${tk.id}')" class="text-slate-300 hover:text-red-500 text-xs p-1">✕</button>
+                        <!-- Delete Button (سلة المهملات) -->
+                        <button onclick="deleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold" title="حذف">🗑️</button>
                     </div>
                 </div>
             `;
@@ -573,7 +664,7 @@
             
             const now = new Date();
             const year = now.getFullYear();
-            const month = now.getMonth(); // Current Month
+            const month = now.getMonth();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
             for(let i = 1; i <= daysInMonth; i++) {
@@ -585,9 +676,9 @@
                 const isSelected = selectedCalendarDate === dateStr;
 
                 grid.innerHTML += `
-                    <div onclick="selectCalendarDate('${dateStr}')" class="p-2 rounded-2xl cursor-pointer transition ${isSelected ? 'ring-2 ring-purple-600 bg-purple-200 font-bold' : hasTasks ? 'bg-purple-100 font-bold text-purple-800' : 'bg-purple-50/50 text-slate-500 hover:bg-purple-100'}">
+                    <div onclick="selectCalendarDate('${dateStr}')" class="p-2.5 rounded-2xl cursor-pointer transition ${isSelected ? 'ring-2 ring-purple-600 bg-purple-200 font-black text-purple-900' : hasTasks ? 'bg-purple-100 font-extrabold text-purple-800' : 'bg-purple-50/50 text-slate-500 hover:bg-purple-100'}">
                         <span>${i}</span>
-                        ${hasTasks ? '<span class="block w-1.5 h-1.5 bg-purple-600 rounded-full mx-auto mt-0.5"></span>' : ''}
+                        ${hasTasks ? '<span class="block w-2 h-2 bg-purple-600 rounded-full mx-auto mt-1"></span>' : ''}
                     </div>
                 `;
             }
@@ -603,17 +694,54 @@
             document.getElementById('selectedDateDisplay').innerText = selectedCalendarDate || '-';
             const tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate);
             const container = document.getElementById('calendarSelectedDateTasks');
-            container.innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs text-slate-400 text-center py-2">${i18n[currentLang].noTasksForSelectedDate}</p>`;
+            container.innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksForSelectedDate}</p>`;
         }
 
-        // Views Switcher
+        // Check Overdue Tasks Automatically
+        function checkOverdueTasks() {
+            const now = new Date();
+            const overdueTask = appData.tasks.find(tk => {
+                if (tk.status !== 'pending' || !tk.date || (!tk.endTime && !tk.startTime)) return false;
+                const checkTime = tk.endTime || tk.startTime;
+                const taskDateTime = new Date(`${tk.date}T${checkTime}`);
+                return taskDateTime < now;
+            });
+
+            if (overdueTask && currentOverdueTaskId !== overdueTask.id) {
+                currentOverdueTaskId = overdueTask.id;
+                document.getElementById('overdueTaskName').innerText = `"${overdueTask.title}"`;
+                document.getElementById('overdueModal').classList.remove('hidden');
+            }
+        }
+
+        function handleOverdueAction(action) {
+            if (!currentOverdueTaskId) return;
+
+            if (action === 'complete') {
+                changeTaskStatus(currentOverdueTaskId, 'done');
+                document.getElementById('overdueModal').classList.add('hidden');
+                currentOverdueTaskId = null;
+            } else if (action === 'cancel') {
+                changeTaskStatus(currentOverdueTaskId, 'cancelled');
+                document.getElementById('overdueModal').classList.add('hidden');
+                currentOverdueTaskId = null;
+            } else if (action === 'postpone') {
+                const idToEdit = currentOverdueTaskId;
+                document.getElementById('overdueModal').classList.add('hidden');
+                currentOverdueTaskId = null;
+                switchView('home');
+                editTask(idToEdit);
+            }
+        }
+
+        // Navigation Views
         function switchView(view) {
             ['Home', 'Today', 'Calendar'].forEach(v => {
                 document.getElementById('view' + v).classList.add('hidden');
                 document.getElementById('nav' + v).className = "flex flex-col items-center gap-1 text-slate-400";
             });
             document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('hidden');
-            document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1)).className = "flex flex-col items-center gap-1 text-purple-600 font-bold";
+            document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1)).className = "flex flex-col items-center gap-1 text-purple-600 font-extrabold";
         }
 
         // AI Modal
@@ -621,9 +749,9 @@
             const modal = document.getElementById('aiModal');
             if(modal.classList.contains('hidden')) {
                 const suggestions = [
-                    "🌸 حاول تحديد وقت محدد لكل مهمة لترتيب يومك دون ضغوط!",
-                    "✨ تنظيم المهام بين قيد الإنجاز واكتمالها يمنحك شعوراً رائعاً بالإنجاز.",
-                    "🌷 يمكنك تغيير ألوان المهام لتحديد الأولويات بسهولة."
+                    "🌸 تحديد الوقت والمدة لكل مهمة يساعدك في إنجاز أعمالك بتركيز وهدوء دون توتر!",
+                    "✨ استخدم زر الدائرة السريع ⭕ لتسجيل الإنجاز فور انتهائك من أي مهمة.",
+                    "🌷 في حال فاتك الوقت، لا تقلق! يتيح لك التطبيق إعادة جدولة وتعديل أوقاتك بكل مرونة."
                 ];
                 document.getElementById('aiSuggestionText').innerText = suggestions[Math.floor(Math.random() * suggestions.length)];
                 modal.classList.remove('hidden');
@@ -632,7 +760,7 @@
             }
         }
 
-        // Initialization
+        // Init
         changeLanguage('ar');
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
     </script>
