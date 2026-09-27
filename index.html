@@ -31,6 +31,23 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400 font-bold" data-i18n="authSubtitle">تسجيل الدخول لحفظ أفكارك ومهامك</p>
             </div>
 
+            <!-- Google Login Button -->
+            <button onclick="handleGoogleLogin()" class="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-100 py-2.5 rounded-2xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition">
+                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span data-i18n="googleLoginBtn">التسجيل عبر Google</span>
+            </button>
+
+            <div class="flex items-center gap-2 text-slate-300 dark:text-slate-600 text-xs my-2">
+                <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
+                <span data-i18n="or">أو</span>
+                <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
+            </div>
+
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="email" id="authEmail" required placeholder="البريد الإلكتروني..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="emailPlaceholder">
                 <input type="password" id="authPassword" required placeholder="كلمة المرور..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="passPlaceholder">
@@ -39,6 +56,19 @@
 
             <div class="text-center pt-1 border-t border-purple-50 dark:border-slate-700">
                 <button onclick="continueAsGuest()" class="text-xs text-slate-400 hover:text-purple-600 font-extrabold" data-i18n="guestBtn">متابعة كزائر (بدون حساب)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION MODAL FOR DELETIONS (نافذة التأكيد على الحذف) -->
+    <div id="confirmDeleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-red-100 dark:border-slate-700 space-y-4 text-center">
+            <div class="text-4xl text-red-500">⚠️</div>
+            <h3 class="font-black text-slate-800 dark:text-slate-100 text-base" data-i18n="confirmDeleteTitle">تأكيد الحذف</h3>
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.</p>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeConfirmModal()" class="w-1/2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancel">إلغاء</button>
+                <button id="btnExecuteDelete" class="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="confirmDeleteBtn">نعم، احذف</button>
             </div>
         </div>
     </div>
@@ -117,16 +147,20 @@
             </div>
         </div>
 
-        <!-- 2. SPACES VIEW (جديد) -->
+        <!-- 2. SPACES VIEW -->
         <div id="viewSpaces" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 flex justify-between items-center">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-1">
                     <span class="text-3xl" id="currentSpaceIcon">📂</span>
-                    <div>
+                    <div class="flex-1">
                         <span class="text-xs text-purple-500 font-bold block" data-i18n="currentSpace">المساحة الحالية</span>
-                        <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-black text-slate-800 dark:text-slate-100 focus:outline-none text-base">
-                            <!-- Populated dynamically -->
-                        </select>
+                        <div class="flex items-center gap-2">
+                            <select id="spaceSelect" onchange="changeSpace(this.value)" class="bg-transparent font-black text-slate-800 dark:text-slate-100 focus:outline-none text-base">
+                                <!-- Populated dynamically -->
+                            </select>
+                            <!-- Space Delete Button -->
+                            <button id="btnDeleteSpace" onclick="askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-sm font-bold p-1" title="حذف المساحة">🗑️</button>
+                        </div>
                     </div>
                 </div>
                 <button onclick="openNewSpaceModal()" class="text-xs bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 font-extrabold px-3.5 py-2 rounded-2xl transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
@@ -303,14 +337,14 @@
 
     <!-- Application Script -->
     <script>
-        // Audio Bell Effect for Task Completion
+        // Sound Effect
         function playBellSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, ctx.currentTime); // A5 Bell tone
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
                 gain.gain.setValueAtTime(0.3, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 1.2);
                 osc.connect(gain);
@@ -323,7 +357,7 @@
         // Translations Dictionary
         const i18n = {
             ar: {
-                authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)",
+                authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)", googleLoginBtn: "التسجيل عبر Google", or: "أو",
                 btnAddTask: "+ إضافة مهمة", btnAddProject: "+ إضافة مشروع",
                 currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة",
                 statTasks: "المهام", statProjects: "المشاريع", statProgress: "الإنجاز",
@@ -339,10 +373,11 @@
                 noTasksInSpace: "لا توجد مهام حرة 🌸", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", noTasksForSelectedDate: "لا توجد مهام مجدولة في هذا اليوم 📅",
                 overdueTitle: "انتهى الوقت المحدد للمهمة!", overdueQuestion: "يبدو أن وقتها قد مضى، ماذا تفضل أن تفعل بها؟",
                 markCompleted: "اعتبارها أنجزت ✅", postponeTask: "تأجيل وتعديل ⏳", cancelTask: "إلغاؤها ❌",
+                confirmDeleteTitle: "تأكيد الحذف ⚠️", confirmDeleteMsg: "هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.", confirmDeleteBtn: "نعم، احذف",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             fr: {
-                authSubtitle: "Connectez-vous pour sauvegarder vos tâches", emailPlaceholder: "E-mail...", passPlaceholder: "Mot de passe...", loginBtn: "Connexion / S'inscrire", guestBtn: "Continuer comme invité",
+                authSubtitle: "Connectez-vous pour sauvegarder vos tâches", emailPlaceholder: "E-mail...", passPlaceholder: "Mot de passe...", loginBtn: "Connexion / S'inscrire", guestBtn: "Continuer comme invité", googleLoginBtn: "Continuer avec Google", or: "ou",
                 btnAddTask: "+ Ajouter Tâche", btnAddProject: "+ Ajouter Projet",
                 currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace",
                 statTasks: "Tâches", statProjects: "Projets", statProgress: "Progrès",
@@ -358,10 +393,11 @@
                 noTasksInSpace: "Aucune tâche libre 🌸", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", noTasksForSelectedDate: "Aucune tâche pour cette date 📅",
                 overdueTitle: "Temps écoulé!", overdueQuestion: "Que souhaitez-vous faire avec cette tâche?",
                 markCompleted: "Marquer comme terminée ✅", postponeTask: "Reporter ⏳", cancelTask: "Annuler ❌",
+                confirmDeleteTitle: "Confirmer la suppression ⚠️", confirmDeleteMsg: "Êtes-vous sûr de vouloir supprimer cet élément?", confirmDeleteBtn: "Oui, supprimer",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
-                authSubtitle: "Log in to save your tasks & projects", emailPlaceholder: "Email...", passPlaceholder: "Password...", loginBtn: "Login / Register", guestBtn: "Continue as Guest",
+                authSubtitle: "Log in to save your tasks & projects", emailPlaceholder: "Email...", passPlaceholder: "Password...", loginBtn: "Login / Register", guestBtn: "Continue as Guest", googleLoginBtn: "Sign in with Google", or: "or",
                 btnAddTask: "+ Add Task", btnAddProject: "+ Add Project",
                 currentSpace: "Current Workspace", addSpaceBtn: "+ New Space",
                 statTasks: "Tasks", statProjects: "Projects", statProgress: "Progress",
@@ -377,6 +413,7 @@
                 noTasksInSpace: "No standalone tasks 🌸", noTasksToday: "No tasks scheduled for today ☀️", noTasksForSelectedDate: "No tasks for this date 📅",
                 overdueTitle: "Time's up!", overdueQuestion: "What would you like to do with this task?",
                 markCompleted: "Mark Done ✅", postponeTask: "Postpone ⏳", cancelTask: "Cancel ❌",
+                confirmDeleteTitle: "Confirm Deletion ⚠️", confirmDeleteMsg: "Are you sure you want to delete this item?", confirmDeleteBtn: "Yes, Delete",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
@@ -384,6 +421,7 @@
         let currentLang = 'ar';
         let currentUserEmail = localStorage.getItem('bloom_current_user') || null;
         let currentOverdueTaskId = null;
+        let pendingDeleteAction = null; // Callback for confirm modal
 
         function getUserStorageKey() {
             return currentUserEmail ? `bloom_app_data_${currentUserEmail}` : 'bloom_app_data_guest';
@@ -412,7 +450,22 @@
             currentUserEmail = email;
             localStorage.setItem('bloom_current_user', email);
             
-            // Load user data
+            appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
+                currentSpaceId: 'default',
+                spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
+                projects: [],
+                tasks: []
+            }));
+
+            document.getElementById('authModal').classList.add('hidden');
+            saveData();
+        }
+
+        function handleGoogleLogin() {
+            const simulatedEmail = "user.google@gmail.com";
+            currentUserEmail = simulatedEmail;
+            localStorage.setItem('bloom_current_user', simulatedEmail);
+            
             appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
                 currentSpaceId: 'default',
                 spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
@@ -435,7 +488,24 @@
             document.getElementById('authModal').classList.remove('hidden');
         }
 
-        // Dark / Light Theme Toggle
+        // CONFIRM DELETE MODAL LOGIC
+        function promptConfirmDelete(msg, actionCallback) {
+            document.getElementById('confirmDeleteMsg').innerText = msg || i18n[currentLang].confirmDeleteMsg;
+            pendingDeleteAction = actionCallback;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+            
+            document.getElementById('btnExecuteDelete').onclick = function() {
+                if(pendingDeleteAction) pendingDeleteAction();
+                closeConfirmModal();
+            };
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmDeleteModal').classList.add('hidden');
+            pendingDeleteAction = null;
+        }
+
+        // Theme Toggle
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -529,6 +599,22 @@
             saveData();
         }
 
+        function askDeleteSpace() {
+            if(appData.spaces.length <= 1) {
+                alert("لا يمكنك حذف المساحة الوحيدة المتبقية!");
+                return;
+            }
+            const currentSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
+            promptConfirmDelete(`هل أنت تأكد من حذف مساحة العمل "${currentSpace ? currentSpace.name : ''}" وكافة محتوياتها؟`, () => {
+                const spaceToDelete = appData.currentSpaceId;
+                appData.spaces = appData.spaces.filter(s => s.id !== spaceToDelete);
+                appData.projects = appData.projects.filter(p => p.spaceId !== spaceToDelete);
+                appData.tasks = appData.tasks.filter(t => t.spaceId !== spaceToDelete);
+                appData.currentSpaceId = appData.spaces[0].id;
+                saveData();
+            });
+        }
+
         // Save Task
         function handleSaveTask(e) {
             e.preventDefault();
@@ -593,7 +679,7 @@
             saveData();
         }
 
-        // Toggle Done directly with Circle Button ⭕ + Sound & Confetti
+        // Toggle Quick Complete
         function toggleQuickComplete(id) {
             appData.tasks = appData.tasks.map(t => {
                 if(t.id === id) {
@@ -624,14 +710,20 @@
         }
 
         function deleteTask(id) {
-            appData.tasks = appData.tasks.filter(t => t.id !== id);
-            saveData();
+            const task = appData.tasks.find(t => t.id === id);
+            promptConfirmDelete(`هل أنت تأكد من رغبتك في حذف المهمة "${task ? task.title : ''}"؟`, () => {
+                appData.tasks = appData.tasks.filter(t => t.id !== id);
+                saveData();
+            });
         }
 
         function deleteProject(id) {
-            appData.projects = appData.projects.filter(p => p.id !== id);
-            appData.tasks = appData.tasks.filter(t => t.projectId !== id);
-            saveData();
+            const proj = appData.projects.find(p => p.id === id);
+            promptConfirmDelete(`هل أنت تأكد من رغبتك في حذف المشروع "${proj ? proj.title : ''}" وكافة مهماته؟`, () => {
+                appData.projects = appData.projects.filter(p => p.id !== id);
+                appData.tasks = appData.tasks.filter(t => t.projectId !== id);
+                saveData();
+            });
         }
 
         // Render UI
@@ -641,6 +733,16 @@
             // Space Select
             const spaceSelect = document.getElementById('spaceSelect');
             spaceSelect.innerHTML = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
+
+            // Hide Space Delete if only 1 space exists
+            const btnDeleteSpace = document.getElementById('btnDeleteSpace');
+            if(btnDeleteSpace) {
+                if(appData.spaces.length <= 1) {
+                    btnDeleteSpace.classList.add('hidden');
+                } else {
+                    btnDeleteSpace.classList.remove('hidden');
+                }
+            }
 
             // Project Select in Modal
             const projectSelect = document.getElementById('taskProjectSelect');
@@ -729,7 +831,6 @@
             return `
                 <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all" style="background-color: ${tk.color || '#F3E8FF'}">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <!-- Circle Button ⭕ for Quick Completion (Purple Dark) -->
                         <button onclick="toggleQuickComplete('${tk.id}')" class="text-xl hover:scale-110 text-purple-800 dark:text-purple-400 font-bold transition focus:outline-none">
                             ${tk.status === 'done' ? '✅' : '🟣'}
                         </button>
@@ -747,7 +848,6 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 ml-2">
-                        <!-- Status Selector -->
                         <select onchange="changeTaskStatus('${tk.id}', this.value)" class="text-xs font-black rounded-xl px-1.5 py-1 bg-white/90 border border-purple-100 text-slate-700 focus:outline-none">
                             <option value="pending" ${tk.status === 'pending' ? 'selected' : ''}>⏳</option>
                             <option value="in_progress" ${tk.status === 'in_progress' ? 'selected' : ''}>🔄</option>
@@ -755,10 +855,7 @@
                             <option value="cancelled" ${tk.status === 'cancelled' ? 'selected' : ''}>❌</option>
                         </select>
 
-                        <!-- Edit Button -->
                         <button onclick="editTask('${tk.id}')" class="text-slate-500 hover:text-purple-700 text-sm p-1 font-bold" title="تعديل">✏️</button>
-                        
-                        <!-- Delete Button (سلة المهملات) -->
                         <button onclick="deleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold" title="حذف">🗑️</button>
                     </div>
                 </div>
@@ -806,7 +903,6 @@
             document.getElementById('selectedDateDisplay').innerText = selectedCalendarDate || '-';
             let tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate);
             
-            // Sort Chronologically by Time
             tasks.sort((a, b) => {
                 if (!a.startTime) return 1;
                 if (!b.startTime) return -1;
