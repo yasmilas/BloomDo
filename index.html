@@ -77,14 +77,23 @@
                 <!-- Form Task -->
                 <form id="formTask" onsubmit="handleAddTask(event)" class="space-y-3">
                     <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2 rounded-2xl border border-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 bg-purple-50/20 text-xs">
+                    
                     <div class="flex gap-2">
                         <select id="taskProjectSelect" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20 focus:outline-none">
                             <option value="">مباشرة في المساحة (بدون مشروع)</option>
                         </select>
                         <input type="date" id="taskDate" class="w-1/2 px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20">
                     </div>
-                    <div class="flex items-center justify-between">
-                        <input type="time" id="taskTime" class="px-3 py-1.5 rounded-2xl border border-purple-100 text-xs text-slate-600 bg-purple-50/20">
+
+                    <!-- Time Range Inputs (بداية ونهاية الوقت) -->
+                    <div class="flex items-center gap-2 bg-purple-50/30 p-2 rounded-2xl border border-purple-100 text-xs">
+                        <span class="text-slate-500 font-bold text-[10px]">من:</span>
+                        <input type="time" id="taskStartTime" class="w-1/2 bg-white px-2 py-1 rounded-xl border border-purple-100 text-slate-600 text-xs">
+                        <span class="text-slate-500 font-bold text-[10px]">إلى:</span>
+                        <input type="time" id="taskEndTime" class="w-1/2 bg-white px-2 py-1 rounded-xl border border-purple-100 text-slate-600 text-xs">
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
                         <!-- Colors -->
                         <div class="flex gap-1.5">
                             <button type="button" onclick="selectColor('#FCE7F3')" class="w-5 h-5 rounded-full bg-pink-200 border-2 border-white ring-1 ring-purple-200"></button>
@@ -92,7 +101,7 @@
                             <button type="button" onclick="selectColor('#E0E7FF')" class="w-5 h-5 rounded-full bg-indigo-200 border-2 border-white ring-1 ring-purple-200"></button>
                             <button type="button" onclick="selectColor('#FEF3C7')" class="w-5 h-5 rounded-full bg-amber-200 border-2 border-white ring-1 ring-purple-200"></button>
                         </div>
-                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-2xl font-bold text-xs transition">حفظ</button>
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-1.5 rounded-2xl font-bold text-xs transition">حفظ المهمة</button>
                     </div>
                 </form>
 
@@ -262,7 +271,8 @@
             const title = document.getElementById('taskTitle').value.trim();
             const projectId = document.getElementById('taskProjectSelect').value || null;
             const date = document.getElementById('taskDate').value;
-            const time = document.getElementById('taskTime').value;
+            const startTime = document.getElementById('taskStartTime').value;
+            const endTime = document.getElementById('taskEndTime').value;
 
             const newTask = {
                 id: 'task_' + Date.now(),
@@ -270,7 +280,8 @@
                 projectId: projectId,
                 title,
                 date,
-                time,
+                startTime,
+                endTime,
                 color: activeColor,
                 status: 'pending' // pending, done, postponed, cancelled
             };
@@ -385,13 +396,23 @@
         function renderTaskHTML(t) {
             const statusTag = t.status === 'postponed' ? '<span class="text-[9px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-bold">مؤجلة</span>' :
                               t.status === 'cancelled' ? '<span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-bold">ملغاة</span>' : '';
+            
+            // إعداد عرض الوقت (بداية - نهاية)
+            let timeDisplay = '';
+            if (t.startTime || t.endTime) {
+                timeDisplay = `⏰ ${t.startTime || ''} ${t.endTime ? 'إلى ' + t.endTime : ''}`;
+            }
+
             return `
                 <div class="p-3 rounded-2xl flex items-center justify-between shadow-sm transition" style="background-color: ${t.color}">
                     <div class="flex items-center gap-2.5">
                         <input type="checkbox" ${t.status === 'done' ? 'checked' : ''} onchange="toggleTaskStatus('${t.id}')" class="w-4 h-4 accent-purple-600 rounded cursor-pointer">
                         <div>
                             <p class="font-bold text-xs ${t.status === 'done' ? 'line-through text-slate-400' : 'text-slate-800'}">${t.title} ${statusTag}</p>
-                            ${t.date ? `<span class="text-[9px] text-slate-500 font-medium">📅 ${t.date}${t.time || ''}</span>` : ''}
+                            <div class="flex gap-2 text-[9px] text-slate-500 font-medium">
+                                ${t.date ? `<span>📅 ${t.date}</span>` : ''}
+                                ${timeDisplay ? `<span>${timeDisplay}</span>` : ''}
+                            </div>
                         </div>
                     </div>
                     <button onclick="deleteTask('${t.id}')" class="text-slate-300 hover:text-red-500 text-xs">✕</button>
@@ -425,12 +446,13 @@
             }
         }
 
-        // Overdue Check Logic
+        // Overdue Check Logic (يفحص بناءً على وقت النهاية)
         function checkOverdueTasks() {
             const now = new Date();
             const overdue = appData.tasks.find(t => {
-                if (t.status !== 'pending' || !t.date || !t.time) return false;
-                const taskDateTime = new Date(`${t.date}T${t.time}`);
+                if (t.status !== 'pending' || !t.date || (!t.endTime && !t.startTime)) return false;
+                const checkTime = t.endTime || t.startTime;
+                const taskDateTime = new Date(`${t.date}T${checkTime}`);
                 return taskDateTime < now;
             });
 
@@ -458,9 +480,9 @@
             const modal = document.getElementById('aiModal');
             if(modal.classList.contains('hidden')) {
                 const suggestions = [
-                    "🌸 ابدأ بإنجاز المهام الصغيرة المسجلة في المساحة لتكسب طاقة لإنجاز باقي مشروعك!",
-                    "✨ لديك عدة مهام اليوم! خذ استراحة لمدة 10 دقائق بعد كل مهمة مكتملة.",
-                    "🌷 نقترح البدء بالمهمة الأكثر إلحاحاً أولاً، ثم ترتيب المشاريع بعد الظهر."
+                    "🌸 ابدأ بإنجاز المهام ذات النطاق الزمني المحدد أولاً لتضمن الاستفادة من الوقت!",
+                    "✨ لديك مهام ممتازة اليوم! حاول إنجازها بين وقت البداية والنهاية دون تسويف.",
+                    "🌷 ترتيب المهام حسب وقت البداية سيساعدك على يوم منظم وهادئ."
                 ];
                 document.getElementById('aiSuggestionText').innerText = suggestions[Math.floor(Math.random() * suggestions.length)];
                 modal.classList.remove('hidden');
