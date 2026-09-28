@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BloomDo - Cute Pastel To-Do</title>
+    <title>BloomDo - Advanced Productivity Suite</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#c084fc">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', 'Poppins', sans-serif; font-size: 15px; }
@@ -30,41 +29,31 @@
                 <h2 class="text-xl font-black text-purple-700 dark:text-purple-400 mt-1">BloomDo</h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400 font-bold" data-i18n="authSubtitle">تسجيل الدخول لحفظ أفكارك ومهامك</p>
             </div>
-
             <button onclick="playUiSound(); handleGoogleLogin()" class="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-100 py-2.5 rounded-2xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition">
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                </svg>
-                <span data-i18n="googleLoginBtn">التسجيل عبر Google</span>
+                <span>🌐</span> <span data-i18n="googleLoginBtn">التسجيل عبر Google</span>
             </button>
-
             <div class="flex items-center gap-2 text-slate-300 dark:text-slate-600 text-xs my-2">
                 <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
                 <span data-i18n="or">أو</span>
                 <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
             </div>
-
             <form id="authForm" onsubmit="handleAuth(event)" class="space-y-3">
                 <input type="email" id="authEmail" required placeholder="البريد الإلكتروني..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="emailPlaceholder">
                 <input type="password" id="authPassword" required placeholder="كلمة المرور..." class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 bg-purple-50/30 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="passPlaceholder">
                 <button type="submit" onclick="playUiSound()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-2xl text-xs font-black shadow-md transition" data-i18n="loginBtn">دخول / إنشاء حساب</button>
             </form>
-
             <div class="text-center pt-1 border-t border-purple-50 dark:border-slate-700">
                 <button onclick="playUiSound(); continueAsGuest()" class="text-xs text-slate-400 hover:text-purple-600 font-extrabold" data-i18n="guestBtn">متابعة كزائر (بدون حساب)</button>
             </div>
         </div>
     </div>
 
-    <!-- CONFIRMATION MODAL FOR DELETIONS -->
+    <!-- CONFIRMATION MODAL -->
     <div id="confirmDeleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-red-100 dark:border-slate-700 space-y-4 text-center">
             <div class="text-4xl text-red-500">⚠️</div>
             <h3 class="font-black text-slate-800 dark:text-slate-100 text-base" data-i18n="confirmDeleteTitle">تأكيد الحذف</h3>
-            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.</p>
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت تأكد من رغبتك في الحذف؟</p>
             <div class="flex gap-2 pt-2">
                 <button onclick="playUiSound(); closeConfirmModal()" class="w-1/2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancel">إلغاء</button>
                 <button id="btnExecuteDelete" onclick="playUiSound()" class="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="confirmDeleteBtn">نعم، احذف</button>
@@ -72,7 +61,7 @@
         </div>
     </div>
 
-    <!-- Header Navigation -->
+    <!-- HEADER NAVIGATION -->
     <header class="sticky top-0 z-30 bg-white/80 dark:bg-slate-800/80 glass border-b border-purple-100 dark:border-slate-700 p-4 shadow-sm">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
@@ -93,23 +82,41 @@
                     <option value="en">EN 🇺🇸</option>
                 </select>
 
-                <button onclick="playUiSound(); openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-sm" title="الحساب">
-                    👤
-                </button>
+                <button onclick="playUiSound(); openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-sm">👤</button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- MAIN CONTAINER -->
     <main class="max-w-md mx-auto px-4 pt-5 space-y-6">
 
-        <!-- Action Floating Buttons (+ Task & + Project) -->
-        <div class="flex gap-3">
-            <button onclick="playUiSound(); openAddTaskModal()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
-                <span class="text-lg">+</span> <span data-i18n="btnAddTask">+ إضافة مهمة</span>
+        <!-- QUICK ACTION BUTTONS -->
+        <div class="flex gap-2">
+            <button onclick="playUiSound(); openAddTaskModal()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-1 transition">
+                <span>+</span> <span data-i18n="btnAddTask">+ مهمة</span>
             </button>
-            <button onclick="playUiSound(); openAddProjectModal()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-2 transition">
-                <span class="text-lg">+</span> <span data-i18n="btnAddProject">+ إضافة مشروع</span>
+            <button onclick="playUiSound(); openAddProjectModal()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-1 transition">
+                <span>+</span> <span data-i18n="btnAddProject">+ مشروع</span>
+            </button>
+            <button onclick="playUiSound(); openNewStickyModal()" class="bg-amber-400 hover:bg-amber-500 text-slate-900 px-3 py-2.5 rounded-2xl text-xs font-black shadow-md flex items-center justify-center gap-1 transition">
+                <span>📝</span> <span data-i18n="btnNote">+ ملاحظة</span>
+            </button>
+        </div>
+
+        <!-- SORTING CONTROL & MODE TOGGLE -->
+        <div class="bg-white/80 dark:bg-slate-800/80 p-3 rounded-2xl shadow-sm border border-purple-100 dark:border-slate-700 flex justify-between items-center text-xs font-bold">
+            <div class="flex items-center gap-2">
+                <span class="text-slate-500" data-i18n="sortMode">الترتيب:</span>
+                <select id="sortModeSelect" onchange="changeSortMode(this.value)" class="bg-purple-50 dark:bg-slate-700 text-purple-900 dark:text-purple-200 px-2 py-1 rounded-xl text-xs border-none font-bold focus:outline-none">
+                    <option value="manual" data-i18n="sortManual">🖐️ يدوي (Drag & Drop)</option>
+                    <option value="time" data-i18n="sortTime">⏰ حسب الوقت</option>
+                    <option value="date" data-i18n="sortDate">📅 حسب التاريخ</option>
+                    <option value="created" data-i18n="sortCreated">🆕 أحدث إضافة</option>
+                    <option value="pinned" data-i18n="sortPinned">📌 المثبت أولاً</option>
+                </select>
+            </div>
+            <button onclick="playUiSound(); switchView('archive')" class="text-purple-600 dark:text-purple-400 font-extrabold flex items-center gap-1 bg-purple-100 dark:bg-purple-900/40 px-2.5 py-1 rounded-xl">
+                <span>🗃️</span> <span data-i18n="navArchive">الأرشيف</span>
             </button>
         </div>
 
@@ -117,189 +124,303 @@
         <div id="viewHome" class="space-y-6">
             <!-- Stats Bar -->
             <div class="grid grid-cols-3 gap-3 text-center">
-                <div class="bg-purple-100/70 dark:bg-purple-900/30 p-3.5 rounded-2xl">
-                    <span class="block text-xs text-purple-700 dark:text-purple-300 font-extrabold" data-i18n="statTasks">المهام</span>
+                <div class="bg-purple-100/70 dark:bg-purple-900/30 p-3 rounded-2xl">
+                    <span class="block text-xs text-purple-700 dark:text-purple-300 font-extrabold" data-i18n="statTasks">المهام النشطة</span>
                     <span class="text-lg font-black text-purple-900 dark:text-purple-200" id="statTasksCount">0</span>
                 </div>
-                <div class="bg-pink-100/70 dark:bg-pink-900/30 p-3.5 rounded-2xl">
+                <div class="bg-pink-100/70 dark:bg-pink-900/30 p-3 rounded-2xl">
                     <span class="block text-xs text-pink-700 dark:text-pink-300 font-extrabold" data-i18n="statProjects">المشاريع</span>
                     <span class="text-lg font-black text-pink-900 dark:text-pink-200" id="statProjectsCount">0</span>
                 </div>
-                <div class="bg-indigo-100/70 dark:bg-indigo-900/30 p-3.5 rounded-2xl">
+                <div class="bg-indigo-100/70 dark:bg-indigo-900/30 p-3 rounded-2xl">
                     <span class="block text-xs text-indigo-700 dark:text-indigo-300 font-extrabold" data-i18n="statProgress">الإنجاز</span>
                     <span class="text-lg font-black text-indigo-900 dark:text-indigo-200" id="statProgress">0%</span>
                 </div>
             </div>
 
-            <!-- Projects Section -->
-            <div id="projectsContainer" class="space-y-4">
-                <!-- Projects Rendered Here -->
+            <!-- PINNED STICKY NOTES SECTION -->
+            <div id="pinnedNotesSection" class="hidden space-y-2">
+                <h3 class="text-xs font-black text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                    <span>📌</span> <span data-i18n="pinnedNotes">الملاحظات المثبتة</span>
+                </h3>
+                <div id="pinnedNotesContainer" class="grid grid-cols-2 gap-2"></div>
             </div>
 
-            <!-- Standalone Tasks Section -->
+            <!-- PROJECTS CONTAINER -->
+            <div id="projectsContainer" class="space-y-4"></div>
+
+            <!-- STANDALONE TASKS SECTION -->
             <div>
                 <h3 class="text-sm font-extrabold text-purple-900 dark:text-purple-300 mb-3 px-1" data-i18n="standaloneTasks">مهام مستقلة 🌸</h3>
-                <div id="standaloneTasksContainer" class="space-y-2.5">
-                    <!-- Tasks Rendered Here -->
-                </div>
+                <div id="standaloneTasksContainer" class="space-y-2.5"></div>
             </div>
         </div>
 
         <!-- 2. SPACES VIEW -->
         <div id="viewSpaces" class="space-y-5 hidden">
             <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700">
-                <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاصة بك 📂</h2>
+                <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاص بك 📂</h2>
                 <button onclick="playUiSound(); openNewSpaceModal()" class="text-xs bg-purple-600 text-white font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-purple-700 transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
             </div>
-
-            <!-- Spaces List Grid -->
-            <div id="spacesCardsGrid" class="grid grid-cols-2 gap-3">
-                <!-- Dynamic Space Cards -->
-            </div>
-
-            <!-- Selected Space Dynamic Details View -->
+            <div id="spacesCardsGrid" class="grid grid-cols-2 gap-3"></div>
             <div id="selectedSpaceDetails" class="bg-white/90 dark:bg-slate-800/90 p-4 rounded-3xl border border-purple-100 dark:border-slate-700 space-y-4">
                 <div class="flex justify-between items-center border-b border-purple-100 dark:border-slate-700 pb-2">
                     <h3 class="text-sm font-black text-purple-900 dark:text-purple-300 flex items-center gap-2">
                         <span>📂</span> <span id="spaceDetailTitle">المساحة المحددة</span>
                     </h3>
                     <div class="flex items-center gap-2">
-                        <button onclick="playUiSound(); editCurrentSpace()" class="text-slate-500 hover:text-purple-600 text-xs font-extrabold p-1" title="تعديل المساحة">✏️ <span data-i18n="editSpace">تعديل</span></button>
-                        <button id="btnDeleteSpace" onclick="playUiSound(); askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1" title="حذف المساحة">🗑️ <span data-i18n="deleteSpace">حذف</span></button>
+                        <button onclick="playUiSound(); editCurrentSpace()" class="text-slate-500 hover:text-purple-600 text-xs font-extrabold p-1">✏️ <span data-i18n="editSpace">تعديل</span></button>
+                        <button id="btnDeleteSpace" onclick="playUiSound(); askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1">🗑️ <span data-i18n="deleteSpace">حذف</span></button>
                     </div>
                 </div>
-
-                <div id="spaceInnerContent" class="space-y-4">
-                    <!-- Content inside selected space -->
-                </div>
+                <div id="spaceInnerContent" class="space-y-4"></div>
             </div>
         </div>
 
         <!-- 3. TODAY VIEW -->
         <div id="viewToday" class="space-y-4 hidden">
             <h2 class="text-lg font-black text-purple-900 dark:text-purple-300" data-i18n="todayTitle">جدول مهام اليوم ☀️</h2>
-            <div id="todayTasksContainer" class="space-y-2.5">
-                <!-- Today Tasks Rendered Here -->
-            </div>
+            <div id="todayTasksContainer" class="space-y-2.5"></div>
         </div>
 
         <!-- 4. CALENDAR VIEW -->
         <div id="viewCalendar" class="space-y-4 hidden">
             <h2 class="text-lg font-black text-purple-900 dark:text-purple-300" data-i18n="calendarTitle">التقويم الشهري 📅</h2>
             <div class="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700">
-                <div class="grid grid-cols-7 gap-1 text-center font-extrabold text-xs text-purple-500 mb-2" id="calendarHeaderDays">
-                    <!-- Day names -->
-                </div>
-                <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold">
-                    <!-- Dynamic Calendar Grid -->
-                </div>
+                <div class="grid grid-cols-7 gap-1 text-center font-extrabold text-xs text-purple-500 mb-2" id="calendarHeaderDays"></div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold"></div>
             </div>
-
-            <!-- Tasks for Selected Date -->
             <div class="bg-white/90 dark:bg-slate-800/90 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
                 <h3 class="text-xs font-extrabold text-purple-900 dark:text-purple-300 border-b border-purple-100 dark:border-slate-700 pb-2 flex justify-between items-center">
-                    <span data-i18n="tasksForDate">مهام اليوم المحدد (مرتبة أوقاتاً):</span>
+                    <span data-i18n="tasksForDate">مهام اليوم المحدد:</span>
                     <span id="selectedDateDisplay" class="text-purple-600 font-black text-sm">-</span>
                 </h3>
-                <div id="calendarSelectedDateTasks" class="space-y-2.5">
-                    <!-- Selected Date Tasks Rendered Here -->
-                </div>
+                <div id="calendarSelectedDateTasks" class="space-y-2.5"></div>
             </div>
+        </div>
+
+        <!-- 5. ARCHIVE VIEW -->
+        <div id="viewArchive" class="space-y-5 hidden">
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
+                <h2 class="text-base font-black text-purple-900 dark:text-purple-300 flex items-center justify-between">
+                    <span>🗃️ أرشيف المهام</span>
+                    <div class="flex gap-2 text-xs font-bold">
+                        <span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-xl" id="archivedDoneCount">✅ 0</span>
+                        <span class="bg-red-100 text-red-800 px-2.5 py-1 rounded-xl" id="archivedCancelledCount">❌ 0</span>
+                    </div>
+                </h2>
+                <input type="text" id="archiveSearchInput" oninput="renderArchive()" placeholder="بحث في الأرشيف..." class="w-full px-3 py-2 rounded-2xl border border-purple-100 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none">
+            </div>
+            <div id="archiveTasksContainer" class="space-y-2.5"></div>
+        </div>
+
+        <!-- 6. STICKY NOTES VIEW -->
+        <div id="viewNotes" class="space-y-4 hidden">
+            <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-3xl border border-purple-100 dark:border-slate-700">
+                <h2 class="text-base font-black text-purple-900 dark:text-purple-300">📝 الملاحظات السريعة (Sticky Notes)</h2>
+                <button onclick="playUiSound(); openNewStickyModal()" class="text-xs bg-amber-400 text-slate-900 font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-amber-500 transition">+ ملاحظة جديدة</button>
+            </div>
+            <div id="stickyNotesGrid" class="grid grid-cols-2 gap-3"></div>
         </div>
 
     </main>
 
-    <!-- Navigation Bar at Bottom -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-800/80 glass border-t border-purple-100 dark:border-slate-700 px-6 py-3 z-30">
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-800/80 glass border-t border-purple-100 dark:border-slate-700 px-4 py-2.5 z-30">
         <div class="max-w-md mx-auto flex justify-between items-center text-slate-400">
             <button onclick="playUiSound(); switchView('home')" id="navHome" class="flex flex-col items-center gap-1 text-purple-600">
                 <span class="text-xl">🏠</span>
-                <span class="text-[11px] font-extrabold" data-i18n="navHome">الرئيسية</span>
+                <span class="text-[10px] font-extrabold" data-i18n="navHome">الرئيسية</span>
             </button>
             <button onclick="playUiSound(); switchView('spaces')" id="navSpaces" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">📂</span>
-                <span class="text-[11px] font-extrabold" data-i18n="navSpaces">المساحات</span>
+                <span class="text-[10px] font-extrabold" data-i18n="navSpaces">المساحات</span>
             </button>
             <button onclick="playUiSound(); switchView('today')" id="navToday" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">☀️</span>
-                <span class="text-[11px] font-extrabold" data-i18n="navToday">اليوم</span>
+                <span class="text-[10px] font-extrabold" data-i18n="navToday">اليوم</span>
             </button>
             <button onclick="playUiSound(); switchView('calendar')" id="navCalendar" class="flex flex-col items-center gap-1 hover:text-purple-600">
                 <span class="text-xl">📅</span>
-                <span class="text-[11px] font-extrabold" data-i18n="navCalendar">التقويم</span>
+                <span class="text-[10px] font-extrabold" data-i18n="navCalendar">التقويم</span>
+            </button>
+            <button onclick="playUiSound(); switchView('notes')" id="navNotes" class="flex flex-col items-center gap-1 hover:text-purple-600">
+                <span class="text-xl">📝</span>
+                <span class="text-[10px] font-extrabold" data-i18n="navNotes">ملاحظات</span>
             </button>
         </div>
     </nav>
 
+    <!-- MODAL: DETAILED TASK VIEW PAGE -->
+    <div id="taskDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl border border-purple-100 dark:border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto">
+            <div class="flex justify-between items-start border-b border-purple-100 dark:border-slate-700 pb-3">
+                <div class="space-y-1">
+                    <span id="detailSpaceProjBadge" class="text-[10px] font-black bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-2.5 py-1 rounded-xl"></span>
+                    <h2 id="detailTaskTitle" class="text-lg font-black text-slate-900 dark:text-slate-100 mt-1"></h2>
+                </div>
+                <button onclick="playUiSound(); closeTaskDetailModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold p-1">✕</button>
+            </div>
+
+            <!-- Timing & Duration Info -->
+            <div class="bg-purple-50/70 dark:bg-slate-700/50 p-3.5 rounded-2xl space-y-2 text-xs font-bold">
+                <div class="flex justify-between items-center text-purple-900 dark:text-purple-200">
+                    <span>📅 <span id="detailTaskDate"></span></span>
+                    <span>⌛ <span id="detailTaskDuration"></span></span>
+                </div>
+                <!-- Minuteur Section -->
+                <div class="pt-2 border-t border-purple-200 dark:border-slate-600 flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] text-slate-500 block" data-i18n="minuteurTitle">المؤقت (Minuteur):</span>
+                        <span id="minuteurDisplay" class="text-xl font-black font-mono text-purple-700 dark:text-purple-300">00:00:00</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="btnStartMinuteur" onclick="playUiSound(); toggleMinuteur()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-2xl text-xs font-black shadow-md">▶️ بدء</button>
+                        <button onclick="playUiSound(); resetMinuteur()" class="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-2xl text-xs font-bold">🔄</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description / Instructions -->
+            <div class="space-y-1">
+                <label class="text-xs font-black text-slate-600 dark:text-slate-300" data-i18n="descriptionLabel">📝 الوصف / تعليمات المهمة:</label>
+                <div id="detailTaskDescription" class="bg-slate-50 dark:bg-slate-700/30 p-3 rounded-2xl text-xs font-semibold text-slate-700 dark:text-slate-200 whitespace-pre-line border border-slate-100 dark:border-slate-700 min-h-[60px]"></div>
+            </div>
+
+            <!-- Subtasks Section -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-black text-slate-700 dark:text-slate-200" data-i18n="subtasksLabel">➕ المهام الفرعية (Subtasks):</label>
+                    <span id="subtasksProgressText" class="text-xs font-black text-purple-600 dark:text-purple-400">0/0</span>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
+                    <div id="subtasksProgressBar" class="bg-purple-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="detailSubtasksList" class="space-y-1.5 pt-1"></div>
+                <div class="flex gap-2 pt-1">
+                    <input type="text" id="newSubtaskInput" placeholder="أضف مهمة فرعية جديدة..." class="flex-1 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 text-xs font-bold dark:bg-slate-700 focus:outline-none">
+                    <button onclick="playUiSound(); addSubtaskFromDetail()" class="bg-purple-600 text-white px-4 py-2 rounded-2xl text-xs font-black shadow-sm">+ أضف</button>
+                </div>
+            </div>
+
+            <!-- Linked Sticky Notes -->
+            <div id="linkedNotesSection" class="space-y-2 pt-2 border-t border-purple-100 dark:border-slate-700">
+                <label class="text-xs font-black text-slate-700 dark:text-slate-200">📌 الملاحظات المرتبطة بهذه المهمة:</label>
+                <div id="linkedNotesList" class="space-y-1.5"></div>
+            </div>
+
+            <div class="flex gap-2 pt-3 border-t border-purple-100 dark:border-slate-700">
+                <button onclick="playUiSound(); editTaskFromDetail()" class="flex-1 bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="editSpace">✏️ تعديل كامل</button>
+                <button onclick="playUiSound(); closeTaskDetailModal()" class="flex-1 bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="cancel">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL: ADD / EDIT TASK -->
     <div id="taskModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-purple-100 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-sm w-full shadow-2xl border border-purple-100 dark:border-slate-700 space-y-3 max-h-[90vh] overflow-y-auto">
             <h3 class="font-black text-base text-purple-900 dark:text-purple-300" id="taskModalTitle" data-i18n="tabAddTask">إضافة مهمة 📝</h3>
             <form id="formTask" onsubmit="handleSaveTask(event)" class="space-y-3">
                 <input type="hidden" id="editingTaskId" value="">
                 
                 <input type="text" id="taskTitle" placeholder="عنوان المهمة..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="taskTitlePlaceholder">
                 
-                <!-- Target Space Selector -->
-                <div>
-                    <label class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 block mb-1" data-i18n="targetSpaceLabel">مساحة العمل:</label>
-                    <select id="taskSpaceSelect" onchange="playUiSound(); updateProjectDropdownForSpace(this.value)" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
-                        <!-- Populated dynamically -->
+                <!-- Advanced Multi-Day & Schedule Mode -->
+                <div class="space-y-2 bg-purple-50/60 dark:bg-slate-700/50 p-3 rounded-2xl border border-purple-100 dark:border-slate-600 text-xs font-bold">
+                    <label class="block text-slate-600 dark:text-slate-300" data-i18n="scheduleTypeLabel">نظام الوقت والمدة:</label>
+                    <select id="taskScheduleType" onchange="toggleScheduleFields()" class="w-full px-3 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        <option value="single">يوم واحد (Single Day)</option>
+                        <option value="continuous">عدة أيام متصلة (Continuous Days)</option>
+                        <option value="sessions">عدة أيام متفرقة (Multiple Sessions)</option>
                     </select>
-                </div>
 
-                <div class="flex gap-2">
-                    <select id="taskProjectSelect" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs text-slate-700 dark:text-slate-200 font-bold focus:outline-none">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <input type="date" id="taskDate" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200">
-                </div>
-
-                <!-- Time Range & Duration -->
-                <div class="space-y-2 bg-purple-50/50 dark:bg-slate-700/50 p-3 rounded-2xl border border-purple-100 dark:border-slate-600">
-                    <div class="flex items-center gap-2 text-xs font-bold">
-                        <span class="text-slate-600 dark:text-slate-300" data-i18n="from">من:</span>
-                        <input type="time" id="taskStartTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
-                        <span class="text-slate-600 dark:text-slate-300" data-i18n="to">إلى:</span>
-                        <input type="time" id="taskEndTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                    <div id="singleDayFields" class="space-y-2">
+                        <input type="date" id="taskDate" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        <div class="flex items-center gap-2">
+                            <span class="text-slate-500" data-i18n="from">من:</span>
+                            <input type="time" id="taskStartTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                            <span class="text-slate-500" data-i18n="to">إلى:</span>
+                            <input type="time" id="taskEndTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                        </div>
                     </div>
+
+                    <div id="multiDayFields" class="space-y-2 hidden">
+                        <div class="flex gap-2">
+                            <input type="date" id="taskStartDate" class="w-1/2 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                            <input type="date" id="taskEndDate" class="w-1/2 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        </div>
+                    </div>
+
                     <div id="durationDisplay" class="text-center text-xs font-extrabold text-purple-700 dark:text-purple-300 hidden">
-                        ⏳ <span data-i18n="duration">المدة:</span> <span id="durationText">-</span>
+                        ⏳ <span data-i18n="duration">المدة المحسوبة:</span> <span id="durationText">-</span>
                     </div>
                 </div>
 
-                <!-- Status Selection -->
-                <div class="flex items-center gap-2">
-                    <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300" data-i18n="statusLabel">الحالة:</label>
-                    <select id="taskStatusSelect" class="flex-1 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none">
-                        <option value="pending" data-i18n="statusPending">⏳ لم تنجز بعد</option>
-                        <option value="in_progress" data-i18n="statusInProgress">🔄 قيد الإنجاز</option>
-                        <option value="done" data-i18n="statusDone">✅ أنجزت</option>
-                        <option value="cancelled" data-i18n="statusCancelled">❌ ملغية</option>
+                <!-- Space & Project Selector -->
+                <div class="flex gap-2">
+                    <select id="taskSpaceSelect" onchange="updateProjectDropdownForSpace(this.value)" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none"></select>
+                    <select id="taskProjectSelect" class="w-1/2 px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none"></select>
+                </div>
+
+                <!-- Reminder Notifications Option -->
+                <div class="space-y-1">
+                    <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block" data-i18n="reminderLabel">🔔 التذكير باقتراب الموعد:</label>
+                    <select id="taskReminderSelect" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        <option value="none">بدون تذكير</option>
+                        <option value="5">قبل 5 دقائق ⏰</option>
+                        <option value="15">قبل 15 دقيقة ⏰</option>
+                        <option value="30">قبل 30 دقيقة ⏰</option>
+                        <option value="60">قبل ساعة واحدة ⏰</option>
                     </select>
+                </div>
+
+                <!-- Description Input -->
+                <div>
+                    <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block mb-1" data-i18n="descriptionLabel">📝 وصف وخطة المهمة:</label>
+                    <textarea id="taskDescription" rows="2" placeholder="اكتب التفاصيل والتعليمات لنفسك هنا..." class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none"></textarea>
                 </div>
 
                 <!-- Color Selection -->
-                <div class="space-y-2 pt-1">
-                    <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block" data-i18n="colorLabel">لون المهمة:</label>
-                    <div class="flex gap-2 items-center">
-                        <button type="button" onclick="playUiSound(); selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="playUiSound(); selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="playUiSound(); selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <button type="button" onclick="playUiSound(); selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
-                        <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-7 h-7 rounded-full cursor-pointer border-0 bg-transparent p-0">
-                    </div>
-                    <div class="flex items-center gap-2 pt-1">
-                        <span class="text-[11px] font-bold text-slate-400">HEX:</span>
-                        <input type="text" id="hexColorInput" oninput="selectColor(this.value)" placeholder="#F3E8FF" class="w-24 px-2 py-1 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold dark:bg-slate-700">
-                    </div>
+                <div class="flex gap-2 items-center">
+                    <button type="button" onclick="playUiSound(); selectColor('#FCE7F3')" class="w-6 h-6 rounded-full bg-pink-200 border-2 border-white ring-2 ring-purple-200"></button>
+                    <button type="button" onclick="playUiSound(); selectColor('#F3E8FF')" class="w-6 h-6 rounded-full bg-purple-200 border-2 border-white ring-2 ring-purple-200"></button>
+                    <button type="button" onclick="playUiSound(); selectColor('#E0E7FF')" class="w-6 h-6 rounded-full bg-indigo-200 border-2 border-white ring-2 ring-purple-200"></button>
+                    <button type="button" onclick="playUiSound(); selectColor('#FEF3C7')" class="w-6 h-6 rounded-full bg-amber-200 border-2 border-white ring-2 ring-purple-200"></button>
+                    <input type="color" id="customColorPicker" onchange="selectColor(this.value)" value="#f3e8ff" class="w-7 h-7 rounded-full cursor-pointer border-0 bg-transparent p-0">
                 </div>
 
                 <div class="flex gap-2 justify-end pt-2">
                     <button type="button" onclick="playUiSound(); closeTaskModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
-                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-purple-600 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="saveTask">حفظ</button>
+                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-purple-600 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="saveTask">حفظ المهمة</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL: STICKY NOTE -->
+    <div id="stickyModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 max-w-xs w-full shadow-xl space-y-3">
+            <h3 class="font-black text-sm text-amber-600 dark:text-amber-400">📝 ملاحظة سريعة (Sticky Note)</h3>
+            <textarea id="stickyContent" rows="3" placeholder="اكتب فكرتك أو ملاحظتك السريعة هنا..." class="w-full px-3 py-2 rounded-2xl border border-amber-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none"></textarea>
+            
+            <div class="space-y-2 text-xs font-bold">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="stickyPinHome" class="rounded text-amber-500 focus:ring-0">
+                    <span>📌 تثبيت في الصفحة الرئيسية</span>
+                </label>
+                
+                <div>
+                    <label class="block text-slate-500 mb-1">🔗 ربط بـ مهمة محددة:</label>
+                    <select id="stickyLinkTaskId" class="w-full px-2 py-1.5 rounded-xl border border-amber-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        <option value="">(بدون ربط)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-2 justify-end pt-2">
+                <button onclick="playUiSound(); closeStickyModal()" class="px-3 py-1.5 text-xs text-slate-400 font-extrabold" data-i18n="cancel">إلغاء</button>
+                <button onclick="playUiSound(); saveStickyNote()" class="px-4 py-1.5 bg-amber-400 text-slate-900 text-xs font-black rounded-2xl" data-i18n="save">حفظ الملاحظة</button>
+            </div>
         </div>
     </div>
 
@@ -310,36 +431,15 @@
             <form id="formProject" onsubmit="handleAddProject(event)" class="space-y-3">
                 <input type="hidden" id="editingProjectId" value="">
                 <input type="text" id="projectTitle" placeholder="اسم المشروع..." required class="w-full px-4 py-2.5 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="projectTitlePlaceholder">
-                
                 <div>
                     <label class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 block mb-1" data-i18n="targetSpaceLabel">مساحة العمل:</label>
-                    <select id="projectSpaceSelect" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 focus:outline-none">
-                        <!-- Populated dynamically -->
-                    </select>
+                    <select id="projectSpaceSelect" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold focus:outline-none"></select>
                 </div>
-
                 <div class="flex gap-2 justify-end">
                     <button type="button" onclick="playUiSound(); closeProjectModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-2xl font-extrabold text-xs" data-i18n="cancel">إلغاء</button>
-                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">إنشاء / حفظ</button>
+                    <button type="submit" onclick="playUiSound()" class="px-5 py-2 bg-pink-500 text-white rounded-2xl font-extrabold text-xs shadow-md" data-i18n="createProject">حفظ</button>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- OVERDUE POPUP MODAL -->
-    <div id="overdueModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-pink-200 dark:border-slate-700 space-y-4 text-center">
-            <div class="text-5xl">⏰</div>
-            <h3 class="font-black text-slate-800 dark:text-slate-100 text-base" data-i18n="overdueTitle">انتهى الوقت المحدد للمهمة!</h3>
-            <p class="text-sm font-bold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-slate-700 p-2.5 rounded-2xl" id="overdueTaskName">اسم المهمة</p>
-            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="overdueQuestion">يبدو أن وقتها قد مضى، ماذا تفضل أن تفعل بها؟</p>
-            <div class="flex flex-col gap-2">
-                <button onclick="playUiSound(); handleOverdueAction('complete')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="markCompleted">اعتبارها أنجزت ✅</button>
-                <div class="flex gap-2">
-                    <button onclick="playUiSound(); handleOverdueAction('postpone')" class="w-1/2 bg-amber-400 hover:bg-amber-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="postponeTask">تأجيل وتعديل ⏳</button>
-                    <button onclick="playUiSound(); handleOverdueAction('cancel')" class="w-1/2 bg-red-400 hover:bg-red-500 text-white py-2.5 rounded-2xl text-xs font-black shadow-sm" data-i18n="cancelTask">إلغاؤها ❌</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -359,9 +459,9 @@
         </div>
     </div>
 
-    <!-- Application Script -->
+    <!-- APPLICATION SCRIPT -->
     <script>
-        // Sound Effects Engine
+        // SOUND EFFECTS
         function playBellSound() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -371,10 +471,8 @@
                 osc.frequency.setValueAtTime(880, ctx.currentTime);
                 gain.gain.setValueAtTime(0.3, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 1.2);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 1.2);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 1.2);
             } catch(e) {}
         }
 
@@ -387,130 +485,117 @@
                 osc.frequency.setValueAtTime(440, ctx.currentTime);
                 gain.gain.setValueAtTime(0.05, ctx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.15);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.15);
             } catch(e) {}
         }
 
+        // TRANSLATIONS (AR, ARY, ES, FR, EN)
         const i18n = {
             ar: {
                 authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)", googleLoginBtn: "التسجيل عبر Google", or: "أو",
-                btnAddTask: "+ إضافة مهمة", btnAddProject: "+ إضافة مشروع",
-                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاصة بك 📂", deleteSpace: "حذف المساحة", editSpace: "تعديل", editProject: "تعديل المشروع",
-                statTasks: "المهام", statProjects: "المشاريع", statProgress: "الإنجاز",
+                btnAddTask: "+ مهمة", btnAddProject: "+ مشروع", btnNote: "+ ملاحظة",
+                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاص بك 📂", deleteSpace: "حذف", editSpace: "تعديل",
+                statTasks: "المهام النشطة", statProjects: "المشاريع", statProgress: "الإنجاز",
                 tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة / تعديل مشروع 📁", targetSpaceLabel: "مساحة العمل:",
                 taskTitlePlaceholder: "عنوان المهمة...", projectTitlePlaceholder: "اسم المشروع...",
-                noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:", duration: "المدة:",
-                statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "حفظ المهمة", updateTask: "تحديث المهمة",
-                cancel: "إلغاء", createProject: "إنشاء / حفظ", standaloneTasks: "مهام مستقلة 🌸",
-                todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅",
-                tasksForDate: "مهام اليوم المحدد (مرتبة أوقاتاً):", navHome: "الرئيسية", navSpaces: "المساحات", navToday: "اليوم", navCalendar: "التقويم",
+                noProjectOption: "مباشرة في المساحة (بدون مشروع)", from: "من:", to: "إلى:", duration: "المدة المحسوبة:",
+                statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "حفظ المهمة", cancel: "إلغاء", createProject: "حفظ", standaloneTasks: "مهام مستقلة 🌸",
+                todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅", tasksForDate: "مهام اليوم المحدد:", navHome: "الرئيسية", navSpaces: "المساحات", navToday: "اليوم", navCalendar: "التقويم", navArchive: "الأرشيف", navNotes: "ملاحظات",
                 newSpaceTitle: "مساحة عمل جديدة 📂", editSpaceTitle: "تعديل مساحة العمل 📂", spaceNamePlaceholder: "اسم المساحة...", save: "حفظ",
-                statusPending: "⏳ لم تنجز بعد", statusInProgress: "🔄 قيد الإنجاز", statusDone: "✅ أنجزت", statusCancelled: "❌ ملغية",
-                noTasksInSpace: "لا توجد مهام حرة 🌸", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", noTasksForSelectedDate: "لا توجد مهام مجدولة في هذا اليوم 📅",
-                overdueTitle: "انتهى الوقت المحدد للمهمة!", overdueQuestion: "يبدو أن وقتها قد مضى، ماذا تفضل أن تفعل بها؟",
-                markCompleted: "اعتبارها أنجزت ✅", postponeTask: "تأجيل وتعديل ⏳", cancelTask: "إلغاؤها ❌",
                 confirmDeleteTitle: "تأكيد الحذف ⚠️", confirmDeleteMsg: "هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.", confirmDeleteBtn: "نعم، احذف",
+                sortMode: "الترتيب:", sortManual: "🖐️ يدوي (Drag & Drop)", sortTime: "⏰ حسب الوقت", sortDate: "📅 حسب التاريخ", sortCreated: "🆕 أحدث إضافة", sortPinned: "📌 المثبت أولاً",
+                pinnedNotes: "الملاحظات المثبتة", subtasksLabel: "➕ المهام الفرعية (Subtasks):", descriptionLabel: "📝 الوصف وتفاصيل المهمة:", minuteurTitle: "المؤقت (Minuteur):", reminderLabel: "🔔 التذكير باقتراب الموعد:",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             ary: {
                 authSubtitle: "سجّل الدخول باش تبقى تحفظ الشغل ديالك", emailPlaceholder: "الإيميل ديالك...", passPlaceholder: "الكود السري...", loginBtn: "دخل / دير حساب جديد", guestBtn: "كمل كزائر (بلا حساب)", googleLoginBtn: "دخل بـ Google", or: "ولا",
-                btnAddTask: "+ زِد مهمة", btnAddProject: "+ زِد مشروع",
-                currentSpace: "البلاصة الحالية", addSpaceBtn: "+ بلاصة جديدة", spacesTitle: "البلايص ديال الخدمة ديالك 📂", deleteSpace: "مسح هاد البلاصة", editSpace: "بدّل", editProject: "بدّل المشروع",
-                statTasks: "المهمات", statProjects: "المشاريع", statProgress: "نسبة النجاح",
+                btnAddTask: "+ مهمة", btnAddProject: "+ مشروع", btnNote: "+ ملاحظة",
+                currentSpace: "البلاصة الحالية", addSpaceBtn: "+ بلاصة جديدة", spacesTitle: "البلايص ديال الخدمة ديالك 📂", deleteSpace: "مسح", editSpace: "بدّل",
+                statTasks: "المهمات النشيطة", statProjects: "المشاريع", statProgress: "نسبة النجاح",
                 tabAddTask: "زيد مهمة 📝", tabAddProject: "زيد / بدّل مشروع 📁", targetSpaceLabel: "البلاصة ديال الخدمة:",
                 taskTitlePlaceholder: "شنو بغيتي تدير؟...", projectTitlePlaceholder: "سمية المشروع...",
-                noProjectOption: "ديريكت فالبلاصة (بلا مشروع)", from: "من:", to: "حتى لـ:", duration: "الوقت:",
-                statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "سجل المهمة", updateTask: "بدّل المهمة",
-                cancel: "إلغاء", createProject: "صاوب / سجّل", standaloneTasks: "مهمات فردية 🌸",
-                todayTitle: "شنو عندك اليوم ☀️", calendarTitle: "الروزنامة الشهرية 📅",
-                tasksForDate: "مهمات هاد النهار (مرتبين بالوقت):", navHome: "الدار", navSpaces: "البلايص", navToday: "اليوم", navCalendar: "الروزنامة",
+                noProjectOption: "ديريكت فالبلاصة (بلا مشروع)", from: "من:", to: "حتى لـ:", duration: "الوقت المحسوب:",
+                statusLabel: "الحالة:", colorLabel: "لون المهمة:", saveTask: "سجل المهمة", cancel: "إلغاء", createProject: "سجّل", standaloneTasks: "مهمات فردية 🌸",
+                todayTitle: "شنو عندك اليوم ☀️", calendarTitle: "الروزنامة الشهرية 📅", tasksForDate: "مهمات هاد النهار:", navHome: "الدار", navSpaces: "البلايص", navToday: "اليوم", navCalendar: "الروزنامة", navArchive: "الأرشيف", navNotes: "ملاحظات",
                 newSpaceTitle: "بلاصة خدمة جديدة 📂", editSpaceTitle: "بدّل بلاصة الخدمة 📂", spaceNamePlaceholder: "سمية البلاصة...", save: "سجّل",
-                statusPending: "⏳ مزال مادرتهاش", statusInProgress: "🔄 خدام عليها", statusDone: "✅ كملات", statusCancelled: "❌ ملغية",
-                noTasksInSpace: "ماكاين حتى مهمة خاوية 🌸", noTasksToday: "ماكاين والو المبرمج لليوم ☀️", noTasksForSelectedDate: "ماكاين والو فـ هاد النهار 📅",
-                overdueTitle: "فوتّي الوقت ديال المهمة!", overdueQuestion: "الوقت ديالها سالا، شنو بغيتي تدير بيها؟",
-                markCompleted: "حسبها كملات ✅", postponeTask: "أجّلها وبدّل الوقت ⏳", cancelTask: "لغيها ❌",
                 confirmDeleteTitle: "تأكيد المَسح ⚠️", confirmDeleteMsg: "واش متأكد بغيتي تمسحها؟ راه ماتقدرش ترجعها من بعد.", confirmDeleteBtn: "إيه، مسح",
+                sortMode: "الترتيب:", sortManual: "🖐️ بيدك (Drag & Drop)", sortTime: "⏰ بالوقت", sortDate: "📅 بالتاريخ", sortCreated: "🆕 الجديد هو اللول", sortPinned: "📌 المثبتين هما اللوالا",
+                pinnedNotes: "ملاحظات مثبتة", subtasksLabel: "➕ المهمات الصغار (Subtasks):", descriptionLabel: "📝 التفاصيل ديال المهمة:", minuteurTitle: "المؤقت (Minuteur):", reminderLabel: "🔔 الفيقّة قبل الموعد:",
                 days: ["أح", "ات", "تلا", "أر", "خـ", "جم", "سب"]
             },
             es: {
                 authSubtitle: "Inicia sesión para guardar tus tareas y proyectos", emailPlaceholder: "Correo electrónico...", passPlaceholder: "Contraseña...", loginBtn: "Iniciar Sesión / Registrarse", guestBtn: "Continuar como invitado", googleLoginBtn: "Continuar con Google", or: "o",
-                btnAddTask: "+ Añadir Tarea", btnAddProject: "+ Añadir Proyecto",
-                currentSpace: "Espacio Actual", addSpaceBtn: "+ Nuevo Espacio", spacesTitle: "Tus Espacios de Trabajo 📂", deleteSpace: "Eliminar Espacio", editSpace: "Editar", editProject: "Editar Proyecto",
-                statTasks: "Tareas", statProjects: "Proyectos", statProgress: "Progreso",
+                btnAddTask: "+ Tarea", btnAddProject: "+ Proyecto", btnNote: "+ Nota",
+                currentSpace: "Espacio Actual", addSpaceBtn: "+ Nuevo Espacio", spacesTitle: "Tus Espacios de Trabajo 📂", deleteSpace: "Eliminar", editSpace: "Editar",
+                statTasks: "Tareas Activas", statProjects: "Proyectos", statProgress: "Progreso",
                 tabAddTask: "Añadir Tarea 📝", tabAddProject: "Añadir / Editar Proyecto 📁", targetSpaceLabel: "Espacio de trabajo:",
                 taskTitlePlaceholder: "Título de la tarea...", projectTitlePlaceholder: "Nombre del proyecto...",
-                noProjectOption: "Directamente en el espacio", from: "Desde:", to: "Hasta:", duration: "Duración:",
-                statusLabel: "Estado:", colorLabel: "Color:", saveTask: "Guardar Tarea", updateTask: "Actualizar Tarea",
-                cancel: "Cancelar", createProject: "Crear / Guardar", standaloneTasks: "Tareas Independientes 🌸",
-                todayTitle: "Programa de Hoy ☀️", calendarTitle: "Calendario Mensual 📅",
-                tasksForDate: "Tareas ordenadas por hora:", navHome: "Inicio", navSpaces: "Espacios", navToday: "Hoy", navCalendar: "Calendario",
+                noProjectOption: "Directamente en el espacio", from: "Desde:", to: "Hasta:", duration: "Duración calculada:",
+                statusLabel: "Estado:", colorLabel: "Color:", saveTask: "Guardar Tarea", cancel: "Cancelar", createProject: "Guardar", standaloneTasks: "Tareas Independientes 🌸",
+                todayTitle: "Programa de Hoy ☀️", calendarTitle: "Calendario Mensual 📅", tasksForDate: "Tareas para esta fecha:", navHome: "Inicio", navSpaces: "Espacios", navToday: "Hoy", navCalendar: "Calendario", navArchive: "Archivo", navNotes: "Notas",
                 newSpaceTitle: "Nuevo Espacio 📂", editSpaceTitle: "Editar Espacio 📂", spaceNamePlaceholder: "Nombre del espacio...", save: "Guardar",
-                statusPending: "⏳ Pendiente", statusInProgress: "🔄 En Proceso", statusDone: "✅ Completada", statusCancelled: "❌ Cancelada",
-                noTasksInSpace: "No hay tareas independientes 🌸", noTasksToday: "No hay tareas programadas para hoy ☀️", noTasksForSelectedDate: "No hay tareas para esta fecha 📅",
-                overdueTitle: "¡Tiempo agotado!", overdueQuestion: "¿Qué deseas hacer con esta tarea?",
-                markCompleted: "Marcar Completada ✅", postponeTask: "Posponer y Editar ⏳", cancelTask: "Cancelar ❌",
                 confirmDeleteTitle: "Confirmar eliminación ⚠️", confirmDeleteMsg: "¿Estás seguro de que deseas eliminar este elemento?", confirmDeleteBtn: "Sí, eliminar",
+                sortMode: "Orden:", sortManual: "🖐️ Manual (Drag & Drop)", sortTime: "⏰ Por Hora", sortDate: "📅 Por Fecha", sortCreated: "🆕 Más Reciente", sortPinned: "📌 Fijados Primero",
+                pinnedNotes: "Notas Fijadas", subtasksLabel: "➕ Subtareas (Subtasks):", descriptionLabel: "📝 Descripción y detalles:", minuteurTitle: "Temporizador (Minuteur):", reminderLabel: "🔔 Recordatorio:",
                 days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
             },
             fr: {
                 authSubtitle: "Connectez-vous pour sauvegarder vos tâches", emailPlaceholder: "E-mail...", passPlaceholder: "Mot de passe...", loginBtn: "Connexion / S'inscrire", guestBtn: "Continuer comme invité", googleLoginBtn: "Continuer avec Google", or: "ou",
-                btnAddTask: "+ Ajouter Tâche", btnAddProject: "+ Ajouter Projet",
-                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace", spacesTitle: "Vos Espaces de Travail 📂", deleteSpace: "Supprimer L'espace", editSpace: "Modifier", editProject: "Modifier le Projet",
-                statTasks: "Tâches", statProjects: "Projets", statProgress: "Progrès",
+                btnAddTask: "+ Tâche", btnAddProject: "+ Projet", btnNote: "+ Note",
+                currentSpace: "Espace Actuel", addSpaceBtn: "+ Nouvel Espace", spacesTitle: "Vos Espaces de Travail 📂", deleteSpace: "Supprimer", editSpace: "Modifier",
+                statTasks: "Tâches Actives", statProjects: "Projets", statProgress: "Progrès",
                 tabAddTask: "Ajouter Tâche 📝", tabAddProject: "Ajouter / Modifier Projet 📁", targetSpaceLabel: "Espace de travail:",
                 taskTitlePlaceholder: "Titre de la tâche...", projectTitlePlaceholder: "Nom du projet...",
-                noProjectOption: "Directement dans l'espace", from: "De:", to: "À:", duration: "Durée:",
-                statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", updateTask: "Mettre à jour",
-                cancel: "Annuler", createProject: "Créer / Sauvegarder", standaloneTasks: "Tâches Indépendantes 🌸",
-                todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅",
-                tasksForDate: "Tâches triées par heure:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier",
+                noProjectOption: "Directement dans l'espace", from: "De:", to: "À:", duration: "Durée calculée:",
+                statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", cancel: "Annuler", createProject: "Enregistrer", standaloneTasks: "Tâches Indépendantes 🌸",
+                todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅", tasksForDate: "Tâches pour cette date:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier", navArchive: "Archives", navNotes: "Notes",
                 newSpaceTitle: "Nouvel Espace 📂", editSpaceTitle: "Modifier L'espace 📂", spaceNamePlaceholder: "Nom de l'espace...", save: "Enregistrer",
-                statusPending: "⏳ En attente", statusInProgress: "🔄 En cours", statusDone: "✅ Terminée", statusCancelled: "❌ Annulée",
-                noTasksInSpace: "Aucune tâche libre 🌸", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", noTasksForSelectedDate: "Aucune tâche pour cette date 📅",
-                overdueTitle: "Temps écoulé!", overdueQuestion: "Que souhaitez-vous faire avec cette tâche?",
-                markCompleted: "Marquer comme terminée ✅", postponeTask: "Reporter ⏳", cancelTask: "Annuler ❌",
                 confirmDeleteTitle: "Confirmer la suppression ⚠️", confirmDeleteMsg: "Êtes-vous sûr de vouloir supprimer cet élément?", confirmDeleteBtn: "Oui, supprimer",
+                sortMode: "Tri:", sortManual: "🖐️ Manuel (Drag & Drop)", sortTime: "⏰ Par Heure", sortDate: "📅 Par Date", sortCreated: "🆕 Plus Récents", sortPinned: "📌 Épinglés d'abord",
+                pinnedNotes: "Notes Épinglées", subtasksLabel: "➕ Sous-tâches (Subtasks):", descriptionLabel: "📝 Description & détails:", minuteurTitle: "Minuteur:", reminderLabel: "🔔 Rappel:",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
                 authSubtitle: "Log in to save your tasks & projects", emailPlaceholder: "Email...", passPlaceholder: "Password...", loginBtn: "Login / Register", guestBtn: "Continue as Guest", googleLoginBtn: "Sign in with Google", or: "or",
-                btnAddTask: "+ Add Task", btnAddProject: "+ Add Project",
-                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space", spacesTitle: "Your Workspaces 📂", deleteSpace: "Delete Space", editSpace: "Edit", editProject: "Edit Project",
-                statTasks: "Tasks", statProjects: "Projects", statProgress: "Progress",
+                btnAddTask: "+ Task", btnAddProject: "+ Project", btnNote: "+ Note",
+                currentSpace: "Current Workspace", addSpaceBtn: "+ New Space", spacesTitle: "Your Workspaces 📂", deleteSpace: "Delete", editSpace: "Edit",
+                statTasks: "Active Tasks", statProjects: "Projects", statProgress: "Progress",
                 tabAddTask: "Add Task 📝", tabAddProject: "Add / Edit Project 📁", targetSpaceLabel: "Workspace:",
                 taskTitlePlaceholder: "Task title...", projectTitlePlaceholder: "Project name...",
-                noProjectOption: "Directly in Space (No project)", from: "From:", to: "To:", duration: "Duration:",
-                statusLabel: "Status:", colorLabel: "Color:", saveTask: "Save Task", updateTask: "Update Task",
-                cancel: "Cancel", createProject: "Create / Save", standaloneTasks: "Standalone Tasks 🌸",
-                todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅",
-                tasksForDate: "Tasks sorted by time:", navHome: "Home", navSpaces: "Spaces", navToday: "Today", navCalendar: "Calendar",
+                noProjectOption: "Directly in Space (No project)", from: "From:", to: "To:", duration: "Calculated duration:",
+                statusLabel: "Status:", colorLabel: "Color:", saveTask: "Save Task", cancel: "Cancel", createProject: "Save", standaloneTasks: "Standalone Tasks 🌸",
+                todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅", tasksForDate: "Tasks for this date:", navHome: "Home", navSpaces: "Spaces", navToday: "Today", navCalendar: "Calendar", navArchive: "Archive", navNotes: "Notes",
                 newSpaceTitle: "New Workspace 📂", editSpaceTitle: "Edit Workspace 📂", spaceNamePlaceholder: "Space name...", save: "Save",
-                statusPending: "⏳ Pending", statusInProgress: "🔄 In Progress", statusDone: "✅ Completed", statusCancelled: "❌ Cancelled",
-                noTasksInSpace: "No standalone tasks 🌸", noTasksToday: "No tasks scheduled for today ☀️", noTasksForSelectedDate: "No tasks for this date 📅",
-                overdueTitle: "Time's up!", overdueQuestion: "What would you like to do with this task?",
-                markCompleted: "Mark Done ✅", postponeTask: "Postpone ⏳", cancelTask: "Cancel ❌",
                 confirmDeleteTitle: "Confirm Deletion ⚠️", confirmDeleteMsg: "Are you sure you want to delete this item?", confirmDeleteBtn: "Yes, Delete",
+                sortMode: "Sorting:", sortManual: "🖐️ Manual (Drag & Drop)", sortTime: "⏰ By Time", sortDate: "📅 By Date", sortCreated: "🆕 Newly Added", sortPinned: "📌 Pinned First",
+                pinnedNotes: "Pinned Notes", subtasksLabel: "➕ Subtasks:", descriptionLabel: "📝 Description & Instructions:", minuteurTitle: "Timer (Minuteur):", reminderLabel: "🔔 Reminder:",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
 
         let currentLang = 'ar';
         let currentUserEmail = localStorage.getItem('bloom_current_user') || null;
-        let currentOverdueTaskId = null;
         let pendingDeleteAction = null;
+        let selectedDetailTaskId = null;
+
+        // Minuteur Global Variables
+        let minuteurInterval = null;
+        let minuteurSeconds = 0;
+        let minuteurIsOvertime = false;
+        let minuteurIsRunning = false;
 
         function getUserStorageKey() {
-            return currentUserEmail ? `bloom_app_data_${currentUserEmail}` : 'bloom_app_data_guest';
+            return currentUserEmail ? `bloom_app_data_v2_${currentUserEmail}` : 'bloom_app_data_v2_guest';
         }
 
         let appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
             currentSpaceId: 'default',
+            sortMode: 'manual',
             spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
             projects: [],
-            tasks: []
+            tasks: [],
+            stickyNotes: []
         }));
 
         let activeColor = '#F3E8FF';
@@ -521,66 +606,51 @@
             render();
         }
 
+        // AUTH & USER LOGIC
         function handleAuth(e) {
             e.preventDefault();
             const email = document.getElementById('authEmail').value.trim().toLowerCase();
             if(!email) return;
             currentUserEmail = email;
             localStorage.setItem('bloom_current_user', email);
-            
-            appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
-                currentSpaceId: 'default',
-                spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
-                projects: [],
-                tasks: []
-            }));
-
-            document.getElementById('authModal').classList.add('hidden');
-            saveData();
+            reloadAppData();
         }
 
         function handleGoogleLogin() {
-            const simulatedEmail = "user.google@gmail.com";
-            currentUserEmail = simulatedEmail;
-            localStorage.setItem('bloom_current_user', simulatedEmail);
-            
-            appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
-                currentSpaceId: 'default',
-                spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
-                projects: [],
-                tasks: []
-            }));
-
-            document.getElementById('authModal').classList.add('hidden');
-            saveData();
+            currentUserEmail = "user.google@gmail.com";
+            localStorage.setItem('bloom_current_user', currentUserEmail);
+            reloadAppData();
         }
 
         function continueAsGuest() {
             currentUserEmail = null;
             localStorage.removeItem('bloom_current_user');
+            reloadAppData();
+        }
+
+        function reloadAppData() {
+            appData = JSON.parse(localStorage.getItem(getUserStorageKey()) || JSON.stringify({
+                currentSpaceId: 'default', sortMode: 'manual',
+                spaces: [{ id: 'default', name: 'المساحة الشخصية 🌸', icon: '🌸' }],
+                projects: [], tasks: [], stickyNotes: []
+            }));
             document.getElementById('authModal').classList.add('hidden');
             saveData();
         }
 
-        function openAuthModal() {
-            document.getElementById('authModal').classList.remove('hidden');
-        }
+        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
 
+        // CONFIRM DELETE
         function promptConfirmDelete(msg, actionCallback) {
             document.getElementById('confirmDeleteMsg').innerText = msg || i18n[currentLang].confirmDeleteMsg;
             pendingDeleteAction = actionCallback;
             document.getElementById('confirmDeleteModal').classList.remove('hidden');
-            
             document.getElementById('btnExecuteDelete').onclick = function() {
                 if(pendingDeleteAction) pendingDeleteAction();
                 closeConfirmModal();
             };
         }
-
-        function closeConfirmModal() {
-            document.getElementById('confirmDeleteModal').classList.add('hidden');
-            pendingDeleteAction = null;
-        }
+        function closeConfirmModal() { document.getElementById('confirmDeleteModal').classList.add('hidden'); pendingDeleteAction = null; }
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -597,24 +667,41 @@
             currentLang = lang;
             document.documentElement.dir = (lang === 'ar' || lang === 'ary') ? 'rtl' : 'ltr';
             document.documentElement.lang = lang;
-            
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(i18n[lang][key]) el.innerText = i18n[lang][key];
             });
-
             document.querySelectorAll('[data-i18n-ph]').forEach(el => {
                 const key = el.getAttribute('data-i18n-ph');
                 if(i18n[lang][key]) el.placeholder = i18n[lang][key];
             });
-
             render();
         }
 
         function selectColor(color) { 
             activeColor = color; 
             document.getElementById('customColorPicker').value = color.startsWith('#') ? color : '#f3e8ff';
-            document.getElementById('hexColorInput').value = color;
+        }
+
+        function changeSortMode(mode) {
+            appData.sortMode = mode;
+            saveData();
+        }
+
+        // TASK TIME & SCHEDULE LOGIC
+        function toggleScheduleFields() {
+            const type = document.getElementById('taskScheduleType').value;
+            const single = document.getElementById('singleDayFields');
+            const multi = document.getElementById('multiDayFields');
+
+            if(type === 'single') {
+                single.classList.remove('hidden');
+                multi.classList.add('hidden');
+            } else {
+                single.classList.add('hidden');
+                multi.classList.remove('hidden');
+            }
+            calculateDuration();
         }
 
         function calculateDuration() {
@@ -626,50 +713,69 @@
             if (start && end) {
                 const [sH, sM] = start.split(':').map(Number);
                 const [eH, eM] = end.split(':').map(Number);
-
                 let diffMins = (eH * 60 + eM) - (sH * 60 + sM);
                 if (diffMins < 0) diffMins += 24 * 60;
 
                 const hrs = Math.floor(diffMins / 60);
                 const mins = diffMins % 60;
-
-                let str = '';
-                if (hrs > 0) str += `${hrs}س `;
-                if (mins > 0) str += `${mins}د`;
-                if (!str) str = 'أقل من دقيقة';
-
-                text.innerText = str;
+                let str = (hrs > 0 ? `${hrs}س ` : '') + (mins > 0 ? `${mins}د` : '');
+                text.innerText = str || 'أقل من دقيقة';
                 display.classList.remove('hidden');
             } else {
                 display.classList.add('hidden');
             }
         }
 
-        function openAddTaskModal() { 
+        // MODAL CONTROLS
+        function openAddTaskModal() {
             populateSpaceDropdowns();
-            document.getElementById('taskModal').classList.remove('hidden'); 
+            document.getElementById('taskModal').classList.remove('hidden');
         }
-        function closeTaskModal() { 
+        function closeTaskModal() {
             document.getElementById('taskModal').classList.add('hidden');
-            cancelEditTask();
+            document.getElementById('formTask').reset();
+            document.getElementById('editingTaskId').value = '';
+            document.getElementById('durationDisplay').classList.add('hidden');
+            toggleScheduleFields();
         }
-        function openAddProjectModal() { 
+
+        function openAddProjectModal() {
             populateSpaceDropdowns();
             document.getElementById('editingProjectId').value = '';
             document.getElementById('formProject').reset();
-            document.getElementById('projectModal').classList.remove('hidden'); 
+            document.getElementById('projectModal').classList.remove('hidden');
         }
         function closeProjectModal() { document.getElementById('projectModal').classList.add('hidden'); }
+
+        function openNewStickyModal() {
+            const select = document.getElementById('stickyLinkTaskId');
+            select.innerHTML = '<option value="">(بدون ربط)</option>' + appData.tasks.map(t => `<option value="${t.id}">${t.title}</option>`).join('');
+            document.getElementById('stickyModal').classList.remove('hidden');
+        }
+        function closeStickyModal() { document.getElementById('stickyModal').classList.add('hidden'); }
+
+        function saveStickyNote() {
+            const content = document.getElementById('stickyContent').value.trim();
+            if(!content) return;
+            const isPinned = document.getElementById('stickyPinHome').checked;
+            const linkedTaskId = document.getElementById('stickyLinkTaskId').value || null;
+
+            appData.stickyNotes.push({
+                id: 'note_' + Date.now(),
+                content, isPinned, linkedTaskId,
+                color: '#FEF3C7'
+            });
+            document.getElementById('stickyContent').value = '';
+            closeStickyModal();
+            saveData();
+        }
 
         function populateSpaceDropdowns() {
             const taskSpaceSelect = document.getElementById('taskSpaceSelect');
             const projSpaceSelect = document.getElementById('projectSpaceSelect');
-            
             const options = appData.spaces.map(s => `<option value="${s.id}" ${s.id === appData.currentSpaceId ? 'selected' : ''}>${s.name}</option>`).join('');
-            
             if(taskSpaceSelect) taskSpaceSelect.innerHTML = options;
             if(projSpaceSelect) projSpaceSelect.innerHTML = options;
-
             updateProjectDropdownForSpace(appData.currentSpaceId);
         }
 
@@ -680,168 +786,253 @@
                 currentProjects.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
         }
 
-        function changeSpace(id) {
-            appData.currentSpaceId = id;
-            saveData();
-        }
-
-        function openNewSpaceModal() { 
-            document.getElementById('editingSpaceId').value = '';
-            document.getElementById('spaceNameInput').value = '';
-            document.getElementById('spaceIconInput').value = '📂';
-            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].newSpaceTitle;
-            document.getElementById('spaceModal').classList.remove('hidden'); 
-        }
-
-        function closeNewSpaceModal() { document.getElementById('spaceModal').classList.add('hidden'); }
-
-        function editCurrentSpace() {
-            const activeSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
-            if(!activeSpace) return;
-
-            document.getElementById('editingSpaceId').value = activeSpace.id;
-            document.getElementById('spaceNameInput').value = activeSpace.name;
-            document.getElementById('spaceIconInput').value = activeSpace.icon || '📂';
-            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].editSpaceTitle;
-            document.getElementById('spaceModal').classList.remove('hidden');
-        }
-
-        function saveNewSpace() {
-            const editingId = document.getElementById('editingSpaceId').value;
-            const name = document.getElementById('spaceNameInput').value.trim();
-            const icon = document.getElementById('spaceIconInput').value.trim() || '📂';
-            if(!name) return;
-
-            if(editingId) {
-                appData.spaces = appData.spaces.map(s => s.id === editingId ? { ...s, name, icon } : s);
-            } else {
-                const newSpace = { id: 'space_' + Date.now(), name, icon };
-                appData.spaces.push(newSpace);
-                appData.currentSpaceId = newSpace.id;
-            }
-
-            closeNewSpaceModal();
-            saveData();
-        }
-
-        function askDeleteSpace() {
-            if(appData.spaces.length <= 1) {
-                alert("لا يمكنك حذف المساحة الوحيدة المتبقية!");
-                return;
-            }
-            const currentSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
-            promptConfirmDelete(`هل أنت تأكد من حذف مساحة العمل "${currentSpace ? currentSpace.name : ''}" وكافة محتوياتها؟`, () => {
-                const spaceToDelete = appData.currentSpaceId;
-                appData.spaces = appData.spaces.filter(s => s.id !== spaceToDelete);
-                appData.projects = appData.projects.filter(p => p.spaceId !== spaceToDelete);
-                appData.tasks = appData.tasks.filter(t => t.spaceId !== spaceToDelete);
-                appData.currentSpaceId = appData.spaces[0].id;
-                saveData();
-            });
-        }
-
+        // SAVE & EDIT TASK
         function handleSaveTask(e) {
             e.preventDefault();
             const editingId = document.getElementById('editingTaskId').value;
             const title = document.getElementById('taskTitle').value.trim();
-            const targetSpaceId = document.getElementById('taskSpaceSelect').value || appData.currentSpaceId;
-            const projectId = document.getElementById('taskProjectSelect').value || null;
+            const scheduleType = document.getElementById('taskScheduleType').value;
             const date = document.getElementById('taskDate').value || null;
+            const startDate = document.getElementById('taskStartDate').value || null;
+            const endDate = document.getElementById('taskEndDate').value || null;
             const startTime = document.getElementById('taskStartTime').value || null;
             const endTime = document.getElementById('taskEndTime').value || null;
-            const status = document.getElementById('taskStatusSelect').value;
+            const spaceId = document.getElementById('taskSpaceSelect').value || appData.currentSpaceId;
+            const projectId = document.getElementById('taskProjectSelect').value || null;
+            const reminder = document.getElementById('taskReminderSelect').value;
+            const description = document.getElementById('taskDescription').value.trim();
 
             if(editingId) {
                 appData.tasks = appData.tasks.map(t => {
                     if(t.id === editingId) {
-                        return { ...t, title, spaceId: targetSpaceId, projectId, date, startTime, endTime, status, color: activeColor };
+                        return { ...t, title, scheduleType, date, startDate, endDate, startTime, endTime, spaceId, projectId, reminder, description, color: activeColor };
                     }
                     return t;
                 });
             } else {
-                const newTask = {
+                appData.tasks.push({
                     id: 'task_' + Date.now(),
-                    spaceId: targetSpaceId,
-                    projectId, title, date, startTime, endTime, status, color: activeColor
-                };
-                appData.tasks.push(newTask);
+                    spaceId, projectId, title, scheduleType, date, startDate, endDate, startTime, endTime, reminder, description,
+                    status: 'pending', isPinned: false, subtasks: [], createdAt: Date.now(), color: activeColor
+                });
             }
 
             closeTaskModal();
             saveData();
         }
 
-        function editTask(id) {
+        function togglePinTask(id) {
+            appData.tasks = appData.tasks.map(t => t.id === id ? { ...t, isPinned: !t.isPinned } : t);
+            saveData();
+        }
+
+        // DETAILED TASK VIEW & MINUTEUR
+        function openTaskDetailModal(id) {
+            selectedDetailTaskId = id;
             const task = appData.tasks.find(t => t.id === id);
             if(!task) return;
 
+            document.getElementById('detailTaskTitle').innerText = task.title;
+            const space = appData.spaces.find(s => s.id === task.spaceId);
+            const proj = appData.projects.find(p => p.id === task.projectId);
+            document.getElementById('detailSpaceProjBadge').innerText = `${space ? space.name : ''} ${proj ? '• ' + proj.title : ''}`;
+            document.getElementById('detailTaskDate').innerText = task.date || (task.startDate ? `${task.startDate} → ${task.endDate}` : 'غير محدد');
+
+            // Calculate duration text
+            let durationMins = 0;
+            if(task.startTime && task.endTime) {
+                const [sH, sM] = task.startTime.split(':').map(Number);
+                const [eH, eM] = task.endTime.split(':').map(Number);
+                durationMins = (eH * 60 + eM) - (sH * 60 + sM);
+                if(durationMins < 0) durationMins += 24 * 60;
+            } else {
+                durationMins = 15; // default 15 mins timer
+            }
+            
+            const hrs = Math.floor(durationMins / 60);
+            const mins = durationMins % 60;
+            document.getElementById('detailTaskDuration').innerText = `${hrs > 0 ? hrs + 'س ' : ''}${mins}د`;
+
+            // Reset Minuteur for this task
+            minuteurSeconds = durationMins * 60;
+            minuteurIsOvertime = false;
+            updateMinuteurDisplay();
+
+            document.getElementById('detailTaskDescription').innerText = task.description || 'لا يوجد وصف تفصيلي مضاف لهذه المهمة.';
+            
+            renderSubtasksDetail(task);
+            renderLinkedNotesDetail(task.id);
+
+            document.getElementById('taskDetailModal').classList.remove('hidden');
+        }
+
+        function closeTaskDetailModal() {
+            if(minuteurInterval) clearInterval(minuteurInterval);
+            minuteurIsRunning = false;
+            document.getElementById('btnStartMinuteur').innerText = "▶️ بدء";
+            document.getElementById('taskDetailModal').classList.add('hidden');
+        }
+
+        function renderSubtasksDetail(task) {
+            const list = document.getElementById('detailSubtasksList');
+            const subs = task.subtasks || [];
+            const doneCount = subs.filter(s => s.done).length;
+            const pct = subs.length ? Math.round((doneCount / subs.length) * 100) : 0;
+
+            document.getElementById('subtasksProgressText').innerText = `${doneCount}/${subs.length}`;
+            document.getElementById('subtasksProgressBar').style.width = pct + '%';
+
+            list.innerHTML = subs.map((s, idx) => `
+                <div class="flex items-center justify-between bg-purple-50/50 dark:bg-slate-700/40 p-2 rounded-xl text-xs font-bold">
+                    <label class="flex items-center gap-2 cursor-pointer flex-1">
+                        <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleSubtaskDone('${task.id}', ${idx})" class="rounded text-purple-600 focus:ring-0">
+                        <span class="${s.done ? 'strike-through text-slate-400' : ''}">${s.title}</span>
+                    </label>
+                    <button onclick="deleteSubtask('${task.id}', ${idx})" class="text-slate-300 hover:text-red-500 text-xs p-1">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function addSubtaskFromDetail() {
+            const input = document.getElementById('newSubtaskInput');
+            const title = input.value.trim();
+            if(!title || !selectedDetailTaskId) return;
+
+            appData.tasks = appData.tasks.map(t => {
+                if(t.id === selectedDetailTaskId) {
+                    const subtasks = t.subtasks || [];
+                    return { ...t, subtasks: [...subtasks, { title, done: false }] };
+                }
+                return t;
+            });
+            input.value = '';
+            const updatedTask = appData.tasks.find(t => t.id === selectedDetailTaskId);
+            renderSubtasksDetail(updatedTask);
+            saveData();
+        }
+
+        function toggleSubtaskDone(taskId, subIdx) {
+            appData.tasks = appData.tasks.map(t => {
+                if(t.id === taskId) {
+                    const subtasks = t.subtasks.map((s, i) => i === subIdx ? { ...s, done: !s.done } : s);
+                    return { ...t, subtasks };
+                }
+                return t;
+            });
+            const updatedTask = appData.tasks.find(t => t.id === taskId);
+            renderSubtasksDetail(updatedTask);
+            saveData();
+        }
+
+        function deleteSubtask(taskId, subIdx) {
+            appData.tasks = appData.tasks.map(t => {
+                if(t.id === taskId) {
+                    const subtasks = t.subtasks.filter((_, i) => i !== subIdx);
+                    return { ...t, subtasks };
+                }
+                return t;
+            });
+            const updatedTask = appData.tasks.find(t => t.id === taskId);
+            renderSubtasksDetail(updatedTask);
+            saveData();
+        }
+
+        function renderLinkedNotesDetail(taskId) {
+            const container = document.getElementById('linkedNotesList');
+            const notes = appData.stickyNotes.filter(n => n.linkedTaskId === taskId);
+            container.innerHTML = notes.map(n => `
+                <div class="p-2.5 rounded-xl bg-amber-100 text-slate-800 text-xs font-bold border border-amber-200">
+                    💡 ${n.content}
+                </div>
+            `).join('') || `<p class="text-xs text-slate-400 font-bold py-1">لا توجد ملاحظات مرتبطة.</p>`;
+        }
+
+        // MINUTEUR LOGIC (Timer + Overtime Counter)
+        function toggleMinuteur() {
+            const btn = document.getElementById('btnStartMinuteur');
+            if(minuteurIsRunning) {
+                clearInterval(minuteurInterval);
+                minuteurIsRunning = false;
+                btn.innerText = "▶️ استئناف";
+            } else {
+                minuteurIsRunning = true;
+                btn.innerText = "⏸️ إيقاف مؤقت";
+                minuteurInterval = setInterval(() => {
+                    if(!minuteurIsOvertime) {
+                        if(minuteurSeconds > 0) {
+                            minuteurSeconds--;
+                        } else {
+                            minuteurIsOvertime = true;
+                            playBellSound();
+                            alert("🔔 انتهت مدة المهمة الأصلية! تحول المؤقت إلى احتساب الوقت الإضافي (+Overtime).");
+                        }
+                    } else {
+                        minuteurSeconds++;
+                    }
+                    updateMinuteurDisplay();
+                }, 1000);
+            }
+        }
+
+        function resetMinuteur() {
+            if(minuteurInterval) clearInterval(minuteurInterval);
+            minuteurIsRunning = false;
+            minuteurIsOvertime = false;
+            minuteurSeconds = 15 * 60;
+            document.getElementById('btnStartMinuteur').innerText = "▶️ بدء";
+            updateMinuteurDisplay();
+        }
+
+        function updateMinuteurDisplay() {
+            const h = Math.floor(Math.abs(minuteurSeconds) / 3600);
+            const m = Math.floor((Math.abs(minuteurSeconds) % 3600) / 60);
+            const s = Math.abs(minuteurSeconds) % 60;
+            
+            const format = (val) => val < 10 ? '0' + val : val;
+            const timeStr = `${format(h)}:${format(m)}:${format(s)}`;
+            
+            const display = document.getElementById('minuteurDisplay');
+            if(minuteurIsOvertime) {
+                display.innerText = `+${timeStr}`;
+                display.className = "text-xl font-black font-mono text-red-500 animate-pulse";
+            } else {
+                display.innerText = timeStr;
+                display.className = "text-xl font-black font-mono text-purple-700 dark:text-purple-300";
+            }
+        }
+
+        function editTaskFromDetail() {
+            const id = selectedDetailTaskId;
+            closeTaskDetailModal();
+            editTask(id);
+        }
+
+        function editTask(id) {
+            const task = appData.tasks.find(t => t.id === id);
+            if(!task) return;
             populateSpaceDropdowns();
 
             document.getElementById('editingTaskId').value = task.id;
             document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskScheduleType').value = task.scheduleType || 'single';
+            toggleScheduleFields();
+
+            document.getElementById('taskDate').value = task.date || '';
+            document.getElementById('taskStartDate').value = task.startDate || '';
+            document.getElementById('taskEndDate').value = task.endDate || '';
+            document.getElementById('taskStartTime').value = task.startTime || '';
+            document.getElementById('taskEndTime').value = task.endTime || '';
             document.getElementById('taskSpaceSelect').value = task.spaceId || appData.currentSpaceId;
             updateProjectDropdownForSpace(task.spaceId || appData.currentSpaceId);
             document.getElementById('taskProjectSelect').value = task.projectId || '';
-            document.getElementById('taskDate').value = task.date || '';
-            document.getElementById('taskStartTime').value = task.startTime || '';
-            document.getElementById('taskEndTime').value = task.endTime || '';
-            document.getElementById('taskStatusSelect').value = task.status || 'pending';
+            document.getElementById('taskReminderSelect').value = task.reminder || 'none';
+            document.getElementById('taskDescription').value = task.description || '';
             selectColor(task.color || '#F3E8FF');
-            calculateDuration();
 
             openAddTaskModal();
         }
 
-        function cancelEditTask() {
-            document.getElementById('formTask').reset();
-            document.getElementById('editingTaskId').value = '';
-            document.getElementById('durationDisplay').classList.add('hidden');
-            selectColor('#F3E8FF');
-        }
-
-        function editProject(id) {
-            const proj = appData.projects.find(p => p.id === id);
-            if(!proj) return;
-
-            populateSpaceDropdowns();
-            document.getElementById('editingProjectId').value = proj.id;
-            document.getElementById('projectTitle').value = proj.title;
-            document.getElementById('projectSpaceSelect').value = proj.spaceId || appData.currentSpaceId;
-            document.getElementById('projectModal').classList.remove('hidden');
-        }
-
-        function handleAddProject(e) {
-            e.preventDefault();
-            const editingId = document.getElementById('editingProjectId').value;
-            const title = document.getElementById('projectTitle').value.trim();
-            const targetSpaceId = document.getElementById('projectSpaceSelect').value || appData.currentSpaceId;
-            
-            if(editingId) {
-                appData.projects = appData.projects.map(p => p.id === editingId ? { ...p, title, spaceId: targetSpaceId } : p);
-            } else {
-                appData.projects.push({ id: 'proj_' + Date.now(), spaceId: targetSpaceId, title });
-            }
-
-            document.getElementById('formProject').reset();
-            closeProjectModal();
-            saveData();
-        }
-
-        function toggleQuickComplete(id) {
-            appData.tasks = appData.tasks.map(t => {
-                if(t.id === id) {
-                    const nextStatus = t.status === 'done' ? 'pending' : 'done';
-                    if(nextStatus === 'done') {
-                        playBellSound();
-                        confetti({ particleCount: 60, spread: 70, origin: { y: 0.8 } });
-                    }
-                    return { ...t, status: nextStatus };
-                }
-                return t;
-            });
-            saveData();
-        }
-
+        // ARCHIVE SYSTEM
         function changeTaskStatus(id, newStatus) {
             appData.tasks = appData.tasks.map(t => {
                 if(t.id === id) {
@@ -856,12 +1047,91 @@
             saveData();
         }
 
-        function deleteTask(id) {
-            const task = appData.tasks.find(t => t.id === id);
-            promptConfirmDelete(`هل أنت تأكد من رغبتك في حذف المهمة "${task ? task.title : ''}"؟`, () => {
+        function restoreArchivedTask(id) {
+            changeTaskStatus(id, 'pending');
+        }
+
+        function deleteTaskPermanent(id) {
+            promptConfirmDelete("هل أنت تأكد من رغبتك في حذف هذه المهمة نهائياً؟", () => {
                 appData.tasks = appData.tasks.filter(t => t.id !== id);
                 saveData();
             });
+        }
+
+        // SPACES & PROJECTS MANAGEMENT
+        function openNewSpaceModal() { 
+            document.getElementById('editingSpaceId').value = '';
+            document.getElementById('spaceNameInput').value = '';
+            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].newSpaceTitle;
+            document.getElementById('spaceModal').classList.remove('hidden'); 
+        }
+        function closeNewSpaceModal() { document.getElementById('spaceModal').classList.add('hidden'); }
+
+        function saveNewSpace() {
+            const editingId = document.getElementById('editingSpaceId').value;
+            const name = document.getElementById('spaceNameInput').value.trim();
+            const icon = document.getElementById('spaceIconInput').value.trim() || '📂';
+            if(!name) return;
+
+            if(editingId) {
+                appData.spaces = appData.spaces.map(s => s.id === editingId ? { ...s, name, icon } : s);
+            } else {
+                const newSpace = { id: 'space_' + Date.now(), name, icon };
+                appData.spaces.push(newSpace);
+                appData.currentSpaceId = newSpace.id;
+            }
+            closeNewSpaceModal();
+            saveData();
+        }
+
+        function editCurrentSpace() {
+            const activeSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
+            if(!activeSpace) return;
+            document.getElementById('editingSpaceId').value = activeSpace.id;
+            document.getElementById('spaceNameInput').value = activeSpace.name;
+            document.getElementById('spaceIconInput').value = activeSpace.icon || '📂';
+            document.getElementById('spaceModalTitle').innerText = i18n[currentLang].editSpaceTitle;
+            document.getElementById('spaceModal').classList.remove('hidden');
+        }
+
+        function askDeleteSpace() {
+            if(appData.spaces.length <= 1) { alert("لا يمكنك حذف المساحة الوحيدة المتبقية!"); return; }
+            const currentSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
+            promptConfirmDelete(`هل أنت تأكد من حذف مساحة العمل "${currentSpace ? currentSpace.name : ''}" وكافة محتوياتها؟`, () => {
+                const spaceToDelete = appData.currentSpaceId;
+                appData.spaces = appData.spaces.filter(s => s.id !== spaceToDelete);
+                appData.projects = appData.projects.filter(p => p.spaceId !== spaceToDelete);
+                appData.tasks = appData.tasks.filter(t => t.spaceId !== spaceToDelete);
+                appData.currentSpaceId = appData.spaces[0].id;
+                saveData();
+            });
+        }
+
+        function changeSpace(id) { appData.currentSpaceId = id; saveData(); }
+
+        function handleAddProject(e) {
+            e.preventDefault();
+            const editingId = document.getElementById('editingProjectId').value;
+            const title = document.getElementById('projectTitle').value.trim();
+            const spaceId = document.getElementById('projectSpaceSelect').value || appData.currentSpaceId;
+
+            if(editingId) {
+                appData.projects = appData.projects.map(p => p.id === editingId ? { ...p, title, spaceId } : p);
+            } else {
+                appData.projects.push({ id: 'proj_' + Date.now(), spaceId, title });
+            }
+            closeProjectModal();
+            saveData();
+        }
+
+        function editProject(id) {
+            const proj = appData.projects.find(p => p.id === id);
+            if(!proj) return;
+            populateSpaceDropdowns();
+            document.getElementById('editingProjectId').value = proj.id;
+            document.getElementById('projectTitle').value = proj.title;
+            document.getElementById('projectSpaceSelect').value = proj.spaceId || appData.currentSpaceId;
+            document.getElementById('projectModal').classList.remove('hidden');
         }
 
         function deleteProject(id) {
@@ -873,25 +1143,50 @@
             });
         }
 
+        // RENDER LOGIC
+        function sortTasksList(list) {
+            const mode = appData.sortMode || 'manual';
+            const cloned = [...list];
+
+            if(mode === 'pinned') {
+                return cloned.sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
+            } else if(mode === 'time') {
+                return cloned.sort((a, b) => (a.startTime || '99:99').localeCompare(b.startTime || '99:99'));
+            } else if(mode === 'date') {
+                return cloned.sort((a, b) => (a.date || '9999-99-99').localeCompare(b.date || '9999-99-99'));
+            } else if(mode === 'created') {
+                return cloned.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            }
+            return cloned;
+        }
+
         function render() {
             const t = i18n[currentLang];
+            document.getElementById('sortModeSelect').value = appData.sortMode || 'manual';
 
-            const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
+            // Filter Active Tasks (Pending / In Progress)
+            const activeTasks = appData.tasks.filter(tk => tk.status === 'pending' || tk.status === 'in_progress');
+            const spaceActiveTasks = activeTasks.filter(tk => tk.spaceId === appData.currentSpaceId);
             const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
 
             // Stats
-            document.getElementById('statTasksCount').innerText = currentTasks.length;
+            document.getElementById('statTasksCount').innerText = spaceActiveTasks.length;
             document.getElementById('statProjectsCount').innerText = currentProjects.length;
-            const completedCount = currentTasks.filter(t => t.status === 'done').length;
-            const progress = currentTasks.length ? Math.round((completedCount / currentTasks.length) * 100) : 0;
+            const completedCount = appData.tasks.filter(tk => tk.spaceId === appData.currentSpaceId && tk.status === 'done').length;
+            const totalCount = appData.tasks.filter(tk => tk.spaceId === appData.currentSpaceId).length;
+            const progress = totalCount ? Math.round((completedCount / totalCount) * 100) : 0;
             document.getElementById('statProgress').innerText = progress + '%';
+
+            // Pinned Notes Banner
+            renderPinnedNotes();
 
             // Projects Render
             const projectsContainer = document.getElementById('projectsContainer');
             projectsContainer.innerHTML = currentProjects.map(proj => {
-                const projTasks = currentTasks.filter(task => task.projectId === proj.id);
-                const projDone = projTasks.filter(task => task.status === 'done').length;
-                const projPct = projTasks.length ? Math.round((projDone / projTasks.length) * 100) : 0;
+                const projTasks = sortTasksList(spaceActiveTasks.filter(task => task.projectId === proj.id));
+                const allProjTasks = appData.tasks.filter(tk => tk.projectId === proj.id);
+                const projDone = allProjTasks.filter(tk => tk.status === 'done').length;
+                const projPct = allProjTasks.length ? Math.round((projDone / allProjTasks.length) * 100) : 0;
 
                 return `
                     <div class="bg-white/95 dark:bg-slate-800/95 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
@@ -899,8 +1194,8 @@
                             <span class="font-extrabold text-sm text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-xs font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
-                                <button onclick="playUiSound(); editProject('${proj.id}')" class="text-slate-400 hover:text-purple-600 text-xs font-bold p-1" title="تعديل المشروع">✏️</button>
-                                <button onclick="playUiSound(); deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-xs font-bold p-1" title="حذف المشروع">🗑️</button>
+                                <button onclick="playUiSound(); editProject('${proj.id}')" class="text-slate-400 hover:text-purple-600 text-xs font-bold p-1">✏️</button>
+                                <button onclick="playUiSound(); deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-xs font-bold p-1">🗑️</button>
                             </div>
                         </div>
                         <div class="w-full bg-purple-50 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
@@ -913,30 +1208,73 @@
                 `;
             }).join('');
 
-            // Standalone Tasks
+            // Standalone Active Tasks
             const standaloneTasksContainer = document.getElementById('standaloneTasksContainer');
-            const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
+            const standaloneTasks = sortTasksList(spaceActiveTasks.filter(tk => !tk.projectId));
             standaloneTasksContainer.innerHTML = standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-4">${t.noTasksInSpace}</p>`;
 
-            // Render SPACES VIEW
+            // Render Views
             renderSpacesView();
-
-            // Today Tasks
-            const todayStr = new Date().toISOString().split('T')[0];
-            const todayTasks = appData.tasks.filter(tk => tk.date === todayStr);
-            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">${t.noTasksToday}</p>`;
-
+            renderTodayTasks();
             renderCalendar();
-            renderSelectedDateTasks();
-            checkOverdueTasks();
+            renderArchive();
+            renderStickyNotesView();
         }
 
-        // Render Spaces View Interactive Cards
+        function renderPinnedNotes() {
+            const pinned = appData.stickyNotes.filter(n => n.isPinned);
+            const section = document.getElementById('pinnedNotesSection');
+            const container = document.getElementById('pinnedNotesContainer');
+
+            if(pinned.length > 0) {
+                section.classList.remove('hidden');
+                container.innerHTML = pinned.map(n => `
+                    <div class="p-2.5 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-slate-900 dark:text-amber-100 text-xs font-bold border border-amber-200">
+                        💡 ${n.content}
+                    </div>
+                `).join('');
+            } else {
+                section.classList.add('hidden');
+            }
+        }
+
+        function renderTaskCard(tk) {
+            const subCount = (tk.subtasks || []).length;
+            const subDone = (tk.subtasks || []).filter(s => s.done).length;
+            const subText = subCount > 0 ? `📚 ${subDone}/${subCount}` : '';
+
+            return `
+                <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all relative" style="background-color: ${tk.color || '#F3E8FF'}">
+                    <div onclick="openTaskDetailModal('${tk.id}')" class="flex items-center gap-3 flex-1 min-w-0 cursor-pointer">
+                        <button onclick="event.stopPropagation(); changeTaskStatus('${tk.id}', 'done')" class="text-xl hover:scale-110 text-purple-800 dark:text-purple-400 font-bold transition">🟣</button>
+
+                        <div class="truncate">
+                            <div class="flex items-center gap-1">
+                                ${tk.isPinned ? '<span class="text-xs">📌</span>' : ''}
+                                <p class="font-extrabold text-sm text-slate-800 truncate">${tk.title}</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 mt-0.5">
+                                ${tk.date ? `<span>📅 ${tk.date}</span>` : ''}
+                                ${tk.startTime ? `<span>⏰ ${tk.startTime}</span>` : ''}
+                                ${subText ? `<span class="bg-white/80 text-purple-800 px-1.5 py-0.5 rounded-md font-extrabold">${subText}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5 ml-2">
+                        <button onclick="playUiSound(); togglePinTask('${tk.id}')" class="text-xs p-1" title="تثبيت">${tk.isPinned ? '📌' : '📍'}</button>
+                        <button onclick="playUiSound(); editTask('${tk.id}')" class="text-slate-500 text-sm p-1 font-bold">✏️</button>
+                        <button onclick="playUiSound(); changeTaskStatus('${tk.id}', 'cancelled')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold">❌</button>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderSpacesView() {
             const cardsGrid = document.getElementById('spacesCardsGrid');
             cardsGrid.innerHTML = appData.spaces.map(sp => {
                 const isSelected = sp.id === appData.currentSpaceId;
-                const spTasks = appData.tasks.filter(t => t.spaceId === sp.id);
+                const spTasks = appData.tasks.filter(t => t.spaceId === sp.id && t.status !== 'done' && t.status !== 'cancelled');
                 const spProjs = appData.projects.filter(p => p.spaceId === sp.id);
 
                 return `
@@ -951,39 +1289,19 @@
                 `;
             }).join('');
 
-            // Details of Selected Space
             const activeSpace = appData.spaces.find(s => s.id === appData.currentSpaceId);
             document.getElementById('spaceDetailTitle').innerText = activeSpace ? activeSpace.name : '';
 
-            const btnDeleteSpace = document.getElementById('btnDeleteSpace');
-            if(btnDeleteSpace) {
-                if(appData.spaces.length <= 1) {
-                    btnDeleteSpace.classList.add('hidden');
-                } else {
-                    btnDeleteSpace.classList.remove('hidden');
-                }
-            }
-
-            const currentTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId);
+            const activeTasks = appData.tasks.filter(t => t.spaceId === appData.currentSpaceId && (t.status === 'pending' || t.status === 'in_progress'));
             const currentProjects = appData.projects.filter(p => p.spaceId === appData.currentSpaceId);
-            const standaloneTasks = currentTasks.filter(tk => !tk.projectId);
+            const standalone = activeTasks.filter(tk => !tk.projectId);
 
             const spaceInnerContent = document.getElementById('spaceInnerContent');
             spaceInnerContent.innerHTML = currentProjects.map(proj => {
-                const projTasks = currentTasks.filter(task => task.projectId === proj.id);
-                const projDone = projTasks.filter(task => task.status === 'done').length;
-                const projPct = projTasks.length ? Math.round((projDone / projTasks.length) * 100) : 0;
-
+                const projTasks = activeTasks.filter(task => task.projectId === proj.id);
                 return `
                     <div class="bg-purple-50/50 dark:bg-slate-700/50 rounded-2xl p-3 border border-purple-100 dark:border-slate-600 space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="font-extrabold text-xs text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-[10px] font-black text-purple-600 dark:text-purple-400">${projPct}%</span>
-                                <button onclick="playUiSound(); editProject('${proj.id}')" class="text-slate-400 hover:text-purple-600 text-xs font-bold p-0.5" title="تعديل المشروع">✏️</button>
-                                <button onclick="playUiSound(); deleteProject('${proj.id}')" class="text-slate-300 hover:text-red-500 text-xs font-bold p-0.5" title="حذف المشروع">🗑️</button>
-                            </div>
-                        </div>
+                        <span class="font-extrabold text-xs text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
                         <div class="space-y-1.5 pt-1">
                             ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-[10px] text-slate-300 text-center py-1">-</p>`}
                         </div>
@@ -992,82 +1310,32 @@
             }).join('') + `
                 <div class="pt-2">
                     <h4 class="text-xs font-extrabold text-purple-900 dark:text-purple-300 mb-2">${i18n[currentLang].standaloneTasks}</h4>
-                    <div class="space-y-2.5">${standaloneTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksInSpace}</p>`}</div>
+                    <div class="space-y-2.5">${standalone.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksInSpace}</p>`}</div>
                 </div>
             `;
         }
 
-        function renderTaskCard(tk) {
-            const isCompletedOrCancelled = tk.status === 'done' || tk.status === 'cancelled';
-            
-            let timeStr = '';
-            if(tk.startTime || tk.endTime) {
-                timeStr = `⏰ ${tk.startTime || ''} ${tk.endTime ? '→ ' + tk.endTime : ''}`;
-            }
-
-            let durStr = '';
-            if (tk.startTime && tk.endTime) {
-                const [sH, sM] = tk.startTime.split(':').map(Number);
-                const [eH, eM] = tk.endTime.split(':').map(Number);
-                let diff = (eH * 60 + eM) - (sH * 60 + sM);
-                if (diff < 0) diff += 24 * 60;
-                const h = Math.floor(diff / 60);
-                const m = diff % 60;
-                durStr = `(${h > 0 ? h + 'س ' : ''}${m}د)`;
-            }
-
-            return `
-                <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all" style="background-color: ${tk.color || '#F3E8FF'}">
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <button onclick="toggleQuickComplete('${tk.id}')" class="text-xl hover:scale-110 text-purple-800 dark:text-purple-400 font-bold transition focus:outline-none">
-                            ${tk.status === 'done' ? '✅' : '🟣'}
-                        </button>
-
-                        <div class="truncate">
-                            <p class="font-extrabold text-sm ${isCompletedOrCancelled ? 'strike-through text-slate-500' : 'text-slate-800'} truncate">
-                                ${tk.title}
-                            </p>
-                            <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 mt-0.5">
-                                ${tk.date ? `<span>📅 ${tk.date}</span>` : ''}
-                                ${timeStr ? `<span>${timeStr}</span>` : ''}
-                                ${durStr ? `<span class="text-purple-800 font-black">${durStr}</span>` : ''}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-1.5 ml-2">
-                        <select onchange="playUiSound(); changeTaskStatus('${tk.id}', this.value)" class="text-xs font-black rounded-xl px-1.5 py-1 bg-white/90 border border-purple-100 text-slate-700 focus:outline-none">
-                            <option value="pending" ${tk.status === 'pending' ? 'selected' : ''}>⏳</option>
-                            <option value="in_progress" ${tk.status === 'in_progress' ? 'selected' : ''}>🔄</option>
-                            <option value="done" ${tk.status === 'done' ? 'selected' : ''}>✅</option>
-                            <option value="cancelled" ${tk.status === 'cancelled' ? 'selected' : ''}>❌</option>
-                        </select>
-
-                        <button onclick="playUiSound(); editTask('${tk.id}')" class="text-slate-500 hover:text-purple-700 text-sm p-1 font-bold" title="تعديل">✏️</button>
-                        <button onclick="playUiSound(); deleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold" title="حذف">🗑️</button>
-                    </div>
-                </div>
-            `;
+        function renderTodayTasks() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = sortTasksList(appData.tasks.filter(tk => (tk.status === 'pending' || tk.status === 'in_progress') && (tk.date === todayStr || tk.startDate === todayStr)));
+            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">لا توجد مهام مجدولة لليوم ☀️</p>`;
         }
 
         function renderCalendar() {
             const headerDays = document.getElementById('calendarHeaderDays');
             headerDays.innerHTML = i18n[currentLang].days.map(d => `<span>${d}</span>`).join('');
-
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = '';
             
             const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth();
+            const year = now.getFullYear(); const month = now.getMonth();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
             for(let i = 1; i <= daysInMonth; i++) {
                 const dayPadded = i < 10 ? '0' + i : i;
                 const monthPadded = (month + 1) < 10 ? '0' + (month + 1) : (month + 1);
                 const dateStr = `${year}-${monthPadded}-${dayPadded}`;
-                
-                const hasTasks = appData.tasks.some(tk => tk.date === dateStr);
+                const hasTasks = appData.tasks.some(tk => tk.date === dateStr || tk.startDate === dateStr);
                 const isSelected = selectedCalendarDate === dateStr;
 
                 grid.innerHTML += `
@@ -1077,74 +1345,81 @@
                     </div>
                 `;
             }
-        }
-
-        function selectCalendarDate(dateStr) {
-            selectedCalendarDate = dateStr;
-            renderCalendar();
             renderSelectedDateTasks();
         }
 
+        function selectCalendarDate(dateStr) { selectedCalendarDate = dateStr; renderCalendar(); }
+
         function renderSelectedDateTasks() {
             document.getElementById('selectedDateDisplay').innerText = selectedCalendarDate || '-';
-            let tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate);
+            let tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate || tk.startDate === selectedCalendarDate);
+            document.getElementById('calendarSelectedDateTasks').innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">لا توجد مهام لليوم المحدد 📅</p>`;
+        }
+
+        // RENDER ARCHIVE VIEW (Done & Cancelled Tasks)
+        function renderArchive() {
+            const query = (document.getElementById('archiveSearchInput')?.value || '').toLowerCase();
+            const archived = appData.tasks.filter(tk => (tk.status === 'done' || tk.status === 'cancelled') && tk.title.toLowerCase().includes(query));
+
+            const doneCount = appData.tasks.filter(tk => tk.status === 'done').length;
+            const cancelledCount = appData.tasks.filter(tk => tk.status === 'cancelled').length;
             
-            tasks.sort((a, b) => {
-                if (!a.startTime) return 1;
-                if (!b.startTime) return -1;
-                return a.startTime.localeCompare(b.startTime);
-            });
+            document.getElementById('archivedDoneCount').innerText = `✅ ${doneCount}`;
+            document.getElementById('archivedCancelledCount').innerText = `❌ ${cancelledCount}`;
 
-            const container = document.getElementById('calendarSelectedDateTasks');
-            container.innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksForSelectedDate}</p>`;
+            const container = document.getElementById('archiveTasksContainer');
+            container.innerHTML = archived.map(tk => `
+                <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+                    <div>
+                        <p class="font-bold text-xs strike-through text-slate-500">${tk.title}</p>
+                        <span class="text-[10px] font-bold ${tk.status === 'done' ? 'text-emerald-600' : 'text-red-500'}">${tk.status === 'done' ? 'مكتملة ✅' : 'ملغاة ❌'}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="playUiSound(); restoreArchivedTask('${tk.id}')" class="text-xs bg-purple-100 text-purple-700 px-2.5 py-1 rounded-xl font-bold">🔄 استعادة</button>
+                        <button onclick="playUiSound(); deleteTaskPermanent('${tk.id}')" class="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-xl font-bold">🗑️ حذف</button>
+                    </div>
+                </div>
+            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">الأرشيف فارغ 🗃️</p>`;
         }
 
-        function checkOverdueTasks() {
-            const now = new Date();
-            const overdueTask = appData.tasks.find(tk => {
-                if (tk.status !== 'pending' || !tk.date || (!tk.endTime && !tk.startTime)) return false;
-                const checkTime = tk.endTime || tk.startTime;
-                const taskDateTime = new Date(`${tk.date}T${checkTime}`);
-                return taskDateTime < now;
-            });
-
-            if (overdueTask && currentOverdueTaskId !== overdueTask.id) {
-                currentOverdueTaskId = overdueTask.id;
-                document.getElementById('overdueTaskName').innerText = `"${overdueTask.title}"`;
-                document.getElementById('overdueModal').classList.remove('hidden');
-            }
+        // RENDER STICKY NOTES VIEW
+        function renderStickyNotesView() {
+            const grid = document.getElementById('stickyNotesGrid');
+            grid.innerHTML = appData.stickyNotes.map((n, idx) => `
+                <div class="p-3.5 rounded-2xl bg-amber-100 text-slate-900 border border-amber-200 shadow-sm flex flex-col justify-between space-y-2">
+                    <p class="text-xs font-bold whitespace-pre-line">${n.content}</p>
+                    <div class="flex justify-between items-center pt-2 border-t border-amber-200/60">
+                        <button onclick="playUiSound(); toggleStickyPin(${idx})" class="text-xs font-bold">${n.isPinned ? '📌 مثبتة' : '📍 تثبيت'}</button>
+                        <button onclick="playUiSound(); deleteStickyNote(${idx})" class="text-slate-400 hover:text-red-600 text-xs font-bold">🗑️</button>
+                    </div>
+                </div>
+            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5 col-span-2">لا توجد ملاحظات 📝</p>`;
         }
 
-        function handleOverdueAction(action) {
-            if (!currentOverdueTaskId) return;
+        function toggleStickyPin(idx) {
+            appData.stickyNotes[idx].isPinned = !appData.stickyNotes[idx].isPinned;
+            saveData();
+        }
 
-            if (action === 'complete') {
-                changeTaskStatus(currentOverdueTaskId, 'done');
-                document.getElementById('overdueModal').classList.add('hidden');
-                currentOverdueTaskId = null;
-            } else if (action === 'cancel') {
-                changeTaskStatus(currentOverdueTaskId, 'cancelled');
-                document.getElementById('overdueModal').classList.add('hidden');
-                currentOverdueTaskId = null;
-            } else if (action === 'postpone') {
-                const idToEdit = currentOverdueTaskId;
-                document.getElementById('overdueModal').classList.add('hidden');
-                currentOverdueTaskId = null;
-                switchView('home');
-                editTask(idToEdit);
-            }
+        function deleteStickyNote(idx) {
+            appData.stickyNotes.splice(idx, 1);
+            saveData();
         }
 
         function switchView(view) {
-            ['Home', 'Spaces', 'Today', 'Calendar'].forEach(v => {
-                document.getElementById('view' + v).classList.add('hidden');
-                document.getElementById('nav' + v).className = "flex flex-col items-center gap-1 text-slate-400";
+            ['Home', 'Spaces', 'Today', 'Calendar', 'Archive', 'Notes'].forEach(v => {
+                const el = document.getElementById('view' + v);
+                if(el) el.classList.add('hidden');
+                const nav = document.getElementById('nav' + v);
+                if(nav) nav.className = "flex flex-col items-center gap-1 text-slate-400";
             });
-            document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1)).classList.remove('hidden');
-            document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1)).className = "flex flex-col items-center gap-1 text-purple-600 font-extrabold";
+            const activeView = document.getElementById('view' + view.charAt(0).toUpperCase() + view.slice(1));
+            if(activeView) activeView.classList.remove('hidden');
+            const activeNav = document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1));
+            if(activeNav) activeNav.className = "flex flex-col items-center gap-1 text-purple-600 font-extrabold";
         }
 
-        // Init
+        // INIT DRAG & DROP & APP
         changeLanguage('ar');
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
     </script>
