@@ -52,7 +52,7 @@
         <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-xs w-full shadow-2xl border border-red-100 dark:border-slate-700 space-y-4 text-center">
             <div class="text-4xl text-red-500">⚠️</div>
             <h3 class="font-black text-slate-800 dark:text-slate-100 text-base" data-i18n="confirmDeleteTitle">تأكيد الحذف</h3>
-            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت تأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.</p>
+            <p class="text-xs font-bold text-slate-500 dark:text-slate-400" id="confirmDeleteMsg" data-i18n="confirmDeleteMsg">هل أنت متأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.</p>
             <div class="flex gap-2 pt-2">
                 <button onclick="playUiSound(); closeConfirmModal()" class="w-1/2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancel">إلغاء</button>
                 <button id="btnExecuteDelete" onclick="playUiSound()" class="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="confirmDeleteBtn">نعم، احذف</button>
@@ -310,11 +310,14 @@
                 <button onclick="playUiSound(); closeTaskDetailModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold p-1">✕</button>
             </div>
 
-            <!-- Timing & Duration Info -->
+            <!-- Timing & Duration & Recurrence Info -->
             <div class="bg-purple-50/70 dark:bg-slate-700/50 p-3.5 rounded-2xl space-y-2 text-xs font-bold">
                 <div class="flex justify-between items-center text-purple-900 dark:text-purple-200">
                     <span>📅 <span id="detailTaskDate"></span></span>
                     <span>⌛ <span id="detailTaskDuration"></span></span>
+                </div>
+                <div id="detailRecurrenceBadge" class="text-[11px] text-purple-700 dark:text-purple-300 font-extrabold flex items-center gap-1">
+                    <span>🔄 التكرار:</span> <span id="detailRecurrenceText">بدون تكرار</span>
                 </div>
                 <!-- Minuteur Section -->
                 <div class="pt-2 border-t border-purple-200 dark:border-slate-600 flex items-center justify-between">
@@ -403,6 +406,17 @@
                     <div id="durationDisplay" class="text-center text-xs font-extrabold text-purple-700 dark:text-purple-300 hidden">
                         ⏳ <span data-i18n="duration">المدة المحسوبة:</span> <span id="durationText">-</span>
                     </div>
+                </div>
+
+                <!-- Recurrence Select -->
+                <div class="space-y-1">
+                    <label class="text-xs font-extrabold text-slate-600 dark:text-slate-300 block" data-i18n="recurrenceLabel">🔄 نظام تكرار المهمة:</label>
+                    <select id="taskRecurrenceSelect" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 dark:bg-slate-700 text-xs font-bold">
+                        <option value="none" data-i18n="recNone">بدون تكرار (مرة واحدة)</option>
+                        <option value="daily" data-i18n="recDaily">يتكرر يومياً ☀️</option>
+                        <option value="weekly" data-i18n="recWeekly">يتكرر أسبوعياً 📅</option>
+                        <option value="monthly" data-i18n="recMonthly">يتكرر شهرياً 📆</option>
+                    </select>
                 </div>
 
                 <!-- Space & Project Selector -->
@@ -561,6 +575,7 @@
                 optSingleDay: "يوم واحد (Single Day)", optContinuous: "عدة أيام متصلة (Continuous Days)", optSessions: "عدة أيام متفرقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بدون تذكير", rem5: "قبل 5 دقائق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة واحدة ⏰",
                 descPlaceholder: "اكتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "أضف مهمة فرعية جديدة...", btnAddSubtask: "+ أضف", linkedNotesTitle: "📌 الملاحظات المرتبطة بهذه المهمة:", deleteTaskBtn: "🗑️ حذف المهمة",
+                recurrenceLabel: "🔄 نظام تكرار المهمة:", recNone: "بدون تكرار (مرة واحدة)", recDaily: "يتكرر يومياً ☀️", recWeekly: "يتكرر أسبوعياً 📅", recMonthly: "يتكرر شهرياً 📆",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             ary: {
@@ -583,6 +598,7 @@
                 optSingleDay: "نهار واحد (Single Day)", optContinuous: "أيّام متابعة (Continuous Days)", optSessions: "أيّام مفرّقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بلا الفيقّة", rem5: "قبل 5 دقيق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة ⏰",
                 descPlaceholder: "كتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "زيد مهمة صغيرة جديدة...", btnAddSubtask: "+ زيد", linkedNotesTitle: "📌 الملاحظات المربوطة بهاد المهمة:", deleteTaskBtn: "🗑️ مسح المهمة",
+                recurrenceLabel: "🔄 المعاودة ديال المهمة:", recNone: "بلا معاودة (مرة وحدة)", recDaily: "كتعاود كل نهار ☀️", recWeekly: "كتعاود كل سيمانة 📅", recMonthly: "كتعاود كل شهر 📆",
                 days: ["أح", "ات", "تلا", "أر", "خـ", "جم", "سب"]
             },
             es: {
@@ -605,6 +621,7 @@
                 optSingleDay: "Un solo día (Single Day)", optContinuous: "Días continuos (Continuous Days)", optSessions: "Sesiones múltiples (Multiple Sessions)",
                 scheduleTypeLabel: "Sistema de tiempo y duración:", remNone: "Sin recordatorio", rem5: "5 minutos antes ⏰", rem15: "15 minutos antes ⏰", rem30: "30 minutos antes ⏰", rem60: "1 hora antes ⏰",
                 descPlaceholder: "Escribe detalles y notas para ti...", subtaskPlaceholder: "Añadir nueva subtarea...", btnAddSubtask: "+ Añadir", linkedNotesTitle: "📌 Notas vinculadas a esta tarea:", deleteTaskBtn: "🗑️ Eliminar Tarea",
+                recurrenceLabel: "🔄 Repetición de tarea:", recNone: "Sin repetición (Una vez)", recDaily: "Repetir diariamente ☀️", recWeekly: "Repetir semanalmente 📅", recMonthly: "Repetir mensualmente 📆",
                 days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
             },
             fr: {
@@ -627,6 +644,7 @@
                 optSingleDay: "Un seul jour (Single Day)", optContinuous: "Jours continus (Continuous Days)", optSessions: "Sessions multiples (Multiple Sessions)",
                 scheduleTypeLabel: "Système de temps & durée:", remNone: "Sans rappel", rem5: "5 min avant ⏰", rem15: "15 min avant ⏰", rem30: "30 min avant ⏰", rem60: "1 heure avant ⏰",
                 descPlaceholder: "Écrivez les détails et instructions ici...", subtaskPlaceholder: "Ajouter une sous-tâche...", btnAddSubtask: "+ Ajouter", linkedNotesTitle: "📌 Notes liées à cette tâche:", deleteTaskBtn: "🗑️ Supprimer Tâche",
+                recurrenceLabel: "🔄 Répétition de la tâche:", recNone: "Pas de répétition (Une fois)", recDaily: "Répéter chaque jour ☀️", recWeekly: "Répéter chaque semaine 📅", recMonthly: "Répéter chaque mois 📆",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
@@ -649,6 +667,7 @@
                 optSingleDay: "Single Day", optContinuous: "Continuous Days", optSessions: "Multiple Sessions",
                 scheduleTypeLabel: "Time & duration system:", remNone: "No reminder", rem5: "5 mins before ⏰", rem15: "15 mins before ⏰", rem30: "30 mins before ⏰", rem60: "1 hour before ⏰",
                 descPlaceholder: "Write details and instructions here...", subtaskPlaceholder: "Add new subtask...", btnAddSubtask: "+ Add", linkedNotesTitle: "📌 Linked notes for this task:", deleteTaskBtn: "🗑️ Delete Task",
+                recurrenceLabel: "🔄 Task Recurrence:", recNone: "No Recurrence (Once)", recDaily: "Repeat Daily ☀️", recWeekly: "Repeat Weekly 📅", recMonthly: "Repeat Monthly 📆",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
@@ -679,6 +698,37 @@
 
         let activeColor = '#F3E8FF';
         let selectedCalendarDate = new Date().toISOString().split('T')[0];
+
+        // RECURRENCE & UNFINISHED EXPIRED TASKS AUTO-RESCHEDULE CHECKER
+        function checkAndProcessRecurrence() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            let modified = false;
+
+            appData.tasks = appData.tasks.map(t => {
+                // If task is unfinished and its date is in the past
+                if ((t.status === 'pending' || t.status === 'in_progress') && t.date && t.date < todayStr) {
+                    if (t.recurrence && t.recurrence !== 'none') {
+                        let nextDate = new Date(t.date);
+                        if (t.recurrence === 'daily') {
+                            nextDate.setDate(nextDate.getDate() + 1);
+                        } else if (t.recurrence === 'weekly') {
+                            nextDate.setDate(nextDate.getDate() + 7);
+                        } else if (t.recurrence === 'monthly') {
+                            nextDate.setMonth(nextDate.getMonth() + 1);
+                        }
+                        
+                        const newDateStr = nextDate.toISOString().split('T')[0];
+                        // If calculated next date is still in past, push to today
+                        const finalDateStr = newDateStr < todayStr ? todayStr : newDateStr;
+                        modified = true;
+                        return { ...t, date: finalDateStr };
+                    }
+                }
+                return t;
+            });
+
+            if (modified) saveData();
+        }
 
         function saveData() {
             localStorage.setItem(getUserStorageKey(), JSON.stringify(appData));
@@ -714,6 +764,7 @@
                 projects: [], tasks: [], stickyNotes: []
             }));
             document.getElementById('authModal').classList.add('hidden');
+            checkAndProcessRecurrence();
             saveData();
         }
 
@@ -880,11 +931,12 @@
             const editingId = document.getElementById('editingTaskId').value;
             const title = document.getElementById('taskTitle').value.trim();
             const scheduleType = document.getElementById('taskScheduleType').value;
-            const date = document.getElementById('taskDate').value || null;
+            const date = document.getElementById('taskDate').value || new Date().toISOString().split('T')[0];
             const startDate = document.getElementById('taskStartDate').value || null;
             const endDate = document.getElementById('taskEndDate').value || null;
             const startTime = document.getElementById('taskStartTime').value || null;
             const endTime = document.getElementById('taskEndTime').value || null;
+            const recurrence = document.getElementById('taskRecurrenceSelect').value || 'none';
             const spaceId = document.getElementById('taskSpaceSelect').value || appData.currentSpaceId;
             const projectId = document.getElementById('taskProjectSelect').value || null;
             const reminder = document.getElementById('taskReminderSelect').value;
@@ -893,14 +945,14 @@
             if(editingId) {
                 appData.tasks = appData.tasks.map(t => {
                     if(t.id === editingId) {
-                        return { ...t, title, scheduleType, date, startDate, endDate, startTime, endTime, spaceId, projectId, reminder, description, color: activeColor };
+                        return { ...t, title, scheduleType, date, startDate, endDate, startTime, endTime, recurrence, spaceId, projectId, reminder, description, color: activeColor };
                     }
                     return t;
                 });
             } else {
                 appData.tasks.push({
                     id: 'task_' + Date.now(),
-                    spaceId, projectId, title, scheduleType, date, startDate, endDate, startTime, endTime, reminder, description,
+                    spaceId, projectId, title, scheduleType, date, startDate, endDate, startTime, endTime, recurrence, reminder, description,
                     status: 'pending', isPinned: false, subtasks: [], createdAt: Date.now(), color: activeColor
                 });
             }
@@ -925,6 +977,15 @@
             const proj = appData.projects.find(p => p.id === task.projectId);
             document.getElementById('detailSpaceProjBadge').innerText = `${space ? space.name : ''} ${proj ? '• ' + proj.title : ''}`;
             document.getElementById('detailTaskDate').innerText = task.date || (task.startDate ? `${task.startDate} → ${task.endDate}` : 'غير محدد');
+
+            // Recurrence text mapping
+            const recMap = {
+                none: i18n[currentLang].recNone,
+                daily: i18n[currentLang].recDaily,
+                weekly: i18n[currentLang].recWeekly,
+                monthly: i18n[currentLang].recMonthly
+            };
+            document.getElementById('detailRecurrenceText').innerText = recMap[task.recurrence || 'none'];
 
             // Calculate duration text
             let durationMins = 0;
@@ -1111,6 +1172,7 @@
             document.getElementById('taskEndDate').value = task.endDate || '';
             document.getElementById('taskStartTime').value = task.startTime || '';
             document.getElementById('taskEndTime').value = task.endTime || '';
+            document.getElementById('taskRecurrenceSelect').value = task.recurrence || 'none';
             document.getElementById('taskSpaceSelect').value = task.spaceId || appData.currentSpaceId;
             updateProjectDropdownForSpace(task.spaceId || appData.currentSpaceId);
             document.getElementById('taskProjectSelect').value = task.projectId || '';
@@ -1329,6 +1391,7 @@
             const subCount = (tk.subtasks || []).length;
             const subDone = (tk.subtasks || []).filter(s => s.done).length;
             const subText = subCount > 0 ? `📚 ${subDone}/${subCount}` : '';
+            const recIcon = (tk.recurrence && tk.recurrence !== 'none') ? '🔄' : '';
 
             return `
                 <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all relative" style="background-color: ${tk.color || '#F3E8FF'}">
@@ -1338,6 +1401,7 @@
                         <div class="truncate">
                             <div class="flex items-center gap-1">
                                 ${tk.isPinned ? '<span class="text-xs">📌</span>' : ''}
+                                ${recIcon ? `<span class="text-xs" title="تكرار">${recIcon}</span>` : ''}
                                 <p class="font-extrabold text-sm text-slate-800 truncate">${tk.title}</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 mt-0.5">
@@ -1528,6 +1592,7 @@
 
         // INIT APP
         changeLanguage('ar');
+        checkAndProcessRecurrence();
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
     </script>
 </body>
