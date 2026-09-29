@@ -51,21 +51,28 @@
 
                 <div class="space-y-1.5 bg-purple-50/70 dark:bg-slate-700/50 p-3 rounded-2xl">
                     <h4 class="font-black text-purple-800 dark:text-purple-300 text-xs flex items-center gap-1">
-                        <span>🔄</span> <span data-i18n="guideRecurrenceTitle">3. التكرار والتأجيل التلقائي:</span>
+                        <span>🚫</span> <span data-i18n="guideCancelTitle">3. إلغاء وتأجيل وإنجاز المهام:</span>
+                    </h4>
+                    <p data-i18n="guideCancelDesc">تستطيع تحديد حالة المهمة كـ "منجزة 🟣"، أو "ملغية 🚫" لحفظها في الأرشيف، أو تتبع التكلفة الزمنية عبر المؤقت الداخلي.</p>
+                </div>
+
+                <div class="space-y-1.5 bg-purple-50/70 dark:bg-slate-700/50 p-3 rounded-2xl">
+                    <h4 class="font-black text-purple-800 dark:text-purple-300 text-xs flex items-center gap-1">
+                        <span>🔄</span> <span data-i18n="guideRecurrenceTitle">4. التكرار والتأجيل التلقائي:</span>
                     </h4>
                     <p data-i18n="guideRecurrenceDesc">عند ضبط تكرار مهمة (يومي/أسبوعي/شهري)، وفي حال انقضاء يوم المهمة دون إنجازها، يقوم التطبيق تلقائياً بنقلها لليوم الموالي مع الحفاظ على توقيتها الأصلي.</p>
                 </div>
 
                 <div class="space-y-1.5 bg-purple-50/70 dark:bg-slate-700/50 p-3 rounded-2xl">
                     <h4 class="font-black text-purple-800 dark:text-purple-300 text-xs flex items-center gap-1">
-                        <span>🖐️</span> <span data-i18n="guideDragTitle">4. الترتيب اليدوي (Drag & Drop):</span>
+                        <span>🖐️</span> <span data-i18n="guideDragTitle">5. الترتيب اليدوي (Drag & Drop):</span>
                     </h4>
                     <p data-i18n="guideDragDesc">اختر نظام الترتيب "يدوي" لتتمكن من إعادة ترتيب المهام، المشاريع، والمساحات بسهولة وسحبها بأصبعك إلى الترتيب المفضل لديك.</p>
                 </div>
 
                 <div class="space-y-1.5 bg-purple-50/70 dark:bg-slate-700/50 p-3 rounded-2xl">
                     <h4 class="font-black text-purple-800 dark:text-purple-300 text-xs flex items-center gap-1">
-                        <span>⏱️</span> <span data-i18n="guideToolsTitle">5. أدوات إضافية (المؤقت والملاحظات):</span>
+                        <span>⏱️</span> <span data-i18n="guideToolsTitle">6. أدوات إضافية (المؤقت والملاحظات):</span>
                     </h4>
                     <p data-i18n="guideToolsDesc">استفد من مؤقت التركيز (Minuteur) لحساب وقت إنجاز المهام، والملاحظات السريعة (Sticky Notes) للتدوين السريع وربط الأفكار بالمهام.</p>
                 </div>
@@ -422,9 +429,10 @@
             </div>
 
             <div class="flex gap-2 pt-3 border-t border-purple-100 dark:border-slate-700">
-                <button onclick="playUiSound(); editTaskFromDetail()" class="flex-1 bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="editTaskBtn">✏️️ تعديل كامل</button>
-                <button onclick="playUiSound(); askDeleteTask(selectedDetailTaskId)" class="bg-red-100 text-red-600 px-4 py-2.5 rounded-2xl text-xs font-black" data-i18n="deleteTaskBtn">🗑️️ حذف المهمة</button>
-                <button onclick="playUiSound(); closeTaskDetailModal()" class="flex-1 bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="closeBtn">إغلاق</button>
+                <button onclick="playUiSound(); changeTaskStatus(selectedDetailTaskId, 'cancelled'); closeTaskDetailModal()" class="bg-amber-100 text-amber-800 px-3 py-2.5 rounded-2xl text-xs font-black" data-i18n="cancelTaskBtn">🚫 إلغاء المهمة</button>
+                <button onclick="playUiSound(); editTaskFromDetail()" class="flex-1 bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="editTaskBtn">✏️ تعديل كامل</button>
+                <button onclick="playUiSound(); askDeleteTask(selectedDetailTaskId)" class="bg-red-100 text-red-600 px-3 py-2.5 rounded-2xl text-xs font-black" data-i18n="deleteTaskBtn">🗑️ حذف</button>
+                <button onclick="playUiSound(); closeTaskDetailModal()" class="bg-purple-600 text-white px-4 py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="closeBtn">إغلاق</button>
             </div>
         </div>
     </div>
@@ -628,23 +636,24 @@
                 todayTitle: "جدول مهام اليوم ☀️", calendarTitle: "التقويم الشهري 📅", tasksForDate: "مهام اليوم المحدد:", navHome: "الرئيسية", navSpaces: "المساحات", navToday: "اليوم", navCalendar: "التقويم", navArchive: "الأرشيف", navNotes: "ملاحظات", navStatuses: "حالات المهام",
                 newSpaceTitle: "مساحة عمل جديدة 📂", editSpaceTitle: "تعديل مساحة العمل 📂", spaceNamePlaceholder: "اسم المساحة...", save: "حفظ",
                 confirmDeleteTitle: "تأكيد الحذف ⚠️", confirmDeleteMsg: "هل أنت متأكد من رغبتك في الحذف؟ لا يمكن التراجع عن هذه الخطوة.", confirmDeleteBtn: "نعم، احذف",
-                sortMode: "الترتيب:", sortManual: "🖐️️ يدوي (Drag & Drop)", sortTime: "⏰ حسب الوقت", sortDate: "📅 حسب التاريخ", sortCreated: "🆕 أحدث إضافة", sortPinned: "📌 المثبت أولاً",
+                sortMode: "الترتيب:", sortManual: "🖐 يدوي (Drag & Drop)", sortTime: "⏰ حسب الوقت", sortDate: "📅 حسب التاريخ", sortCreated: "🆕 أحدث إضافة", sortPinned: "📌 المثبت أولاً",
                 pinnedNotes: "الملاحظات المثبتة", subtasksLabel: "➕ المهام الفرعية (Subtasks):", descriptionLabel: "📝 الوصف وتفاصيل المهمة:", minuteurTitle: "المؤقت (Minuteur):", reminderLabel: "🔔 التذكير باقتراب الموعد:",
                 statusesPageTitle: "📊 تصنيف المهام حسب الحالة", archivePageTitle: "🗃️ أرشيف المهام", archiveSearchPlaceholder: "بحث في الأرشيف...",
                 notesPageTitle: "📝 الملاحظات السريعة (Sticky Notes)", newNoteTitle: "📝 ملاحظة سريعة (Sticky Note)", notePlaceholder: "اكتب فكرتك هنا...", pinToHome: "📌 تثبيت في الصفحة الرئيسية", linkToTaskLabel: "🔗 ربط بـ مهمة محددة:",
                 statusPending: "⏳ لم تنجز بعد", statusInProgress: "🔄 قيد الإنجاز", statusDone: "✅ أنجزت", statusCancelled: "❌ ملغية",
                 optSingleDay: "يوم واحد (Single Day)", optContinuous: "عدة أيام متصلة (Continuous Days)", optSessions: "عدة أيام متفرقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بدون تذكير", rem5: "قبل 5 دقائق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة واحدة ⏰",
-                descPlaceholder: "اكتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "أضف مهمة فرعية جديدة...", btnAddSubtask: "+ أضف", linkedNotesTitle: "📌 الملاحظات المرتبطة بهذه المهمة:", deleteTaskBtn: "🗑️ حذف المهمة", editTaskBtn: "✏️ تعديل كامل", closeBtn: "إغلاق", btnStartTimer: "▶️ بدء", recurrenceTitle: "🔄 التكرار:",
+                descPlaceholder: "اكتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "أضف مهمة فرعية جديدة...", btnAddSubtask: "+ أضف", linkedNotesTitle: "📌 الملاحظات المرتبطة بهذه المهمة:", deleteTaskBtn: "🗑️ حذف", editTaskBtn: "✏️ تعديل كامل", closeBtn: "إغلاق", btnStartTimer: "▶️ بدء", recurrenceTitle: "🔄 التكرار:", cancelTaskBtn: "🚫 إلغاء المهمة",
                 recurrenceLabel: "🔄 نظام تكرار المهمة:", recNone: "بدون تكرار (مرة واحدة)", recDaily: "يتكرر يومياً ☀️", recWeekly: "يتكرر أسبوعياً 📅", recMonthly: "يتكرر شهرياً 📆",
                 noTasksInSpace: "لا توجد مهام نشطة في هذه المساحة 🌸", noTasksForDate: "لا توجد مهام لليوم المحدد 📅", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", emptyArchive: "الأرشيف فارغ 🗃️", emptyNotes: "لا توجد ملاحظات 📝",
                 guideTitle: "دليل المستخدم - BloomDo",
                 guideIntro: "مرحباً بك في BloomDo! مساحتك المتكاملة لتنظيم وقتك، مهامك، ومشاريعك بسهولة وسلاسة. إليك كيفية الاستفادة من مختلف ميزات التطبيق:",
                 guideSpacesTitle: "1. مساحات العمل والمشاريع:", guideSpacesDesc: "يمكنك إنشاء مساحات عمل مستقلة (مثل: العمل، الدراسة، الحياة الشخصية) وتنظيم المشاريع داخل كل مساحة للفصل بين مجالات حياتك المختلفة.",
                 guideTasksTitle: "2. إضافة المهام والمواعيد:", guideTasksDesc: "أضف مهامك مع تحديد الوقت (بداية ونهاية)، التذكيرات، الوصف التفصيلي، وإضافة مهام فرعية (Subtasks) لكل مهمة.",
-                guideRecurrenceTitle: "3. التكرار والتأجيل التلقائي:", guideRecurrenceDesc: "عند ضبط تكرار مهمة (يومي/أسبوعي/شهري)، وفي حال انقضاء يوم المهمة دون إنجازها، يقوم التطبيق تلقائياً بنقلها لليوم الموالي مع الحفاظ على توقيتها الأصلي.",
-                guideDragTitle: "4. الترتيب اليدوي (Drag & Drop):", guideDragDesc: "اختر نظام الترتيب \"يدوي\" لتتمكن من إعادة ترتيب المهام، المشاريع، والمساحات بسهولة وسحبها بأصبعك إلى الترتيب المفضل لديك.",
-                guideToolsTitle: "5. أدوات إضافية (المؤقت والملاحظات):", guideToolsDesc: "استفد من مؤقت التركيز (Minuteur) لحساب وقت إنجاز المهام، والملاحظات السريعة (Sticky Notes) للتدوين السريع وربط الأفكار بالمهام.",
+                guideCancelTitle: "3. إلغاء وتأجيل وإنجاز المهام:", guideCancelDesc: "تستطيع تحديد حالة المهمة كـ \"منجزة 🟣\"، أو \"ملغية 🚫\" لحفظها في الأرشيف، أو تتبع التكلفة الزمنية عبر المؤقت الداخلي.",
+                guideRecurrenceTitle: "4. التكرار والتأجيل التلقائي:", guideRecurrenceDesc: "عند ضبط تكرار مهمة (يومي/أسبوعي/شهري)، وفي حال انقضاء يوم المهمة دون إنجازها، يقوم التطبيق تلقائياً بنقلها لليوم الموالي مع الحفاظ على توقيتها الأصلي.",
+                guideDragTitle: "5. الترتيب اليدوي (Drag & Drop):", guideDragDesc: "اختر نظام الترتيب \"يدوي\" لتتمكن من إعادة ترتيب المهام، المشاريع، والمساحات بسهولة وسحبها بأصبعك إلى الترتيب المفضل لديك.",
+                guideToolsTitle: "6. أدوات إضافية (المؤقت والملاحظات):", guideToolsDesc: "استفد من مؤقت التركيز (Minuteur) لحساب وقت إنجاز المهام، والملاحظات السريعة (Sticky Notes) للتدوين السريع وربط الأفكار بالمهام.",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             ary: {
@@ -666,16 +675,17 @@
                 statusPending: "⏳ مزال مادرتهاش", statusInProgress: "🔄 خدام عليها", statusDone: "✅ كملات", statusCancelled: "❌ ملغية",
                 optSingleDay: "نهار واحد (Single Day)", optContinuous: "أيّام متابعة (Continuous Days)", optSessions: "أيّام مفرّقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بلا الفيقّة", rem5: "قبل 5 دقيق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة ⏰",
-                descPlaceholder: "كتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "زيد مهمة صغيرة جديدة...", btnAddSubtask: "+ زيد", linkedNotesTitle: "📌 الملاحظات المربوطة بهاد المهمة:", deleteTaskBtn: "🗑️ مسح المهمة", editTaskBtn: "✏️ تعديل كامل", closeBtn: "شدّ", btnStartTimer: "▶️ بدا", recurrenceTitle: "🔄 المعاودة:",
+                descPlaceholder: "كتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "زيد مهمة صغيرة جديدة...", btnAddSubtask: "+ زيد", linkedNotesTitle: "📌 الملاحظات المربوطة بهاد المهمة:", deleteTaskBtn: "🗑️ مسح", editTaskBtn: "✏️ تعديل كامل", closeBtn: "شدّ", btnStartTimer: "▶️ بدا", recurrenceTitle: "🔄 المعاودة:", cancelTaskBtn: "🚫 إلغاء المهمة",
                 recurrenceLabel: "🔄 المعاودة ديال المهمة:", recNone: "بلا معاودة (مرة وحدة)", recDaily: "كتعاود كل نهار ☀️", recWeekly: "كتعاود كل سيمانة 📅", recMonthly: "كتعاود كل شهر 📆",
                 noTasksInSpace: "ماكايناش مهمات نشيطة فهاد البلاصة 🌸", noTasksForDate: "ماكايناش مهمات لهاد النهار 📅", noTasksToday: "ماكايناش مهمات اليوم ☀️", emptyArchive: "الأرشيف خاوي 🗃️", emptyNotes: "ماكايناش ملاحظات 📝",
                 guideTitle: "دليل الاستعمال - BloomDo",
                 guideIntro: "مرحبا بيك فـ BloomDo! البلاصة ديالك باش تنظم وقتك ومهماتك وسغلك بسهولة. ها كيفاش تستافد من كاع الميزات ديال التطبيق:",
                 guideSpacesTitle: "1. بلايص الخدمة والمشاريع:", guideSpacesDesc: "تقدر تدير بلايص خدمة معزولين (مثل: الخدمة، القراية، الحياة الشخصية) وتنظم المشاريع وسط كل بلاصة باش تفرّق بين شغل كل جهة.",
                 guideTasksTitle: "2. زيادة المهمات والمواعيد:", guideTasksDesc: "زيد المهمات ديالك وحدد الوقت (اللبدو والمكspace)، الفيقّة، الشرح، وزيد مهمات صغار (Subtasks) لكل مهمة.",
-                guideRecurrenceTitle: "3. المعاودة والتأجيل التلقائي:", guideRecurrenceDesc: "إلا درتي المهمة كتعاود (كل نهار/سيمانة/شهر)، وماكملتيهاش فنهارها، التطبيق كيزيدها للتاريخ الموالي أوتوماتيكياً وكيحافظ على الوقت الأصلي.",
-                guideDragTitle: "4. الترتيب بيديك (Drag & Drop):", guideDragDesc: "عززل الترتيب \"يدوي\" باش تقدر ترتب المهمات والمشاريع والبلايص بسحبها بصبعك للترتيب اللي كيعجبك.",
-                guideToolsTitle: "5. أدوات إضافية (المؤقت والملاحظات):", guideToolsDesc: "استافد من المؤقت (Minuteur) باش تحسب الوقت ديال المهمة، والملاحظات السريعة (Sticky Notes) باش تقيد الأفكار وتربطها بالمهمات.",
+                guideCancelTitle: "3. إلغاء وتأجيل وكمل المهمات:", guideCancelDesc: "تقدر تدير المهمة كملات 🟣 أو ملغية 🚫 باش تسجّلها فالأرشيف وتتبع الوقت ديالها بالمؤقت الداخلي.",
+                guideRecurrenceTitle: "4. المعاودة والتأجيل التلقائي:", guideRecurrenceDesc: "إلا درتي المهمة كتعاود (كل نهار/سيمانة/شهر)، وماكملتيهاش فنهارها، التطبيق كيزيدها للتاريخ الموالي أوتوماتيكياً وكيحافظ على الوقت الأصلي.",
+                guideDragTitle: "5. الترتيب بيديك (Drag & Drop):", guideDragDesc: "عززل الترتيب \"يدوي\" باش تقدر ترتب المهمات والمشاريع والبلايص بسحبها بصبعك للترتيب اللي كيعجبك.",
+                guideToolsTitle: "6. أدوات إضافية (المؤقت والملاحظات):", guideToolsDesc: "استافد من المؤقت (Minuteur) باش تحسب الوقت ديال المهمة، والملاحظات السريعة (Sticky Notes) باش تقيد الأفكار وتربطها بالمهمات.",
                 days: ["أح", "ات", "تلا", "أر", "خـ", "جم", "سب"]
             },
             es: {
@@ -689,7 +699,7 @@
                 statusLabel: "Estado:", colorLabel: "Color:", saveTask: "Guardar Tarea", cancel: "Cancelar", createProject: "Guardar", standaloneTasks: "Tareas Independientes 🌸",
                 todayTitle: "Programa de Hoy ☀️", calendarTitle: "Calendario Mensual 📅", tasksForDate: "Tareas para esta fecha:", navHome: "Inicio", navSpaces: "Espacios", navToday: "Hoy", navCalendar: "Calendario", navArchive: "Archivo", navNotes: "Notas", navStatuses: "Estados",
                 newSpaceTitle: "Nuevo Espacio 📂", editSpaceTitle: "Editar Espacio 📂", spaceNamePlaceholder: "Nombre del espacio...", save: "Guardar",
-                confirmDeleteTitle: "Confirmar eliminación ⚠️️", confirmDeleteMsg: "¿Estás seguro de que deseas eliminar este elemento? No se puede deshacer.", confirmDeleteBtn: "Sí, eliminar",
+                confirmDeleteTitle: "Confirmar eliminación ⚠️", confirmDeleteMsg: "¿Estás seguro de que deseas eliminar este elemento? No se puede deshacer.", confirmDeleteBtn: "Sí, eliminar",
                 sortMode: "Orden:", sortManual: "🖐️ Manual (Drag & Drop)", sortTime: "⏰ Por Hora", sortDate: "📅 Por Fecha", sortCreated: "🆕 Más Reciente", sortPinned: "📌 Fijados Primero",
                 pinnedNotes: "Notas Fijadas", subtasksLabel: "➕ Subtareas (Subtasks):", descriptionLabel: "📝 Descripción y detalles:", minuteurTitle: "Temporizador (Minuteur):", reminderLabel: "🔔 Recordatorio:",
                 statusesPageTitle: "📊 Tareas clasificadas por estado", archivePageTitle: "🗃️ Archivo de tareas", archiveSearchPlaceholder: "Buscar en el archivo...",
@@ -697,16 +707,17 @@
                 statusPending: "⏳ Pendiente", statusInProgress: "🔄 En Proceso", statusDone: "✅ Completada", statusCancelled: "❌ Cancelada",
                 optSingleDay: "Un solo día (Single Day)", optContinuous: "Días continuos (Continuous Days)", optSessions: "Sesiones múltiples (Multiple Sessions)",
                 scheduleTypeLabel: "Sistema de tiempo y duración:", remNone: "Sin recordatorio", rem5: "5 minutos antes ⏰", rem15: "15 minutos antes ⏰", rem30: "30 minutos antes ⏰", rem60: "1 hora antes ⏰",
-                descPlaceholder: "Escribe detalles y notas para ti...", subtaskPlaceholder: "Añadir nueva subtarea...", btnAddSubtask: "+ Añadir", linkedNotesTitle: "📌 Notas vinculadas a esta tarea:", deleteTaskBtn: "🗑️️ Eliminar Tarea", editTaskBtn: "✏️ Editar Tarea", closeBtn: "Cerrar", btnStartTimer: "▶️ Iniciar", recurrenceTitle: "🔄 Repetición:",
+                descPlaceholder: "Escribe detalles y notas para ti...", subtaskPlaceholder: "Añadir nueva subtarea...", btnAddSubtask: "+ Añadir", linkedNotesTitle: "📌 Notas vinculadas a esta tarea:", deleteTaskBtn: "🗑️ Eliminar", editTaskBtn: "✏️ Editar Tarea", closeBtn: "Cerrar", btnStartTimer: "▶️ Iniciar", recurrenceTitle: "🔄 Repetición:", cancelTaskBtn: "🚫 Cancelar Tarea",
                 recurrenceLabel: "🔄 Repetición de tarea:", recNone: "Sin repetición (Una vez)", recDaily: "Repetir diariamente ☀️", recWeekly: "Repetir semanalmente 📅", recMonthly: "Repetir mensualmente 📆",
-                noTasksInSpace: "No hay tareas activas en este espacio 🌸", noTasksForDate: "No hay tareas para esta fecha 📅", noTasksToday: "No hay tareas para hoy ☀️", emptyArchive: "El archivo está vacío 🗃️", emptyNotes: "No hay notas 📝",
+                noTasksInSpace: "No hay tareas activas en este espacio 🌸", noTasksForDate: "No hay tareas para esta fecha 📅", noTasksToday: "No hay tareas para hoy ☀️", emptyArchive: "El archivo está vacío 🗃️️", emptyNotes: "No hay notas 📝",
                 guideTitle: "Guía de Usuario - BloomDo",
                 guideIntro: "¡Bienvenido a BloomDo! Tu suite integral para organizar tu tiempo, tareas y proyectos con facilidad. Aquí tienes cómo aprovechar al máximo sus funciones:",
                 guideSpacesTitle: "1. Espacios de trabajo y proyectos:", guideSpacesDesc: "Crea espacios independientes (como Trabajo, Estudio, Personal) y organiza proyectos en cada uno para separar las distintas áreas de tu vida.",
                 guideTasksTitle: "2. Gestión de tareas e itinerario:", guideTasksDesc: "Añade tareas fijando horarios (inicio y fin), recordatorios, descripciones detalladas y subtareas para un seguimiento exhaustivo.",
-                guideRecurrenceTitle: "3. Repetición y posposición automática:", guideRecurrenceDesc: "Al configurar una tarea recurrente (diaria/semanal/mensual), si el día expira sin completarla, la app la reprograma automáticamente para la fecha siguiente manteniendo la hora original.",
-                guideDragTitle: "4. Orden manual (Drag & Drop):", guideDragDesc: "Selecciona el modo de ordenamiento \"Manual\" para reordenar fácilmente tareas, proyectos y espacios arrastrándolos con el dedo.",
-                guideToolsTitle: "5. Herramientas adicionales (Temporizador y Notas):", guideToolsDesc: "Aprovecha el temporizador de enfoque (Minuteur) para medir el tiempo empleado y las notas rápidas (Sticky Notes) para anotar ideas asociadas a tareas.",
+                guideCancelTitle: "3. Cancelar y completar tareas:", guideCancelDesc: "Puedes marcar el estado de tu tarea como \"Completada 🟣\" o \"Cancelada 🚫\" para guardarla en el archivo o medir el tiempo consumido.",
+                guideRecurrenceTitle: "4. Repetición y posposición automática:", guideRecurrenceDesc: "Al configurar una tarea recurrente (diaria/semanal/mensual), si el día expira sin completarla, la app la reprograma automáticamente para la fecha siguiente manteniendo la hora original.",
+                guideDragTitle: "5. Orden manual (Drag & Drop):", guideDragDesc: "Selecciona el modo de ordenamiento \"Manual\" para reordenar fácilmente tareas, proyectos y espacios arrastrándolos con el dedo.",
+                guideToolsTitle: "6. Herramientas adicionales (Temporizador y Notas):", guideToolsDesc: "Aprovecha el temporizador de enfoque (Minuteur) para medir el tiempo empleado y las notas rápidas (Sticky Notes) para anotar ideas asociadas a tareas.",
                 days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
             },
             fr: {
@@ -718,7 +729,7 @@
                 taskTitlePlaceholder: "Titre de la tâche...", projectTitlePlaceholder: "Nom du projet...",
                 noProjectOption: "Directement dans l'espace", from: "De:", to: "À:", duration: "Durée calculée:",
                 statusLabel: "Statut:", colorLabel: "Couleur:", saveTask: "Enregistrer", cancel: "Annuler", createProject: "Enregistrer", standaloneTasks: "Tâches Indépendantes 🌸",
-                todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensual 📅", tasksForDate: "Tâches pour cette date:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier", navArchive: "Archives", navNotes: "Notes", navStatuses: "Statuts",
+                todayTitle: "Tâches d'aujourd'hui ☀️", calendarTitle: "Calendrier Mensuel 📅", tasksForDate: "Tâches pour cette date:", navHome: "Accueil", navSpaces: "Espaces", navToday: "Aujourd'hui", navCalendar: "Calendrier", navArchive: "Archives", navNotes: "Notes", navStatuses: "Statuts",
                 newSpaceTitle: "Nouvel Espace 📂", editSpaceTitle: "Modifier L'espace 📂", spaceNamePlaceholder: "Nom de l'espace...", save: "Enregistrer",
                 confirmDeleteTitle: "Confirmer la suppression ⚠️", confirmDeleteMsg: "Êtes-vous sûr de vouloir supprimer cet élément? Cette action est irréversible.", confirmDeleteBtn: "Oui, supprimer",
                 sortMode: "Tri:", sortManual: "🖐️ Manuel (Drag & Drop)", sortTime: "⏰ Par Heure", sortDate: "📅 Par Date", sortCreated: "🆕 Plus Récents", sortPinned: "📌 Épinglés d'abord",
@@ -728,16 +739,17 @@
                 statusPending: "⏳ En attente", statusInProgress: "🔄 En cours", statusDone: "✅ Terminée", statusCancelled: "❌ Annulée",
                 optSingleDay: "Un seul jour (Single Day)", optContinuous: "Jours continus (Continuous Days)", optSessions: "Sessions multiples (Multiple Sessions)",
                 scheduleTypeLabel: "Système de temps & durée:", remNone: "Sans rappel", rem5: "5 min avant ⏰", rem15: "15 min avant ⏰", rem30: "30 min avant ⏰", rem60: "1 heure avant ⏰",
-                descPlaceholder: "Écrivez les détails et instructions ici...", subtaskPlaceholder: "Ajouter une sous-tâche...", btnAddSubtask: "+ Ajouter", linkedNotesTitle: "📌 Notes liées à cette tâche:", deleteTaskBtn: "🗑️ Supprimer Tâche", editTaskBtn: "✏️ Modifier Tâche", closeBtn: "Fermer", btnStartTimer: "▶️ Démarrer", recurrenceTitle: "🔄 Répétition:",
+                descPlaceholder: "Écrivez les détails et instructions ici...", subtaskPlaceholder: "Ajouter une sous-tâche...", btnAddSubtask: "+ Ajouter", linkedNotesTitle: "📌 Notes liées à cette tâche:", deleteTaskBtn: "🗑️ Supprimer", editTaskBtn: "✏️ Modifier Tâche", closeBtn: "Fermer", btnStartTimer: "▶️ Démarrer", recurrenceTitle: "🔄 Répétition:", cancelTaskBtn: "🚫 Annuler Tâche",
                 recurrenceLabel: "🔄 Répétition de la tâche:", recNone: "Pas de répétition (Une fois)", recDaily: "Répéter chaque jour ☀️", recWeekly: "Répéter chaque semaine 📅", recMonthly: "Répéter chaque mois 📆",
-                noTasksInSpace: "Aucune tâche active dans cet espace 🌸", noTasksForDate: "Aucune tâche pour cette date 📅", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", emptyArchive: "L'archive est vide 🗃️️", emptyNotes: "Pas de notes 📝",
+                noTasksInSpace: "Aucune tâche active dans cet espace 🌸", noTasksForDate: "Aucune tâche pour cette date 📅", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", emptyArchive: "L'archive est vide 🗃️", emptyNotes: "Pas de notes 📝",
                 guideTitle: "Guide d'utilisation - BloomDo",
                 guideIntro: "Bienvenue sur BloomDo ! Votre suite intégrée pour organiser votre temps, vos tâches et vos projets en toute simplicité. Voici comment exploiter les différentes fonctionnalités :",
                 guideSpacesTitle: "1. Espaces de travail et projets :", guideSpacesDesc: "Créez des espaces de travail distincts (ex: Travail, Études, Vie personnelle) et organisez vos projets dans chaque espace pour séparer vos activités.",
                 guideTasksTitle: "2. Ajout de tâches et horaires :", guideTasksDesc: "Ajoutez vos tâches en définissant l'heure (début et fin), des rappels, une description détaillée et des sous-tâches (Subtasks).",
-                guideRecurrenceTitle: "3. Répétition et report automatique :", guideRecurrenceDesc: "En cas de répétition programmée (quotidienne/hebdomadaire/mensuelle), si une tâche n'est pas terminée le jour J, elle est automatiquement reportée au jour suivant en conservant son horaire.",
-                guideDragTitle: "4. Tri manuel (Drag & Drop) :", guideDragDesc: "Sélectionnez le mode de tri \"Manuel\" pour réorganiser facilement vos tâches, projets et espaces par glisser-déposer.",
-                guideToolsTitle: "5. Outils complémentaires (Minuteur & Notes) :", guideToolsDesc: "Profitez du minuteur de concentration pour mesurer votre temps de travail et des notes rapides (Sticky Notes) pour consigner vos idées liées aux tâches.",
+                guideCancelTitle: "3. Annulation et réalisation des tâches :", guideCancelDesc: "Passez le statut d'une tâche en \"Terminée 🟣\" ou \"Annulée 🚫\" pour la conserver dans vos archives.",
+                guideRecurrenceTitle: "4. Répétition et report automatique :", guideRecurrenceDesc: "En cas de répétition programmée (quotidienne/hebdomadaire/mensuelle), si une tâche n'est pas terminée le jour J, elle est automatiquement reportée au jour suivant en conservant son horaire.",
+                guideDragTitle: "5. Tri manuel (Drag & Drop) :", guideDragDesc: "Sélectionnez le mode de tri \"Manuel\" pour réorganiser facilement vos tâches, projets et espaces par glisser-déposer.",
+                guideToolsTitle: "6. Outils complémentaires (Minuteur & Notes) :", guideToolsDesc: "Profitez du minuteur de concentration pour mesurer votre temps de travail et des notes rapides (Sticky Notes) pour consigner vos idées liées aux tâches.",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
@@ -759,16 +771,17 @@
                 statusPending: "⏳ Pending", statusInProgress: "🔄 In Progress", statusDone: "✅ Completed", statusCancelled: "Cancelled ❌",
                 optSingleDay: "Single Day", optContinuous: "Continuous Days", optSessions: "Multiple Sessions",
                 scheduleTypeLabel: "Time & duration system:", remNone: "No reminder", rem5: "5 mins before ⏰", rem15: "15 mins before ⏰", rem30: "30 mins before ⏰", rem60: "1 hour before ⏰",
-                descPlaceholder: "Write details and instructions here...", subtaskPlaceholder: "Add new subtask...", btnAddSubtask: "+ Add", linkedNotesTitle: "📌 Linked notes for this task:", deleteTaskBtn: "🗑️ Delete Task", editTaskBtn: "✏️ Edit Task", closeBtn: "Close", btnStartTimer: "▶️️ Start", recurrenceTitle: "🔄 Recurrence:",
+                descPlaceholder: "Write details and instructions here...", subtaskPlaceholder: "Add new subtask...", btnAddSubtask: "+ Add", linkedNotesTitle: "📌 Linked notes for this task:", deleteTaskBtn: "🗑️ Delete", editTaskBtn: "✏️ Edit Task", closeBtn: "Close", btnStartTimer: "▶ Start", recurrenceTitle: "🔄 Recurrence:", cancelTaskBtn: "🚫 Cancel Task",
                 recurrenceLabel: "🔄 Task Recurrence:", recNone: "No Recurrence (Once)", recDaily: "Repeat Daily ☀️", recWeekly: "Repeat Weekly 📅", recMonthly: "Repeat Monthly 📆",
                 noTasksInSpace: "No active tasks in this space 🌸", noTasksForDate: "No tasks for this date 📅", noTasksToday: "No tasks scheduled for today ☀️", emptyArchive: "Archive is empty 🗃️", emptyNotes: "No notes 📝",
                 guideTitle: "User Guide - BloomDo",
                 guideIntro: "Welcome to BloomDo! Your all-in-one suite to organize your time, tasks, and projects effortlessly. Here is how to make the most of its features:",
                 guideSpacesTitle: "1. Workspaces & Projects:", guideSpacesDesc: "Create separate workspaces (e.g., Work, Study, Personal) and organize projects within each space to keep your life areas well-structured.",
                 guideTasksTitle: "2. Adding Tasks & Scheduling:", guideTasksDesc: "Add tasks with precise start and end times, reminders, detailed descriptions, and actionable subtasks.",
-                guideRecurrenceTitle: "3. Recurrence & Auto-Reschedule:", guideRecurrenceDesc: "When task recurrence is set (daily/weekly/monthly), if a task is uncompleted when the day ends, it automatically shifts to the next date keeping its original times.",
-                guideDragTitle: "4. Manual Drag & Drop Sorting:", guideDragDesc: "Select \"Manual\" sorting mode to intuitively drag and reorder tasks, projects, and workspaces with your finger or mouse.",
-                guideToolsTitle: "5. Productivity Tools (Timer & Notes):", guideToolsDesc: "Use the focus timer (Minuteur) to track spent time on tasks, and Sticky Notes for quick brain dumps linked to your tasks.",
+                guideCancelTitle: "3. Canceling & Completing Tasks:", guideCancelDesc: "Change task status to \"Completed 🟣\" or \"Canceled 🚫\" to save it to your archive.",
+                guideRecurrenceTitle: "4. Recurrence & Auto-Reschedule:", guideRecurrenceDesc: "When task recurrence is set (daily/weekly/monthly), if a task is uncompleted when the day ends, it automatically shifts to the next date keeping its original times.",
+                guideDragTitle: "5. Manual Drag & Drop Sorting:", guideDragDesc: "Select \"Manual\" sorting mode to intuitively drag and reorder tasks, projects, and workspaces with your finger or mouse.",
+                guideToolsTitle: "6. Productivity Tools (Timer & Notes):", guideToolsDesc: "Use the focus timer (Minuteur) to track spent time on tasks, and Sticky Notes for quick brain dumps linked to your tasks.",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
@@ -1531,8 +1544,9 @@
                     </div>
 
                     <div class="flex items-center gap-1.5 ml-2">
+                        <button onclick="playUiSound(); changeTaskStatus('${tk.id}', 'cancelled')" class="text-xs p-1 hover:scale-110" title="إلغاء المهمة">🚫</button>
                         <button onclick="playUiSound(); togglePinTask('${tk.id}')" class="text-xs p-1" title="تثبيت">${tk.isPinned ? '📌' : '📍'}</button>
-                        <button onclick="playUiSound(); editTask('${tk.id}')" class="text-slate-500 text-sm p-1 font-bold">✏️</button>
+                        <button onclick="playUiSound(); editTask('${tk.id}')" class="text-slate-500 text-sm p-1 font-bold">✏️️</button>
                         <button onclick="playUiSound(); askDeleteTask('${tk.id}')" class="text-slate-400 hover:text-red-500 text-sm p-1 font-bold">🗑️</button>
                     </div>
                 </div>
@@ -1659,7 +1673,7 @@
                 <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
                     <div>
                         <p class="font-bold text-xs strike-through text-slate-500">${tk.title}</p>
-                        <span class="text-[10px] font-bold ${tk.status === 'done' ? 'text-emerald-600' : 'text-red-500'}">${tk.status === 'done' ? 'مكتملة ✅' : 'ملغية ❌'}</span>
+                        <span class="text-[10px] font-bold ${tk.status === 'done' ? 'text-emerald-600' : 'text-amber-600'}">${tk.status === 'done' ? 'مكتملة ✅' : 'ملغية 🚫'}</span>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="playUiSound(); restoreArchivedTask('${tk.id}')" class="text-xs bg-purple-100 text-purple-700 px-2.5 py-1 rounded-xl font-bold">🔄 استعادة</button>
