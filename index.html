@@ -11,11 +11,13 @@
         tailwind.config = { darkMode: 'class' }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Tajawal', 'Poppins', sans-serif; font-size: 15px; }
         .glass { backdrop-filter: blur(14px); }
         .strike-through { text-decoration: line-through; opacity: 0.6; }
+        .sortable-ghost { opacity: 0.4; transform: scale(0.98); }
     </style>
 </head>
 <body class="bg-purple-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 pb-28 select-none transition-colors duration-300">
@@ -164,7 +166,7 @@
         <!-- 2. SPACES VIEW -->
         <div id="viewSpaces" class="space-y-5 hidden">
             <div class="flex justify-between items-center bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700">
-                <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاص بك 📂</h2>
+                <h2 class="text-base font-black text-purple-900 dark:text-purple-300" data-i18n="spacesTitle">مساحات العمل الخاصة بك 📂</h2>
                 <button onclick="playUiSound(); openNewSpaceModal()" class="text-xs bg-purple-600 text-white font-extrabold px-3 py-2 rounded-2xl shadow-sm hover:bg-purple-700 transition" data-i18n="addSpaceBtn">+ مساحة جديدة</button>
             </div>
             <div id="spacesCardsGrid" class="grid grid-cols-2 gap-3"></div>
@@ -175,7 +177,7 @@
                     </h3>
                     <div class="flex items-center gap-2">
                         <button onclick="playUiSound(); editCurrentSpace()" class="text-slate-500 hover:text-purple-600 text-xs font-extrabold p-1">✏️ <span data-i18n="editSpace">تعديل</span></button>
-                        <button id="btnDeleteSpace" onclick="playUiSound(); askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1">🗑️ <span data-i18n="deleteSpace">حذف</span></button>
+                        <button id="btnDeleteSpace" onclick="playUiSound(); askDeleteSpace()" class="text-slate-400 hover:text-red-500 text-xs font-extrabold p-1">🗑️ <span data-i18n="deleteSpace">حذف المساحة</span></button>
                     </div>
                 </div>
                 <div id="spaceInnerContent" class="space-y-4"></div>
@@ -251,7 +253,7 @@
         <div id="viewArchive" class="space-y-5 hidden">
             <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
                 <h2 class="text-base font-black text-purple-900 dark:text-purple-300 flex items-center justify-between">
-                    <span data-i18n="archivePageTitle">🗃️ أرشيف المهام</span>
+                    <span data-i18n="archivePageTitle">🗃️️ أرشيف المهام</span>
                     <div class="flex gap-2 text-xs font-bold">
                         <span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-xl" id="archivedDoneCount">✅ 0</span>
                         <span class="bg-red-100 text-red-800 px-2.5 py-1 rounded-xl" id="archivedCancelledCount">❌ 0</span>
@@ -317,7 +319,7 @@
                     <span>⌛ <span id="detailTaskDuration"></span></span>
                 </div>
                 <div id="detailRecurrenceBadge" class="text-[11px] text-purple-700 dark:text-purple-300 font-extrabold flex items-center gap-1">
-                    <span>🔄 التكرار:</span> <span id="detailRecurrenceText">بدون تكرار</span>
+                    <span data-i18n="recurrenceTitle">🔄 التكرار:</span> <span id="detailRecurrenceText">-</span>
                 </div>
                 <!-- Minuteur Section -->
                 <div class="pt-2 border-t border-purple-200 dark:border-slate-600 flex items-center justify-between">
@@ -326,7 +328,7 @@
                         <span id="minuteurDisplay" class="text-xl font-black font-mono text-purple-700 dark:text-purple-300">00:00:00</span>
                     </div>
                     <div class="flex gap-2">
-                        <button id="btnStartMinuteur" onclick="playUiSound(); toggleMinuteur()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-2xl text-xs font-black shadow-md">▶️ بدء</button>
+                        <button id="btnStartMinuteur" onclick="playUiSound(); toggleMinuteur()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-2xl text-xs font-black shadow-md" data-i18n="btnStartTimer">▶️ بدء</button>
                         <button onclick="playUiSound(); resetMinuteur()" class="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-2 rounded-2xl text-xs font-bold">🔄</button>
                     </div>
                 </div>
@@ -361,9 +363,9 @@
             </div>
 
             <div class="flex gap-2 pt-3 border-t border-purple-100 dark:border-slate-700">
-                <button onclick="playUiSound(); editTaskFromDetail()" class="flex-1 bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="editSpace">✏️ تعديل كامل</button>
-                <button onclick="playUiSound(); askDeleteTask(selectedDetailTaskId)" class="bg-red-100 text-red-600 px-4 py-2.5 rounded-2xl text-xs font-black" data-i18n="deleteTaskBtn">🗑️ حذف</button>
-                <button onclick="playUiSound(); closeTaskDetailModal()" class="flex-1 bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="cancel">إغلاق</button>
+                <button onclick="playUiSound(); editTaskFromDetail()" class="flex-1 bg-purple-100 dark:bg-slate-700 text-purple-800 dark:text-purple-200 py-2.5 rounded-2xl text-xs font-black" data-i18n="editTaskBtn">✏️ تعديل كامل</button>
+                <button onclick="playUiSound(); askDeleteTask(selectedDetailTaskId)" class="bg-red-100 text-red-600 px-4 py-2.5 rounded-2xl text-xs font-black" data-i18n="deleteTaskBtn">🗑️ حذف المهمة</button>
+                <button onclick="playUiSound(); closeTaskDetailModal()" class="flex-1 bg-purple-600 text-white py-2.5 rounded-2xl text-xs font-black shadow-md" data-i18n="closeBtn">إغلاق</button>
             </div>
         </div>
     </div>
@@ -558,7 +560,7 @@
             ar: {
                 authSubtitle: "تسجيل الدخول لحفظ أفكارك ومهامك", emailPlaceholder: "البريد الإلكتروني...", passPlaceholder: "كلمة المرور...", loginBtn: "دخول / إنشاء حساب", guestBtn: "متابعة كزائر (بدون حساب)", googleLoginBtn: "التسجيل عبر Google", or: "أو",
                 btnAddTask: "+ مهمة", btnAddProject: "+ مشروع", btnNote: "+ ملاحظة",
-                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاص بك 📂", deleteSpace: "حذف المساحة", editSpace: "تعديل",
+                currentSpace: "المساحة الحالية", addSpaceBtn: "+ مساحة جديدة", spacesTitle: "مساحات العمل الخاصة بك 📂", deleteSpace: "حذف المساحة", editSpace: "تعديل",
                 statTasks: "المهام النشطة", statProjects: "المشاريع", statProgress: "الإنجاز",
                 tabAddTask: "إضافة مهمة 📝", tabAddProject: "إضافة / تعديل مشروع 📁", targetSpaceLabel: "مساحة العمل:",
                 taskTitlePlaceholder: "عنوان المهمة...", projectTitlePlaceholder: "اسم المشروع...",
@@ -574,8 +576,9 @@
                 statusPending: "⏳ لم تنجز بعد", statusInProgress: "🔄 قيد الإنجاز", statusDone: "✅ أنجزت", statusCancelled: "❌ ملغية",
                 optSingleDay: "يوم واحد (Single Day)", optContinuous: "عدة أيام متصلة (Continuous Days)", optSessions: "عدة أيام متفرقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بدون تذكير", rem5: "قبل 5 دقائق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة واحدة ⏰",
-                descPlaceholder: "اكتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "أضف مهمة فرعية جديدة...", btnAddSubtask: "+ أضف", linkedNotesTitle: "📌 الملاحظات المرتبطة بهذه المهمة:", deleteTaskBtn: "🗑️ حذف المهمة",
+                descPlaceholder: "اكتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "أضف مهمة فرعية جديدة...", btnAddSubtask: "+ أضف", linkedNotesTitle: "📌 الملاحظات المرتبطة بهذه المهمة:", deleteTaskBtn: "🗑️ حذف المهمة", editTaskBtn: "✏️ تعديل كامل", closeBtn: "إغلاق", btnStartTimer: "▶️ بدء", recurrenceTitle: "🔄 التكرار:",
                 recurrenceLabel: "🔄 نظام تكرار المهمة:", recNone: "بدون تكرار (مرة واحدة)", recDaily: "يتكرر يومياً ☀️", recWeekly: "يتكرر أسبوعياً 📅", recMonthly: "يتكرر شهرياً 📆",
+                noTasksInSpace: "لا توجد مهام نشطة في هذه المساحة 🌸", noTasksForDate: "لا توجد مهام لليوم المحدد 📅", noTasksToday: "لا توجد مهام مجدولة لليوم ☀️", emptyArchive: "الأرشيف فارغ 🗃️", emptyNotes: "لا توجد ملاحظات 📝",
                 days: ["ح", "ن", "ث", "ع", "خ", "ج", "س"]
             },
             ary: {
@@ -597,8 +600,9 @@
                 statusPending: "⏳ مزال مادرتهاش", statusInProgress: "🔄 خدام عليها", statusDone: "✅ كملات", statusCancelled: "❌ ملغية",
                 optSingleDay: "نهار واحد (Single Day)", optContinuous: "أيّام متابعة (Continuous Days)", optSessions: "أيّام مفرّقة (Multiple Sessions)",
                 scheduleTypeLabel: "نظام الوقت والمدة:", remNone: "بلا الفيقّة", rem5: "قبل 5 دقيق ⏰", rem15: "قبل 15 دقيقة ⏰", rem30: "قبل 30 دقيقة ⏰", rem60: "قبل ساعة ⏰",
-                descPlaceholder: "كتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "زيد مهمة صغيرة جديدة...", btnAddSubtask: "+ زيد", linkedNotesTitle: "📌 الملاحظات المربوطة بهاد المهمة:", deleteTaskBtn: "🗑️ مسح المهمة",
+                descPlaceholder: "كتب التفاصيل والتعليمات لنفسك هنا...", subtaskPlaceholder: "زيد مهمة صغيرة جديدة...", btnAddSubtask: "+ زيد", linkedNotesTitle: "📌 الملاحظات المربوطة بهاد المهمة:", deleteTaskBtn: "🗑️ مسح المهمة", editTaskBtn: "✏️ تعديل كامل", closeBtn: "شدّ", btnStartTimer: "▶️ بدا", recurrenceTitle: "🔄 المعاودة:",
                 recurrenceLabel: "🔄 المعاودة ديال المهمة:", recNone: "بلا معاودة (مرة وحدة)", recDaily: "كتعاود كل نهار ☀️", recWeekly: "كتعاود كل سيمانة 📅", recMonthly: "كتعاود كل شهر 📆",
+                noTasksInSpace: "ماكايناش مهمات نشيطة فهاد البلاصة 🌸", noTasksForDate: "ماكايناش مهمات لهاد النهار 📅", noTasksToday: "ماكايناش مهمات اليوم ☀️", emptyArchive: "الأرشيف خاوي 🗃️", emptyNotes: "ماكايناش ملاحظات 📝",
                 days: ["أح", "ات", "تلا", "أر", "خـ", "جم", "سب"]
             },
             es: {
@@ -620,8 +624,9 @@
                 statusPending: "⏳ Pendiente", statusInProgress: "🔄 En Proceso", statusDone: "✅ Completada", statusCancelled: "❌ Cancelada",
                 optSingleDay: "Un solo día (Single Day)", optContinuous: "Días continuos (Continuous Days)", optSessions: "Sesiones múltiples (Multiple Sessions)",
                 scheduleTypeLabel: "Sistema de tiempo y duración:", remNone: "Sin recordatorio", rem5: "5 minutos antes ⏰", rem15: "15 minutos antes ⏰", rem30: "30 minutos antes ⏰", rem60: "1 hora antes ⏰",
-                descPlaceholder: "Escribe detalles y notas para ti...", subtaskPlaceholder: "Añadir nueva subtarea...", btnAddSubtask: "+ Añadir", linkedNotesTitle: "📌 Notas vinculadas a esta tarea:", deleteTaskBtn: "🗑️ Eliminar Tarea",
+                descPlaceholder: "Escribe detalles y notas para ti...", subtaskPlaceholder: "Añadir nueva subtarea...", btnAddSubtask: "+ Añadir", linkedNotesTitle: "📌 Notas vinculadas a esta tarea:", deleteTaskBtn: "🗑️ Eliminar Tarea", editTaskBtn: "✏️️ Editar Tarea", closeBtn: "Cerrar", btnStartTimer: "▶️ Iniciar", recurrenceTitle: "🔄 Repetición:",
                 recurrenceLabel: "🔄 Repetición de tarea:", recNone: "Sin repetición (Una vez)", recDaily: "Repetir diariamente ☀️", recWeekly: "Repetir semanalmente 📅", recMonthly: "Repetir mensualmente 📆",
+                noTasksInSpace: "No hay tareas activas en este espacio 🌸", noTasksForDate: "No hay tareas para esta fecha 📅", noTasksToday: "No hay tareas para hoy ☀️", emptyArchive: "El archivo está vacío 🗃️", emptyNotes: "No hay notas 📝",
                 days: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
             },
             fr: {
@@ -643,8 +648,9 @@
                 statusPending: "⏳ En attente", statusInProgress: "🔄 En cours", statusDone: "✅ Terminée", statusCancelled: "❌ Annulée",
                 optSingleDay: "Un seul jour (Single Day)", optContinuous: "Jours continus (Continuous Days)", optSessions: "Sessions multiples (Multiple Sessions)",
                 scheduleTypeLabel: "Système de temps & durée:", remNone: "Sans rappel", rem5: "5 min avant ⏰", rem15: "15 min avant ⏰", rem30: "30 min avant ⏰", rem60: "1 heure avant ⏰",
-                descPlaceholder: "Écrivez les détails et instructions ici...", subtaskPlaceholder: "Ajouter une sous-tâche...", btnAddSubtask: "+ Ajouter", linkedNotesTitle: "📌 Notes liées à cette tâche:", deleteTaskBtn: "🗑️ Supprimer Tâche",
+                descPlaceholder: "Écrivez les détails et instructions ici...", subtaskPlaceholder: "Ajouter une sous-tâche...", btnAddSubtask: "+ Ajouter", linkedNotesTitle: "📌 Notes liées à cette tâche:", deleteTaskBtn: "🗑️ Supprimer Tâche", editTaskBtn: "✏️ Modifier Tâche", closeBtn: "Fermer", btnStartTimer: "▶️ Démarrer", recurrenceTitle: "🔄 Répétition:",
                 recurrenceLabel: "🔄 Répétition de la tâche:", recNone: "Pas de répétition (Une fois)", recDaily: "Répéter chaque jour ☀️", recWeekly: "Répéter chaque semaine 📅", recMonthly: "Répéter chaque mois 📆",
+                noTasksInSpace: "Aucune tâche active dans cet espace 🌸", noTasksForDate: "Aucune tâche pour cette date 📅", noTasksToday: "Aucune tâche pour aujourd'hui ☀️", emptyArchive: "L'archive est vide 🗃️", emptyNotes: "Pas de notes 📝",
                 days: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
             },
             en: {
@@ -659,15 +665,16 @@
                 todayTitle: "Today's Schedule ☀️", calendarTitle: "Monthly Calendar 📅", tasksForDate: "Tasks for this date:", navHome: "Home", navSpaces: "Spaces", navToday: "Today", navCalendar: "Calendar", navArchive: "Archive", navNotes: "Notes", navStatuses: "Statuses",
                 newSpaceTitle: "New Workspace 📂", editSpaceTitle: "Edit Workspace 📂", spaceNamePlaceholder: "Space name...", save: "Save",
                 confirmDeleteTitle: "Confirm Deletion ⚠️", confirmDeleteMsg: "Are you sure you want to delete this item? This action cannot be undone.", confirmDeleteBtn: "Yes, Delete",
-                sortMode: "Sorting:", sortManual: "🖐️ Manual (Drag & Drop)", sortTime: "⏰ By Time", sortDate: "📅 By Date", sortCreated: "🆕 Newly Added", sortPinned: "📌 Pinned First",
+                sortMode: "Sorting:", sortManual: "🖐️️ Manual (Drag & Drop)", sortTime: "⏰ By Time", sortDate: "📅 By Date", sortCreated: "🆕 Newly Added", sortPinned: "📌 Pinned First",
                 pinnedNotes: "Pinned Notes", subtasksLabel: "➕ Subtasks:", descriptionLabel: "📝 Description & Instructions:", minuteurTitle: "Timer (Minuteur):", reminderLabel: "🔔 Reminder:",
                 statusesPageTitle: "📊 Tasks Classified by Status", archivePageTitle: "🗃️ Tasks Archive", archiveSearchPlaceholder: "Search archive...",
                 notesPageTitle: "📝 Sticky Notes", newNoteTitle: "📝 New Sticky Note", notePlaceholder: "Write your idea here...", pinToHome: "📌 Pin to Home Page", linkToTaskLabel: "🔗 Link to specific task:",
                 statusPending: "⏳ Pending", statusInProgress: "🔄 In Progress", statusDone: "✅ Completed", statusCancelled: "Cancelled ❌",
                 optSingleDay: "Single Day", optContinuous: "Continuous Days", optSessions: "Multiple Sessions",
                 scheduleTypeLabel: "Time & duration system:", remNone: "No reminder", rem5: "5 mins before ⏰", rem15: "15 mins before ⏰", rem30: "30 mins before ⏰", rem60: "1 hour before ⏰",
-                descPlaceholder: "Write details and instructions here...", subtaskPlaceholder: "Add new subtask...", btnAddSubtask: "+ Add", linkedNotesTitle: "📌 Linked notes for this task:", deleteTaskBtn: "🗑️ Delete Task",
+                descPlaceholder: "Write details and instructions here...", subtaskPlaceholder: "Add new subtask...", btnAddSubtask: "+ Add", linkedNotesTitle: "📌 Linked notes for this task:", deleteTaskBtn: "🗑️ Delete Task", editTaskBtn: "✏️ Edit Task", closeBtn: "Close", btnStartTimer: "▶️ Start", recurrenceTitle: "🔄 Recurrence:",
                 recurrenceLabel: "🔄 Task Recurrence:", recNone: "No Recurrence (Once)", recDaily: "Repeat Daily ☀️", recWeekly: "Repeat Weekly 📅", recMonthly: "Repeat Monthly 📆",
+                noTasksInSpace: "No active tasks in this space 🌸", noTasksForDate: "No tasks for this date 📅", noTasksToday: "No tasks scheduled for today ☀️", emptyArchive: "Archive is empty 🗃️", emptyNotes: "No notes 📝",
                 days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             }
         };
@@ -682,6 +689,9 @@
         let minuteurSeconds = 0;
         let minuteurIsOvertime = false;
         let minuteurIsRunning = false;
+
+        // Sortable Instance References
+        let sortableInstances = [];
 
         function getUserStorageKey() {
             return currentUserEmail ? `bloom_app_data_v2_${currentUserEmail}` : 'bloom_app_data_v2_guest';
@@ -705,7 +715,6 @@
             let modified = false;
 
             appData.tasks = appData.tasks.map(t => {
-                // If task is unfinished and its date is in the past
                 if ((t.status === 'pending' || t.status === 'in_progress') && t.date && t.date < todayStr) {
                     if (t.recurrence && t.recurrence !== 'none') {
                         let nextDate = new Date(t.date);
@@ -718,7 +727,6 @@
                         }
                         
                         const newDateStr = nextDate.toISOString().split('T')[0];
-                        // If calculated next date is still in past, push to today
                         const finalDateStr = newDateStr < todayStr ? todayStr : newDateStr;
                         modified = true;
                         return { ...t, date: finalDateStr };
@@ -976,9 +984,13 @@
             const space = appData.spaces.find(s => s.id === task.spaceId);
             const proj = appData.projects.find(p => p.id === task.projectId);
             document.getElementById('detailSpaceProjBadge').innerText = `${space ? space.name : ''} ${proj ? '• ' + proj.title : ''}`;
-            document.getElementById('detailTaskDate').innerText = task.date || (task.startDate ? `${task.startDate} → ${task.endDate}` : 'غير محدد');
+            
+            let timeStr = task.date || (task.startDate ? `${task.startDate} → ${task.endDate}` : '');
+            if (task.startTime && task.endTime) {
+                timeStr += ` (${task.startTime} → ${task.endTime})`;
+            }
+            document.getElementById('detailTaskDate').innerText = timeStr || 'غير محدد';
 
-            // Recurrence text mapping
             const recMap = {
                 none: i18n[currentLang].recNone,
                 daily: i18n[currentLang].recDaily,
@@ -987,7 +999,6 @@
             };
             document.getElementById('detailRecurrenceText').innerText = recMap[task.recurrence || 'none'];
 
-            // Calculate duration text
             let durationMins = 0;
             if(task.startTime && task.endTime) {
                 const [sH, sM] = task.startTime.split(':').map(Number);
@@ -1002,7 +1013,6 @@
             const mins = durationMins % 60;
             document.getElementById('detailTaskDuration').innerText = `${hrs > 0 ? hrs + 'س ' : ''}${mins}د`;
 
-            // Reset Minuteur for this task
             minuteurSeconds = durationMins * 60;
             minuteurIsOvertime = false;
             updateMinuteurDisplay();
@@ -1018,7 +1028,7 @@
         function closeTaskDetailModal() {
             if(minuteurInterval) clearInterval(minuteurInterval);
             minuteurIsRunning = false;
-            document.getElementById('btnStartMinuteur').innerText = "▶️ بدء";
+            document.getElementById('btnStartMinuteur').innerText = i18n[currentLang].btnStartTimer;
             document.getElementById('taskDetailModal').classList.add('hidden');
         }
 
@@ -1130,7 +1140,7 @@
             minuteurIsRunning = false;
             minuteurIsOvertime = false;
             minuteurSeconds = 15 * 60;
-            document.getElementById('btnStartMinuteur').innerText = "▶️ بدء";
+            document.getElementById('btnStartMinuteur').innerText = i18n[currentLang].btnStartTimer;
             updateMinuteurDisplay();
         }
 
@@ -1337,7 +1347,7 @@
                 const projPct = allProjTasks.length ? Math.round((projDone / allProjTasks.length) * 100) : 0;
 
                 return `
-                    <div class="bg-white/95 dark:bg-slate-800/95 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
+                    <div data-id="${proj.id}" class="project-card-item bg-white/95 dark:bg-slate-800/95 rounded-3xl p-4 shadow-sm border border-purple-100 dark:border-slate-700 space-y-3">
                         <div class="flex justify-between items-center">
                             <span class="font-extrabold text-sm text-purple-900 dark:text-purple-300">📁 ${proj.title}</span>
                             <div class="flex items-center gap-2">
@@ -1349,7 +1359,7 @@
                         <div class="w-full bg-purple-50 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
                             <div class="bg-purple-500 h-2 rounded-full transition-all duration-300" style="width: ${projPct}%"></div>
                         </div>
-                        <div class="space-y-2 pt-1">
+                        <div id="proj_tasks_${proj.id}" class="project-tasks-list space-y-2 pt-1 min-h-[10px]">
                             ${projTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs text-slate-300 text-center py-1">-</p>`}
                         </div>
                     </div>
@@ -1368,6 +1378,9 @@
             renderStatusesPage();
             renderArchive();
             renderStickyNotesView();
+
+            // Initialize Drag and Drop (SortableJS)
+            initDragAndDrop();
         }
 
         function renderPinnedNotes() {
@@ -1393,9 +1406,17 @@
             const subText = subCount > 0 ? `📚 ${subDone}/${subCount}` : '';
             const recIcon = (tk.recurrence && tk.recurrence !== 'none') ? '🔄' : '';
 
+            // Render full timing (Start → End)
+            let timeDisplay = '';
+            if (tk.startTime && tk.endTime) {
+                timeDisplay = `⏰ ${tk.startTime} → ${tk.endTime}`;
+            } else if (tk.startTime) {
+                timeDisplay = `⏰ ${tk.startTime}`;
+            }
+
             return `
-                <div class="p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all relative" style="background-color: ${tk.color || '#F3E8FF'}">
-                    <div onclick="openTaskDetailModal('${tk.id}')" class="flex items-center gap-3 flex-1 min-w-0 cursor-pointer">
+                <div data-id="${tk.id}" class="task-card-item p-3.5 rounded-2xl flex items-center justify-between shadow-sm border border-black/5 transition-all relative cursor-grab active:cursor-grabbing" style="background-color: ${tk.color || '#F3E8FF'}">
+                    <div onclick="openTaskDetailModal('${tk.id}')" class="flex items-center gap-3 flex-1 min-w-0">
                         <button onclick="event.stopPropagation(); changeTaskStatus('${tk.id}', 'done')" class="text-xl hover:scale-110 text-purple-800 dark:text-purple-400 font-bold transition">🟣</button>
 
                         <div class="truncate">
@@ -1406,7 +1427,7 @@
                             </div>
                             <div class="flex flex-wrap items-center gap-2 text-[10px] font-bold text-slate-600 mt-0.5">
                                 ${tk.date ? `<span>📅 ${tk.date}</span>` : ''}
-                                ${tk.startTime ? `<span>⏰ ${tk.startTime}</span>` : ''}
+                                ${timeDisplay ? `<span>${timeDisplay}</span>` : ''}
                                 ${subText ? `<span class="bg-white/80 text-purple-800 px-1.5 py-0.5 rounded-md font-extrabold">${subText}</span>` : ''}
                             </div>
                         </div>
@@ -1429,7 +1450,7 @@
                 const spProjs = appData.projects.filter(p => p.spaceId === sp.id);
 
                 return `
-                    <div onclick="playUiSound(); changeSpace('${sp.id}')" class="p-4 rounded-3xl cursor-pointer transition border ${isSelected ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-400 border-purple-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-purple-100 dark:border-slate-700 hover:bg-purple-50'}">
+                    <div data-id="${sp.id}" onclick="playUiSound(); changeSpace('${sp.id}')" class="space-card-item p-4 rounded-3xl cursor-pointer transition border ${isSelected ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-400 border-purple-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-purple-100 dark:border-slate-700 hover:bg-purple-50'}">
                         <div class="text-2xl mb-1">${sp.icon || '📂'}</div>
                         <h4 class="font-black text-sm truncate">${sp.name}</h4>
                         <div class="text-[10px] font-bold opacity-80 mt-2 flex justify-between">
@@ -1469,7 +1490,7 @@
         function renderTodayTasks() {
             const todayStr = new Date().toISOString().split('T')[0];
             const todayTasks = sortTasksList(appData.tasks.filter(tk => (tk.status === 'pending' || tk.status === 'in_progress') && (tk.date === todayStr || tk.startDate === todayStr)));
-            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">لا توجد مهام مجدولة لليوم ☀️</p>`;
+            document.getElementById('todayTasksContainer').innerHTML = todayTasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">${i18n[currentLang].noTasksToday}</p>`;
         }
 
         function renderCalendar() {
@@ -1504,7 +1525,7 @@
         function renderSelectedDateTasks() {
             document.getElementById('selectedDateDisplay').innerText = selectedCalendarDate || '-';
             let tasks = appData.tasks.filter(tk => tk.date === selectedCalendarDate || tk.startDate === selectedCalendarDate);
-            document.getElementById('calendarSelectedDateTasks').innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">لا توجد مهام لليوم المحدد 📅</p>`;
+            document.getElementById('calendarSelectedDateTasks').innerHTML = tasks.map(tk => renderTaskCard(tk)).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-3">${i18n[currentLang].noTasksForDate}</p>`;
         }
 
         // RENDER TASK STATUSES CLASSIFIED PAGE
@@ -1548,7 +1569,7 @@
                         <button onclick="playUiSound(); deleteTaskPermanent('${tk.id}')" class="text-xs bg-red-100 text-red-700 px-2.5 py-1 rounded-xl font-bold">🗑️ حذف</button>
                     </div>
                 </div>
-            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">الأرشيف فارغ 🗃️</p>`;
+            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5">${i18n[currentLang].emptyArchive}</p>`;
         }
 
         // RENDER STICKY NOTES VIEW
@@ -1562,7 +1583,7 @@
                         <button onclick="playUiSound(); askDeleteStickyNote(${idx})" class="text-slate-400 hover:text-red-600 text-xs font-bold">🗑️</button>
                     </div>
                 </div>
-            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5 col-span-2">لا توجد ملاحظات 📝</p>`;
+            `).join('') || `<p class="text-xs font-bold text-slate-400 text-center py-5 col-span-2">${i18n[currentLang].emptyNotes}</p>`;
         }
 
         function toggleStickyPin(idx) {
@@ -1588,6 +1609,100 @@
             if(activeView) activeView.classList.remove('hidden');
             const activeNav = document.getElementById('nav' + view.charAt(0).toUpperCase() + view.slice(1));
             if(activeNav) activeNav.className = "flex flex-col items-center gap-1 text-purple-600 font-extrabold";
+        }
+
+        // DRAG AND DROP INITIALIZER (SORTABLE JS)
+        function initDragAndDrop() {
+            sortableInstances.forEach(i => i.destroy());
+            sortableInstances = [];
+
+            if (appData.sortMode !== 'manual') return;
+
+            // Standalone Tasks Drag & Drop
+            const standaloneEl = document.getElementById('standaloneTasksContainer');
+            if (standaloneEl) {
+                sortableInstances.push(new Sortable(standaloneEl, {
+                    animation: 150, draggable: '.task-card-item', ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(standaloneEl.children).map(child => child.getAttribute('data-id')).filter(Boolean);
+                        reorderTasks(newOrder);
+                    }
+                }));
+            }
+
+            // Projects List Drag & Drop
+            const projectsEl = document.getElementById('projectsContainer');
+            if (projectsEl) {
+                sortableInstances.push(new Sortable(projectsEl, {
+                    animation: 150, draggable: '.project-card-item', ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(projectsEl.children).map(child => child.getAttribute('data-id')).filter(Boolean);
+                        reorderProjects(newOrder);
+                    }
+                }));
+            }
+
+            // Inner Project Tasks Drag & Drop
+            document.querySelectorAll('.project-tasks-list').forEach(pEl => {
+                sortableInstances.push(new Sortable(pEl, {
+                    animation: 150, draggable: '.task-card-item', ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(pEl.children).map(child => child.getAttribute('data-id')).filter(Boolean);
+                        reorderTasks(newOrder);
+                    }
+                }));
+            });
+
+            // Workspaces Drag & Drop
+            const spacesEl = document.getElementById('spacesCardsGrid');
+            if (spacesEl) {
+                sortableInstances.push(new Sortable(spacesEl, {
+                    animation: 150, draggable: '.space-card-item', ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        const newOrder = Array.from(spacesEl.children).map(child => child.getAttribute('data-id')).filter(Boolean);
+                        reorderSpaces(newOrder);
+                    }
+                }));
+            }
+        }
+
+        function reorderTasks(idOrder) {
+            const taskMap = new Map(appData.tasks.map(t => [t.id, t]));
+            const orderedTasks = [];
+            idOrder.forEach(id => {
+                if (taskMap.has(id)) {
+                    orderedTasks.push(taskMap.get(id));
+                    taskMap.delete(id);
+                }
+            });
+            appData.tasks = [...orderedTasks, ...Array.from(taskMap.values())];
+            localStorage.setItem(getUserStorageKey(), JSON.stringify(appData));
+        }
+
+        function reorderProjects(idOrder) {
+            const projMap = new Map(appData.projects.map(p => [p.id, p]));
+            const orderedProjs = [];
+            idOrder.forEach(id => {
+                if (projMap.has(id)) {
+                    orderedProjs.push(projMap.get(id));
+                    projMap.delete(id);
+                }
+            });
+            appData.projects = [...orderedProjs, ...Array.from(projMap.values())];
+            localStorage.setItem(getUserStorageKey(), JSON.stringify(appData));
+        }
+
+        function reorderSpaces(idOrder) {
+            const spaceMap = new Map(appData.spaces.map(s => [s.id, s]));
+            const orderedSpaces = [];
+            idOrder.forEach(id => {
+                if (spaceMap.has(id)) {
+                    orderedSpaces.push(spaceMap.get(id));
+                    spaceMap.delete(id);
+                }
+            });
+            appData.spaces = [...orderedSpaces, ...Array.from(spaceMap.values())];
+            localStorage.setItem(getUserStorageKey(), JSON.stringify(appData));
         }
 
         // INIT APP
