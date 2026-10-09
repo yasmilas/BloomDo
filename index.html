@@ -168,15 +168,22 @@
             </div>
             
             <div class="flex items-center gap-1.5">
+                <!-- Sound Toggle Button -->
                 <button id="btnSoundToggle" onclick="toggleSoundSetting()" class="bg-purple-50 dark:bg-slate-700 text-purple-700 dark:text-purple-300 p-2 rounded-2xl text-sm font-bold shadow-xs hover:scale-105 transition" title="Activer/Désactiver le son">
                     <span id="soundIcon">🔊</span>
                 </button>
+
+                <!-- Theme Toggle Button -->
                 <button onclick="toggleTheme()" class="bg-purple-50 dark:bg-slate-700 text-purple-700 dark:text-purple-300 p-2 rounded-2xl text-sm font-bold shadow-xs hover:scale-105 transition" title="Thème clair/sombre">
                     <span id="themeIcon">☀️</span>
                 </button>
+
+                <!-- Guide Modal -->
                 <button onclick="playUiSound(); openGuideModal()" class="bg-purple-50 dark:bg-slate-700 text-purple-700 dark:text-purple-300 p-2 rounded-2xl text-sm font-bold shadow-xs hover:scale-105 transition" title="Guide d'utilisation">
                     <span>📖</span>
                 </button>
+
+                <!-- Language Selector -->
                 <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-purple-50 dark:bg-slate-700 text-purple-900 dark:text-purple-200 text-xs font-black px-2 py-2 rounded-2xl border-none focus:outline-none cursor-pointer">
                     <option value="fr" selected>FR 🇫🇷</option>
                     <option value="en">EN 🇺🇸</option>
@@ -184,6 +191,8 @@
                     <option value="ary">🇲🇦 الدارجة</option>
                     <option value="es">ES 🇪🇸</option>
                 </select>
+
+                <!-- Account Modal Button -->
                 <button onclick="playUiSound(); openAuthModal()" class="bg-purple-600 text-white p-2 rounded-2xl text-xs font-bold shadow-md hover:bg-purple-700 transition">👤</button>
             </div>
         </div>
@@ -191,6 +200,7 @@
 
     <!-- MAIN CONTAINER -->
     <main class="max-w-md mx-auto px-4 pt-4 space-y-5">
+
         <!-- QUICK ACTION BUTTONS -->
         <div class="grid grid-cols-3 gap-2">
             <button onclick="playUiSound(); openAddTaskModal()" class="bg-purple-600 hover:bg-purple-700 text-white py-2.5 px-3 rounded-2xl text-xs font-black shadow-md shadow-purple-500/20 flex items-center justify-center gap-1.5 transition active:scale-95">
@@ -329,6 +339,8 @@
             <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-purple-100 dark:border-slate-700">
                 <h2 class="text-sm font-black text-purple-900 dark:text-purple-300" data-i18n="statusesPageTitle">📊 Tâches par statut</h2>
             </div>
+
+            <!-- Pending Section -->
             <div class="space-y-2">
                 <h3 class="text-xs font-black text-amber-700 dark:text-amber-400 flex justify-between items-center bg-amber-50 dark:bg-amber-950/40 p-2.5 rounded-2xl border border-amber-200/50 dark:border-amber-900/30">
                     <span data-i18n="statusPending">⏳ En attente</span>
@@ -336,6 +348,8 @@
                 </h3>
                 <div id="statusPendingList" class="space-y-2"></div>
             </div>
+
+            <!-- In Progress Section -->
             <div class="space-y-2">
                 <h3 class="text-xs font-black text-blue-700 dark:text-blue-400 flex justify-between items-center bg-blue-50 dark:bg-blue-950/40 p-2.5 rounded-2xl border border-blue-200/50 dark:border-blue-900/30">
                     <span data-i18n="statusInProgress">🔄 En cours</span>
@@ -343,6 +357,8 @@
                 </h3>
                 <div id="statusInProgressList" class="space-y-2"></div>
             </div>
+
+            <!-- Completed Section -->
             <div class="space-y-2">
                 <h3 class="text-xs font-black text-emerald-700 dark:text-emerald-400 flex justify-between items-center bg-emerald-50 dark:bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-200/50 dark:border-emerald-900/30">
                     <span data-i18n="statusDone">✅ Terminée</span>
@@ -350,6 +366,8 @@
                 </h3>
                 <div id="statusDoneList" class="space-y-2"></div>
             </div>
+
+            <!-- Cancelled Section -->
             <div class="space-y-2">
                 <h3 class="text-xs font-black text-red-700 dark:text-red-400 flex justify-between items-center bg-red-50 dark:bg-red-950/40 p-2.5 rounded-2xl border border-red-200/50 dark:border-red-900/30">
                     <span data-i18n="statusCancelled">❌ Annulée</span>
@@ -443,6 +461,10 @@
                         <button onclick="resetMinuteur()" class="bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-2xl text-xs font-bold">🔄</button>
                     </div>
                 </div>
+                <div id="timerFinishedActions" class="hidden flex gap-2 pt-2">
+                    <button onclick="continueMinuteur()" class="flex-1 bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 px-3 py-2 rounded-xl text-xs font-black" data-i18n="continueTimer">Continuer</button>
+                    <button onclick="finishMinuteur()" class="flex-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 px-3 py-2 rounded-xl text-xs font-black" data-i18n="finishTimer">C'est fini</button>
+                </div>
             </div>
 
             <!-- Description / Instructions -->
@@ -494,14 +516,25 @@
                 <!-- Schedule Type -->
                 <div class="space-y-2 bg-purple-50/60 dark:bg-slate-700/50 p-3 rounded-2xl border border-purple-100/50 dark:border-slate-600 text-xs font-bold">
                     <label class="block text-slate-600 dark:text-slate-300" data-i18n="scheduleTypeLabel">Durée & Planification:</label>
-                    
+                    <select id="taskScheduleType" onchange="toggleScheduleFields()" class="w-full px-3 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold">
+                        <option value="single" data-i18n="optSingleDay">Un seul jour (Single Day)</option>
+                        <option value="continuous" data-i18n="optContinuous">Jours continus (Continuous)</option>
+                    </select>
+
                     <div id="singleDayFields" class="space-y-2">
                         <input type="date" id="taskDate" class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold">
                         <div class="flex items-center gap-2">
                             <span class="text-slate-500" data-i18n="from">De:</span>
-                            <input type="time" id="taskStartTime" onchange="calculateFormDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                            <input type="time" id="taskStartTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
                             <span class="text-slate-500" data-i18n="to">À:</span>
-                            <input type="time" id="taskEndTime" onchange="calculateFormDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                            <input type="time" id="taskEndTime" onchange="calculateDuration()" class="w-1/2 bg-white dark:bg-slate-800 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 text-xs font-bold">
+                        </div>
+                    </div>
+
+                    <div id="multiDayFields" class="space-y-2 hidden">
+                        <div class="flex gap-2">
+                            <input type="date" id="taskStartDate" class="w-1/2 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold">
+                            <input type="date" id="taskEndDate" class="w-1/2 px-2 py-1.5 rounded-xl border border-purple-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-xs font-bold">
                         </div>
                     </div>
 
@@ -544,7 +577,7 @@
                     <textarea id="taskDescription" rows="2" placeholder="Instructions et détails..." class="w-full px-3 py-2 rounded-2xl border border-purple-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-xs font-bold focus:outline-none" data-i18n-ph="descPlaceholder"></textarea>
                 </div>
 
-                <!-- Color Selection -->
+                <!-- Color Selection (Full Card Theme) -->
                 <div>
                     <label class="text-xs font-bold text-slate-600 dark:text-slate-300 block mb-1" data-i18n="cardColorLabel">🎨 Couleur de la carte:</label>
                     <div class="flex gap-2 items-center">
@@ -576,6 +609,13 @@
                     <input type="checkbox" id="stickyPinHome" class="rounded text-amber-500 focus:ring-0">
                     <span data-i18n="pinToHome">📌 Épingler à la page d'accueil</span>
                 </label>
+                
+                <div>
+                    <label class="block text-slate-500 mb-1" data-i18n="linkToTaskLabel">🔗 Lier à une tâche:</label>
+                    <select id="stickyLinkTaskId" class="w-full px-2 py-1.5 rounded-xl border border-amber-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-xs font-bold">
+                        <option value="">(Sans lien)</option>
+                    </select>
+                </div>
             </div>
 
             <div class="flex gap-2 justify-end pt-2">
@@ -658,7 +698,7 @@
                 },
                 {
                     id: 'task-2',
-                    title: 'Marche matinale',
+                    title: 'Marche matinale 30 mins',
                     description: 'Prendre l\'air et faire du sport.',
                     spaceId: 'space-personal',
                     projectId: 'proj-2',
@@ -674,22 +714,542 @@
                     pinned: false
                 }
             ],
-            notes: []
+            notes: [
+                { id: 'note-1', content: 'Ne pas oublier de valider les tâches accomplies 🎉', pinned: true, taskId: '' }
+            ]
         };
 
         let appState = loadState();
         let currentView = 'home';
         let currentSelectedSpaceId = appState.spaces[0]?.id || 'space-work';
         let selectedDetailTaskId = null;
-        
         let minuteurTimer = null;
-        let minuteurSeconds = 0;
+        let minuteurSeconds = 60;
         let minuteurRunning = false;
-        
+        let minuteurOvertime = false;
         let calendarYear = new Date().getFullYear();
         let calendarMonth = new Date().getMonth();
         let pendingDeleteAction = null;
         let selectedColorHex = '#f3e8ff';
+
+        /* TRANSLATIONS DICTIONARY */
+        const i18n = {
+            fr: {
+                guideTitle: "Guide d'utilisation - BloomDo",
+                guideIntro: "Bienvenue sur BloomDo ! Organisez vos activités en toute simplicité.",
+                guideSpacesTitle: "1. Espaces & Projets :",
+                guideSpacesDesc: "Créez et organisez vos projets. Vous pouvez les modifier ou les supprimer librement à tout moment !",
+                guideColorsTitle: "2. Cartes entièrement colorées :",
+                guideColorsDesc: "Chaque tâche est stylisée avec la couleur choisie sur l'ensemble de sa carte.",
+                guideCelebrationTitle: "3. Célébration & Sons :",
+                guideCelebrationDesc: "Déclenchement automatique d'effets sonores et de confettis 🎉 lors de l'accomplissement d'une tâche !",
+                guideDragTitle: "4. Réorganisation facile :",
+                guideDragDesc: "Réorganisez vos tâches et projets facilement par glisser-déposer.",
+                authSubtitle: "Sauvegardez vos données en toute sécurité",
+                googleLoginBtn: "Continuer avec Google",
+                or: "ou",
+                emailPlaceholder: "Votre E-mail...",
+                passPlaceholder: "Mot de passe...",
+                loginBtn: "Se connecter / S'inscrire",
+                guestBtn: "Continuer comme invité",
+                confirmDeleteTitle: "Confirmer la suppression",
+                confirmDeleteMsg: "Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.",
+                btnAddTask: "Tâche",
+                btnAddProject: "Projet",
+                btnNote: "Note",
+                sortMode: "Tri:",
+                sortManual: "🖐️ Manuel (Drag)",
+                sortTime: "⏰ Par Heure",
+                sortDate: "📅 Par Date",
+                sortCreated: "🆕 Récents",
+                sortPinned: "📌 Épinglés",
+                statTasks: "Tâches",
+                statProjects: "Projets",
+                statProgress: "Progrès",
+                pinnedNotes: "Notes Épinglées",
+                standaloneTasks: "Tâches Indépendantes 🌸",
+                spacesTitle: "Espaces de Travail 📂",
+                addSpaceBtn: "+ Nouvel Espace",
+                editSpace: "Modifier",
+                deleteSpace: "Supprimer",
+                todayTitle: "Tâches d'Aujourd'hui ☀️",
+                calendarTitle: "Calendrier Mensuel 📅",
+                tasksForDate: "Tâches pour cette date:",
+                statusesPageTitle: "📊 Tâches par statut",
+                statusPending: "⏳ En attente",
+                statusInProgress: "🔄 En cours",
+                statusDone: "✅ Terminée",
+                statusCancelled: "❌ Annulée",
+                continueTimer: "Continuer",
+                finishTimer: "C'est fini",
+                restoreTask: "↩️ Restaurer",
+                archivePageTitle: "🗃️ Archives des tâches",
+                archiveSearchPlaceholder: "Rechercher dans les archives...",
+                notesPageTitle: "📝 Notes Rapides",
+                navHome: "Accueil",
+                navSpaces: "Espaces",
+                navToday: "Aujourd'hui",
+                navCalendar: "Calendrier",
+                navNotes: "Notes",
+                navStatuses: "Statuts",
+                navArchive: "Archives",
+                recurrenceTitle: "🔄 Répétition:",
+                minuteurTitle: "Minuteur:",
+                btnStartTimer: "▶️ Démarrer",
+                descriptionLabel: "📝 Description & détails:",
+                subtasksLabel: "➕ Sous-tâches:",
+                subtaskPlaceholder: "Ajouter une sous-tâche...",
+                btnAddSubtask: "+ Ajouter",
+                linkedNotesTitle: "📌 Notes liées à cette tâche:",
+                cancelTaskBtn: "🚫 Annuler",
+                editTaskBtn: "✏️ Modifier",
+                deleteTaskBtn: "🗑️ Supprimer",
+                closeBtn: "Fermer",
+                tabAddTask: "Ajouter une Tâche 📝",
+                taskTitlePlaceholder: "Titre de la tâche...",
+                scheduleTypeLabel: "Durée & Planification:",
+                optSingleDay: "Un seul jour (Single Day)",
+                optContinuous: "Jours continus (Continuous)",
+                from: "De:",
+                to: "À:",
+                duration: "Durée:",
+                recurrenceLabel: "🔄 Répétition:",
+                recNone: "Pas de répétition",
+                recDaily: "Chaque jour ☀️",
+                recWeekly: "Chaque semaine 📅",
+                recMonthly: "Chaque mois 📆",
+                statusLabel: "Statut:",
+                cardColorLabel: "🎨 Couleur de la carte:",
+                cancel: "Annuler",
+                saveTask: "Enregistrer",
+                newNoteTitle: "📝 Nouvelle Note Rapide",
+                notePlaceholder: "Écrivez votre idée...",
+                pinToHome: "📌 Épingler à l'accueil",
+                linkToTaskLabel: "🔗 Lier à une tâche:",
+                save: "Enregistrer",
+                tabAddProject: "Projet 📁",
+                projectTitlePlaceholder: "Nom du projet...",
+                targetSpaceLabel: "Espace de travail:",
+                createProject: "Enregistrer",
+                newSpaceTitle: "Nouvel Espace 📂",
+                spaceNamePlaceholder: "Nom de l'espace...",
+                confirmDeleteBtn: "Oui, supprimer",
+                confirmDeleteProjectMsg: "Voulez-vous vraiment supprimer ce projet ? Ses tâches deviendront indépendantes.",
+                noTasksYet: "Aucune tâche pour le moment ✨"
+            },
+            en: {
+                guideTitle: "User Guide - BloomDo",
+                guideIntro: "Welcome to BloomDo! Easily manage your time and projects.",
+                guideSpacesTitle: "1. Workspaces & Projects:",
+                guideSpacesDesc: "Create workspaces and projects. You can now edit or delete any project at any time!",
+                guideColorsTitle: "2. Full Color Cards:",
+                guideColorsDesc: "Each task is styled with your chosen color across its whole card background.",
+                guideCelebrationTitle: "3. Sound & Celebration:",
+                guideCelebrationDesc: "Automatic sounds and confetti 🎉 trigger when completing tasks!",
+                guideDragTitle: "4. Drag & Drop:",
+                guideDragDesc: "Easily rearrange your items by dragging when manual sort is on.",
+                authSubtitle: "Save your tasks securely",
+                googleLoginBtn: "Continue with Google",
+                or: "or",
+                emailPlaceholder: "Your email...",
+                passPlaceholder: "Password...",
+                loginBtn: "Login / Register",
+                guestBtn: "Continue as Guest",
+                confirmDeleteTitle: "Confirm Deletion",
+                confirmDeleteMsg: "Are you sure you want to delete this item? This cannot be undone.",
+                btnAddTask: "Task",
+                btnAddProject: "Project",
+                btnNote: "Note",
+                sortMode: "Sort:",
+                sortManual: "🖐️ Manual (Drag)",
+                sortTime: "⏰ By Time",
+                sortDate: "📅 By Date",
+                sortCreated: "🆕 Recent",
+                sortPinned: "📌 Pinned",
+                statTasks: "Tasks",
+                statProjects: "Projects",
+                statProgress: "Progress",
+                pinnedNotes: "Pinned Notes",
+                standaloneTasks: "Standalone Tasks 🌸",
+                spacesTitle: "Workspaces 📂",
+                addSpaceBtn: "+ New Space",
+                editSpace: "Edit",
+                deleteSpace: "Delete",
+                todayTitle: "Today's Tasks ☀️",
+                calendarTitle: "Monthly Calendar 📅",
+                tasksForDate: "Tasks for this date:",
+                statusesPageTitle: "📊 Tasks by Status",
+                statusPending: "⏳ Pending",
+                statusInProgress: "🔄 In Progress",
+                statusDone: "✅ Done",
+                statusCancelled: "❌ Cancelled",
+                continueTimer: "Continue",
+                finishTimer: "Finished",
+                restoreTask: "↩️ Restore",
+                archivePageTitle: "🗃️ Task Archives",
+                archiveSearchPlaceholder: "Search archives...",
+                notesPageTitle: "📝 Quick Notes",
+                navHome: "Home",
+                navSpaces: "Spaces",
+                navToday: "Today",
+                navCalendar: "Calendar",
+                navNotes: "Notes",
+                navStatuses: "Statuses",
+                navArchive: "Archives",
+                recurrenceTitle: "🔄 Recurrence:",
+                minuteurTitle: "Timer:",
+                btnStartTimer: "▶️ Start",
+                descriptionLabel: "📝 Description & Details:",
+                subtasksLabel: "➕ Subtasks:",
+                subtaskPlaceholder: "Add subtask...",
+                btnAddSubtask: "+ Add",
+                linkedNotesTitle: "📌 Linked Notes:",
+                cancelTaskBtn: "🚫 Cancel",
+                editTaskBtn: "✏️ Edit",
+                deleteTaskBtn: "🗑️ Delete",
+                closeBtn: "Close",
+                tabAddTask: "Add Task 📝",
+                taskTitlePlaceholder: "Task title...",
+                scheduleTypeLabel: "Schedule Type:",
+                optSingleDay: "Single Day",
+                optContinuous: "Continuous Days",
+                from: "From:",
+                to: "To:",
+                duration: "Duration:",
+                recurrenceLabel: "🔄 Recurrence:",
+                recNone: "No recurrence",
+                recDaily: "Every day ☀️",
+                recWeekly: "Every week 📅",
+                recMonthly: "Every month 📆",
+                statusLabel: "Status:",
+                cardColorLabel: "🎨 Card Color:",
+                cancel: "Cancel",
+                saveTask: "Save",
+                newNoteTitle: "📝 New Note",
+                notePlaceholder: "Write your note...",
+                pinToHome: "📌 Pin to Home",
+                linkToTaskLabel: "🔗 Link to Task:",
+                save: "Save",
+                tabAddProject: "Project 📁",
+                projectTitlePlaceholder: "Project name...",
+                targetSpaceLabel: "Workspace:",
+                createProject: "Save",
+                newSpaceTitle: "New Space 📂",
+                spaceNamePlaceholder: "Space name...",
+                confirmDeleteBtn: "Yes, Delete",
+                confirmDeleteProjectMsg: "Are you sure you want to delete this project? Its tasks will become standalone.",
+                noTasksYet: "No tasks found ✨"
+            },
+            es: {
+                guideTitle: "Guía de Usuario - BloomDo",
+                guideIntro: "¡Bienvenido a BloomDo! Organiza tus tareas fácilmente.",
+                guideSpacesTitle: "1. Espacios y Proyectos:",
+                guideSpacesDesc: "Crea espacios y proyectos. ¡Ahora puedes eliminar o editar cualquier proyecto en cualquier momento!",
+                guideColorsTitle: "2. Tarjetas coloreadas:",
+                guideColorsDesc: "Cada tarea se diseña con el fondo del color que elijas.",
+                guideCelebrationTitle: "3. Sonido y Celebración:",
+                guideCelebrationDesc: "Efectos de sonido y confeti 🎉 al completar tareas.",
+                guideDragTitle: "4. Arrastrar y Soltar:",
+                guideDragDesc: "Reorganiza libremente mediante arrastrar y soltar.",
+                authSubtitle: "Guarda tus datos de forma segura",
+                googleLoginBtn: "Continuar con Google",
+                or: "o",
+                emailPlaceholder: "Correo electrónico...",
+                passPlaceholder: "Contraseña...",
+                loginBtn: "Iniciar sesión / Registrarse",
+                guestBtn: "Continuar como invitado",
+                confirmDeleteTitle: "Confirmar eliminación",
+                confirmDeleteMsg: "¿Estás seguro de que deseas eliminar este elemento?",
+                btnAddTask: "Tarea",
+                btnAddProject: "Proyecto",
+                btnNote: "Nota",
+                sortMode: "Orden:",
+                sortManual: "🖐️ Manual",
+                sortTime: "⏰ Por Hora",
+                sortDate: "📅 Por Fecha",
+                sortCreated: "🆕 Recientes",
+                sortPinned: "📌 Fijados",
+                statTasks: "Tareas",
+                statProjects: "Proyectos",
+                statProgress: "Progreso",
+                pinnedNotes: "Notas Fijadas",
+                standaloneTasks: "Tareas Independientes 🌸",
+                spacesTitle: "Espacios de Trabajo 📂",
+                addSpaceBtn: "+ Nuevo Espacio",
+                editSpace: "Editar",
+                deleteSpace: "Eliminar",
+                todayTitle: "Tareas de Hoy ☀️",
+                calendarTitle: "Calendario Mensual 📅",
+                tasksForDate: "Tareas para esta fecha:",
+                statusesPageTitle: "📊 Tareas por Estado",
+                statusPending: "⏳ Pendiente",
+                statusInProgress: "🔄 En proceso",
+                statusDone: "✅ Completada",
+                statusCancelled: "❌ Cancelada",
+                continueTimer: "Continuar",
+                finishTimer: "Terminado",
+                restoreTask: "↩️ Restaurar",
+                archivePageTitle: "🗃️ Archivo de tareas",
+                archiveSearchPlaceholder: "Buscar en archivos...",
+                notesPageTitle: "📝 Notas Rápidas",
+                navHome: "Inicio",
+                navSpaces: "Espacios",
+                navToday: "Hoy",
+                navCalendar: "Calendario",
+                navNotes: "Notas",
+                navStatuses: "Estados",
+                navArchive: "Archivos",
+                recurrenceTitle: "🔄 Repetición:",
+                minuteurTitle: "Temporizador:",
+                btnStartTimer: "▶️ Iniciar",
+                descriptionLabel: "📝 Descripción:",
+                subtasksLabel: "➕ Subtareas:",
+                subtaskPlaceholder: "Añadir subtarea...",
+                btnAddSubtask: "+ Añadir",
+                linkedNotesTitle: "📌 Notas vinculadas:",
+                cancelTaskBtn: "🚫 Cancelar",
+                editTaskBtn: "✏️ Editar",
+                deleteTaskBtn: "🗑️ Eliminar",
+                closeBtn: "Cerrar",
+                tabAddTask: "Añadir Tarea 📝",
+                taskTitlePlaceholder: "Título de la tarea...",
+                scheduleTypeLabel: "Planificación:",
+                optSingleDay: "Un solo día",
+                optContinuous: "Días continuos",
+                from: "De:",
+                to: "A:",
+                duration: "Duración:",
+                recurrenceLabel: "🔄 Repetición:",
+                recNone: "Sin repetición",
+                recDaily: "Todos los días ☀️",
+                recWeekly: "Cada semana 📅",
+                recMonthly: "Cada mes 📆",
+                statusLabel: "Estado:",
+                cardColorLabel: "🎨 Color de la tarjeta:",
+                cancel: "Cancelar",
+                saveTask: "Guardar",
+                newNoteTitle: "📝 Nueva Nota",
+                notePlaceholder: "Escribe tu idea...",
+                pinToHome: "📌 Fijar en inicio",
+                linkToTaskLabel: "🔗 Vincular a tarea:",
+                save: "Guardar",
+                tabAddProject: "Proyecto 📁",
+                projectTitlePlaceholder: "Nombre del proyecto...",
+                targetSpaceLabel: "Espacio de trabajo:",
+                createProject: "Guardar",
+                newSpaceTitle: "Nuevo Espacio 📂",
+                spaceNamePlaceholder: "Nombre del espacio...",
+                confirmDeleteBtn: "Sí, Eliminar",
+                confirmDeleteProjectMsg: "¿Deseas eliminar este proyecto? Sus tareas pasarán a ser independientes.",
+                noTasksYet: "No hay tareas aún ✨"
+            },
+            ar: {
+                guideTitle: "دليل الاستخدام - BloomDo",
+                guideIntro: "مرحباً بك في BloomDo! نظّم مهامك ومشاريعك بكل سهولة.",
+                guideSpacesTitle: "1. مساحات العمل والمشاريع:",
+                guideSpacesDesc: "يمكنك إنشاء مساحات عمل ومشاريع وتعديلها أو حذف أي مشروع في أي وقت!",
+                guideColorsTitle: "2. بطاقات ملونة بالكامل:",
+                guideColorsDesc: "تأخذ كل مهمة لون الخلفية المختار بالكامل لمظهر أنيق.",
+                guideCelebrationTitle: "3. احتفال وأصوات:",
+                guideCelebrationDesc: "مؤثرات صوتية وألعاب نارية 🎉 عند إنجاز المهام!",
+                guideDragTitle: "4. ترتيب يسير:",
+                guideDragDesc: "قم بإعادة ترتيب العناصر بسهولة عن طريق السحب والإفلات.",
+                authSubtitle: "احفظ مهامك وأفكارك بأمان",
+                googleLoginBtn: "المتابعة باستخدام Google",
+                or: "أو",
+                emailPlaceholder: "البريد الإلكتروني...",
+                passPlaceholder: "كلمة المرور...",
+                loginBtn: "تسجيل الدخول / الاشتراك",
+                guestBtn: "المتابعة كضيف",
+                confirmDeleteTitle: "تأكيد الحذف",
+                confirmDeleteMsg: "هل أنت تأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.",
+                btnAddTask: "مهمة",
+                btnAddProject: "مشروع",
+                btnNote: "ملاحظة",
+                sortMode: "الترتيب:",
+                sortManual: "🖐️ يدوي (سحب)",
+                sortTime: "⏰ بالحساب",
+                sortDate: "📅 بالتاريخ",
+                sortCreated: "🆕 الأحدث",
+                sortPinned: "📌 المثبتة",
+                statTasks: "المهام",
+                statProjects: "المشاريع",
+                statProgress: "الإنجاز",
+                pinnedNotes: "الملاحظات المثبتة",
+                standaloneTasks: "المهام المستقلة 🌸",
+                spacesTitle: "مساحات العمل 📂",
+                addSpaceBtn: "+ مساحة جديدة",
+                editSpace: "تعديل",
+                deleteSpace: "حذف",
+                todayTitle: "مهام اليوم ☀️",
+                calendarTitle: "التقويم الشهري 📅",
+                tasksForDate: "مهام هذا التاريخ:",
+                statusesPageTitle: "📊 المهام حسب الحالة",
+                statusPending: "⏳ قيد الانتظار",
+                statusInProgress: "🔄 قيد التنفيذ",
+                statusDone: "✅ مكتملة",
+                statusCancelled: "❌ ملغاة",
+                continueTimer: "استمر",
+                finishTimer: "انتهى",
+                restoreTask: "↩️ استعادة",
+                archivePageTitle: "🗃️ أرشيف المهام",
+                archiveSearchPlaceholder: "بحث في الأرشيف...",
+                notesPageTitle: "📝 ملاحظات سريعة",
+                navHome: "الرئيسية",
+                navSpaces: "المساحات",
+                navToday: "اليوم",
+                navCalendar: "التقويم",
+                navNotes: "ملاحظات",
+                navStatuses: "الحالات",
+                navArchive: "الأرشيف",
+                recurrenceTitle: "🔄 التكرار:",
+                minuteurTitle: "المؤقت:",
+                btnStartTimer: "▶️ تشغيل",
+                descriptionLabel: "📝 الوصف والتفاصيل:",
+                subtasksLabel: "➕ المهام الفرعية:",
+                subtaskPlaceholder: "إضافة مهمة فرعية...",
+                btnAddSubtask: "+ إضافة",
+                linkedNotesTitle: "📌 ملاحظات مرتبطة:",
+                cancelTaskBtn: "🚫 إلغاء",
+                editTaskBtn: "✏️ تعديل",
+                deleteTaskBtn: "🗑️ حذف",
+                closeBtn: "إغلاق",
+                tabAddTask: "إضافة مهمة 📝",
+                taskTitlePlaceholder: "عنوان المهمة...",
+                scheduleTypeLabel: "التوقيت والجدولة:",
+                optSingleDay: "يوم واحد",
+                optContinuous: "أيام متصلة",
+                from: "من:",
+                to: "إلى:",
+                duration: "المدة:",
+                recurrenceLabel: "🔄 التكرار:",
+                recNone: "بدون تكرار",
+                recDaily: "كل يوم ☀️",
+                recWeekly: "كل أسبوع 📅",
+                recMonthly: "كل شهر 📆",
+                statusLabel: "الحالة:",
+                cardColorLabel: "🎨 لون البطاقة:",
+                cancel: "إلغاء",
+                saveTask: "حفظ",
+                newNoteTitle: "📝 ملاحظة سريعة",
+                notePlaceholder: "اكتب فكرتك...",
+                pinToHome: "📌 تثبيت في الرئيسية",
+                linkToTaskLabel: "🔗 ربط بمهمة:",
+                save: "حفظ",
+                tabAddProject: "مشروع 📁",
+                projectTitlePlaceholder: "اسم المشروع...",
+                targetSpaceLabel: "مساحة العمل:",
+                createProject: "حفظ",
+                newSpaceTitle: "مساحة جديدة 📂",
+                spaceNamePlaceholder: "اسم المساحة...",
+                confirmDeleteBtn: "نعم، احذف",
+                confirmDeleteProjectMsg: "هل تريد حذف هذا المشروع؟ ستتحول مهامه إلى مهام مستقلة.",
+                noTasksYet: "لا توجد مهام حالياً ✨"
+            },
+            ary: {
+                guideTitle: "دليل الاستعمال - BloomDo",
+                guideIntro: "مرحبا بيك فـ BloomDo! نظم وقتك وشغلك بكل سهولة.",
+                guideSpacesTitle: "1. المساحات والمشاريع:",
+                guideSpacesDesc: "قاد مساحات عمل ومشاريع، وتقدر تمسح ولا تعدل أي مشروع فـ أي وقت!",
+                guideColorsTitle: "2. بطاقات ملونة كاملة:",
+                guideColorsDesc: "كل مهمة كاتكون ملونة كاملة باللون لي اخترتي.",
+                guideCelebrationTitle: "3. صوت واحتفال:",
+                guideCelebrationDesc: "أصوات زوينة ومفرقعات 🎉 ملي تسالي شي مهمة!",
+                guideDragTitle: "4. سحب وجر بسهولة:",
+                guideDragDesc: "رتب الشغل ديالك غير بالسحب والإفلات.",
+                authSubtitle: "سجل باش تحفظ الشغل ديالك",
+                googleLoginBtn: "كمل بـ Google",
+                or: "ولا",
+                emailPlaceholder: "الايمايل ديالك...",
+                passPlaceholder: "كلمة السر...",
+                loginBtn: "دخول / تسجيل",
+                guestBtn: "كمل كزائر",
+                confirmDeleteTitle: "تأكيد المسح",
+                confirmDeleteMsg: "واش متأكد باغي تمسح هذا العنصر؟",
+                btnAddTask: "مهمة",
+                btnAddProject: "مشروع",
+                btnNote: "ملاحظة",
+                sortMode: "الترتيب:",
+                sortManual: "🖐️ يدوي",
+                sortTime: "⏰ بالساعة",
+                sortDate: "📅 بالتاريخ",
+                sortCreated: "🆕 الجديد",
+                sortPinned: "📌 المثبت",
+                statTasks: "المهام",
+                statProjects: "المشاريع",
+                statProgress: "التقدم",
+                pinnedNotes: "ملاحظات مثبتة",
+                standaloneTasks: "مهام مستقلة 🌸",
+                spacesTitle: "مساحات العمل 📂",
+                addSpaceBtn: "+ مساحة جديدة",
+                editSpace: "تعديل",
+                deleteSpace: "مسح",
+                todayTitle: "مهام اليوم ☀️",
+                calendarTitle: "التقويم 📅",
+                tasksForDate: "مهام هذا التاريخ:",
+                statusesPageTitle: "📊 المهام بالحالة",
+                statusPending: "⏳ متسلسلة",
+                statusInProgress: "🔄 خدام عليها",
+                statusDone: "✅ سالات",
+                statusCancelled: "❌ ملغية",
+                continueTimer: "كمل",
+                finishTimer: "ساليتي",
+                restoreTask: "↩️ رجعها",
+                archivePageTitle: "🗃️ الأرشيف",
+                archiveSearchPlaceholder: "قلب فـ الأرشيف...",
+                notesPageTitle: "📝 ملاحظات سريعة",
+                navHome: "الرئيسية",
+                navSpaces: "المساحات",
+                navToday: "اليوم",
+                navCalendar: "التقويم",
+                navNotes: "ملاحظات",
+                navStatuses: "الحالات",
+                navArchive: "الأرشيف",
+                recurrenceTitle: "🔄 التكرار:",
+                minuteurTitle: "المكانة:",
+                btnStartTimer: "▶️ ابدأ",
+                descriptionLabel: "📝 التفاصيل:",
+                subtasksLabel: "➕ المهام الفرعية:",
+                subtaskPlaceholder: "زيد مهمة فرعية...",
+                btnAddSubtask: "+ زيد",
+                linkedNotesTitle: "📌 ملاحظات مرابطة:",
+                cancelTaskBtn: "🚫 الغاء",
+                editTaskBtn: "✏️ تعديل",
+                deleteTaskBtn: "🗑️ مسح",
+                closeBtn: "سد",
+                tabAddTask: "زيد مهمة 📝",
+                taskTitlePlaceholder: "عنوان المهمة...",
+                scheduleTypeLabel: "التوقيت:",
+                optSingleDay: "نهر واحد",
+                optContinuous: "ايام متتابعة",
+                from: "من:",
+                to: "حتى:",
+                duration: "المدة:",
+                recurrenceLabel: "🔄 التكرار:",
+                recNone: "بلا تكرار",
+                recDaily: "كل نهار ☀️",
+                recWeekly: "كل سيمانة 📅",
+                recMonthly: "كل شهر 📆",
+                statusLabel: "الحالة:",
+                cardColorLabel: "🎨 لون البطاقة:",
+                cancel: "إلغاء",
+                saveTask: "حفظ",
+                newNoteTitle: "📝 ملاحظة سريعة",
+                notePlaceholder: "كتب الفكرة ديالك...",
+                pinToHome: "📌 ثبت فالرئيسية",
+                linkToTaskLabel: "🔗 ربط مع مهمة:",
+                save: "حفظ",
+                tabAddProject: "مشروع 📁",
+                projectTitlePlaceholder: "سمية المشروع...",
+                targetSpaceLabel: "مساحة العمل:",
+                createProject: "حفظ",
+                newSpaceTitle: "مساحة جديدة 📂",
+                spaceNamePlaceholder: "سمية المساحة...",
+                confirmDeleteBtn: "نعم، امسح",
+                confirmDeleteProjectMsg: "باغي تمسح هاد المشروع؟ المهام ديالو غيرجعو مستقلين.",
+                noTasksYet: "ماكايناش شي مهمة دابا ✨"
+            }
+        };
 
         /* AUDIO SYNTHESIZER ENGINE (Web Audio API) */
         let audioCtx = null;
@@ -733,6 +1293,7 @@
             try {
                 const ctx = getAudioContext();
                 if (!ctx) return;
+                // Play pleasant 4-note victory chime (C5 - E5 - G5 - C6)
                 const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     const osc = ctx.createOscillator();
@@ -782,485 +1343,71 @@
         function loadState() {
             try {
                 const saved = localStorage.getItem('bloomdo_state');
-                if (saved) return { ...DEFAULT_STATE, ...JSON.parse(saved) };
-            } catch (e) {}
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    return { ...DEFAULT_STATE, ...parsed };
+                }
+            } catch (e) {
+                console.error("Could not parse saved state:", e);
+            }
             return DEFAULT_STATE;
         }
 
         function saveState() {
             try {
                 localStorage.setItem('bloomdo_state', JSON.stringify(appState));
-            } catch (e) {}
-        }
-
-        /* HELPER FUNCTIONS */
-        function escapeHtml(unsafe) {
-            return (unsafe || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function calculateDurationString(start, end) {
-            if(!start || !end) return '';
-            const [h1, m1] = start.split(':').map(Number);
-            const [h2, m2] = end.split(':').map(Number);
-            let mins = (h2 * 60 + m2) - (h1 * 60 + m1);
-            if (mins < 0) mins += 24 * 60; // handle overnight
-            const h = Math.floor(mins / 60);
-            const m = mins % 60;
-            if(h === 0) return `${m}min`;
-            return `${h}h${m.toString().padStart(2, '0')}min`;
-        }
-
-        function translateStatus(status) {
-            const map = {
-                'pending': '⏳ En attente',
-                'in_progress': '🔄 En cours',
-                'done': '✅ Terminée',
-                'cancelled': '❌ Annulée'
-            };
-            return map[status] || status;
-        }
-
-        /* VIEW & NAVIGATION */
-        function switchView(viewName) {
-            currentView = viewName;
-            ['viewHome', 'viewSpaces', 'viewToday', 'viewCalendar', 'viewStatuses', 'viewArchive', 'viewNotes'].forEach(v => {
-                const el = document.getElementById(v);
-                if (el) el.classList.add('hidden');
-            });
-            const activeViewMap = {
-                'home': 'viewHome', 'spaces': 'viewSpaces', 'today': 'viewToday',
-                'calendar': 'viewCalendar', 'statuses': 'viewStatuses', 'archive': 'viewArchive', 'notes': 'viewNotes'
-            };
-            if (activeViewMap[viewName]) document.getElementById(activeViewMap[viewName]).classList.remove('hidden');
-            
-            ['navHome', 'navSpaces', 'navToday', 'navCalendar', 'navNotes'].forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) btn.classList.replace('text-purple-600', 'text-slate-400');
-            });
-            const activeNavMap = { 'home': 'navHome', 'spaces': 'navSpaces', 'today': 'navToday', 'calendar': 'navCalendar', 'notes': 'navNotes' };
-            if (activeNavMap[viewName]) {
-                document.getElementById(activeNavMap[viewName]).classList.replace('text-slate-400', 'text-purple-600');
-            }
-            renderView(viewName);
-        }
-
-        function renderAll() {
-            applyTheme();
-            updateSoundIcon();
-            // applyTranslations(); // Simplified for now
-            renderView(currentView);
-        }
-
-        function renderView(viewName) {
-            updateStats();
-            if(viewName === 'home') renderHomeView();
-            else if(viewName === 'archive') renderArchive();
-            // other views...
-        }
-
-        /* HOME VIEW RENDERER */
-        function renderHomeView() {
-            const projContainer = document.getElementById('projectsContainer');
-            projContainer.innerHTML = appState.projects.map(p => {
-                const projTasksAll = appState.tasks.filter(t => t.projectId === p.id && t.status !== 'cancelled');
-                const projTasksActive = projTasksAll.filter(t => t.status !== 'done');
-                const projTasksDone = projTasksAll.filter(t => t.status === 'done').length;
-                const total = projTasksAll.length;
-                const progressPct = total === 0 ? 0 : Math.round((projTasksDone / total) * 100);
-                
-                return `
-                    <div class="bg-white/80 dark:bg-slate-800/80 p-4 rounded-3xl border border-purple-100/60 dark:border-slate-700 shadow-sm space-y-3">
-                        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
-                            <h3 class="text-xs font-black text-purple-900 dark:text-purple-300 flex items-center gap-1.5">
-                                <span>📁</span> <span>${escapeHtml(p.name)}</span>
-                                <span class="bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300 px-2 py-0.5 rounded-full text-[10px] font-extrabold">${projTasksActive.length} actives</span>
-                            </h3>
-                            <div class="flex items-center gap-1">
-                                <button onclick="playUiSound(); openAddTaskModal('${p.spaceId}', '${p.id}')" class="text-purple-600 hover:text-purple-700 text-xs font-bold px-2 py-1 bg-purple-50 dark:bg-purple-900/40 rounded-xl">+ Tâche</button>
-                                <button onclick="playUiSound(); askDeleteProject('${p.id}')" class="text-slate-400 hover:text-red-500 text-xs p-1">🗑️</button>
-                            </div>
-                        </div>
-                        
-                        <!-- PROJECT PROGRESS BAR -->
-                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-1 overflow-hidden shadow-inner">
-                            <div class="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full transition-all duration-500" style="width: ${progressPct}%"></div>
-                        </div>
-                        <div class="text-[10px] text-right font-black text-slate-500 mt-0.5 mb-2">${progressPct}% complété</div>
-
-                        <div id="project-list-${p.id}" class="space-y-2 min-h-[10px]">
-                            ${projTasksActive.length > 0 ? projTasksActive.map(generateTaskCardHTML).join('') : `<p class="text-[11px] text-slate-400 font-bold py-1 text-center">Aucune tâche active ✨</p>`}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            const standaloneTasks = appState.tasks.filter(t => (!t.projectId || t.projectId === '') && t.status !== 'done' && t.status !== 'cancelled');
-            document.getElementById('standaloneTasksCountBadge').innerText = standaloneTasks.length;
-            const standaloneContainer = document.getElementById('standaloneTasksContainer');
-            if (standaloneTasks.length > 0) {
-                standaloneContainer.innerHTML = standaloneTasks.map(generateTaskCardHTML).join('');
-            } else {
-                standaloneContainer.innerHTML = `<p class="text-[11px] text-slate-400 font-bold py-2 text-center bg-white/50 dark:bg-slate-800/50 rounded-2xl">Aucune tâche pour le moment ✨</p>`;
+            } catch (e) {
+                console.error("Could not save state:", e);
             }
         }
 
-        function generateTaskCardHTML(task) {
-            const isDone = task.status === 'done';
-            const color = task.color || '#f3e8ff';
-            const isDark = appState.theme === 'dark';
+        /* I18N IMPLEMENTATION */
+        function applyTranslations() {
+            const lang = appState.lang || 'fr';
+            const dict = i18n[lang] || i18n['fr'];
             
-            const cardBgStyle = isDark 
-                ? `background-color: rgba(30, 41, 59, 0.85); border: 1.5px solid ${color};`
-                : `background-color: ${color}; border: 1.5px solid rgba(0,0,0,0.06);`;
-
-            const space = appState.spaces.find(s => s.id === task.spaceId);
-            const project = appState.projects.find(p => p.id === task.projectId);
-            const spaceName = space ? `${space.icon} ${space.name}` : 'Espace non défini';
-            const projName = project ? `📁 ${project.name}` : 'Indépendante';
-            const durationStr = calculateDurationString(task.startTime, task.endTime);
-
-            return `
-                <div data-id="${task.id}" style="${cardBgStyle}" class="task-card p-3.5 rounded-2xl shadow-sm transition-all hover:shadow-md relative space-y-2 group">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex items-center gap-2.5 flex-1 min-w-0">
-                            <button onclick="event.stopPropagation(); toggleTaskComplete('${task.id}')" class="w-5 h-5 rounded-lg border-2 border-slate-400 flex items-center justify-center transition ${isDone ? 'bg-purple-600 border-purple-600 text-white' : 'hover:border-purple-600'}">
-                                ${isDone ? '✓' : ''}
-                            </button>
-                            <div class="flex-1 min-w-0 cursor-pointer" onclick="openTaskDetailModal('${task.id}')">
-                                <h4 class="font-extrabold text-xs text-slate-900 dark:text-slate-100 truncate ${isDone ? 'strike-through' : ''}">
-                                    ${escapeHtml(task.title)}
-                                </h4>
-                                <!-- EXTERNAL DETAILS (DATE, TIME, DURATION, STATUS) -->
-                                <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
-                                    <span class="text-[9px] font-black bg-white/60 dark:bg-slate-900/40 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">📅 ${task.date || '-'}</span>
-                                    ${task.startTime && task.endTime ? 
-                                        `<span class="text-[9px] font-black bg-white/60 dark:bg-slate-900/40 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">⏰ ${task.startTime} - ${task.endTime} (${durationStr})</span>` 
-                                        : ''}
-                                    <span class="text-[9px] font-black bg-white/60 dark:bg-slate-900/40 px-1.5 py-0.5 rounded text-slate-700 dark:text-slate-300">${translateStatus(task.status)}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="openTaskDetailModal('${task.id}')" class="text-slate-400 hover:text-purple-600 p-1 text-xs">✏️</button>
-                    </div>
-                    <!-- Footer: Space/Project -->
-                    <div class="flex items-center justify-between text-[9px] font-black text-slate-600 dark:text-slate-400 pt-1 border-t border-black/5 dark:border-white/10">
-                        <span class="truncate max-w-[200px] bg-white/50 dark:bg-slate-800/50 px-2 py-0.5 rounded-md">
-                            ${spaceName} / ${projName}
-                        </span>
-                    </div>
-                </div>
-            `;
-        }
-
-        /* ARCHIVE & RESTORE */
-        function renderArchive() {
-            const container = document.getElementById('archiveTasksContainer');
-            const search = document.getElementById('archiveSearchInput').value.toLowerCase();
-            let archived = appState.tasks.filter(t => t.status === 'done' || t.status === 'cancelled');
-            if (search) archived = archived.filter(t => t.title.toLowerCase().includes(search));
-            
-            document.getElementById('archivedDoneCount').innerText = `✅ ${archived.filter(t=>t.status==='done').length}`;
-            document.getElementById('archivedCancelledCount').innerText = `❌ ${archived.filter(t=>t.status==='cancelled').length}`;
-            
-            if(archived.length === 0) {
-                 container.innerHTML = `<p class="text-center text-slate-500 text-xs font-bold py-4">Aucune tâche dans les archives.</p>`;
-                 return;
-            }
-            container.innerHTML = archived.map(task => `
-                <div class="bg-white dark:bg-slate-800 p-3 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex justify-between items-center opacity-80 hover:opacity-100 transition">
-                    <div>
-                        <h4 class="text-xs font-bold ${task.status === 'cancelled' ? 'text-red-500 line-through' : 'text-emerald-600 line-through'}">${escapeHtml(task.title)}</h4>
-                        <span class="text-[10px] text-slate-500 font-bold">${task.date} - ${translateStatus(task.status)}</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <!-- RESTORE BUTTON -->
-                        <button onclick="playUiSound(); restoreTask('${task.id}')" class="bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-2 py-1 rounded-lg text-[10px] font-black shadow-sm">🔄 Restaurer</button>
-                        <button onclick="askDeleteTask('${task.id}')" class="text-red-500 p-1">🗑️</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function restoreTask(taskId) {
-            const task = appState.tasks.find(t => t.id === taskId);
-            if(task) {
-                task.status = 'pending';
-                saveState();
-                renderAll();
-            }
-        }
-
-        /* TASKS MODAL & LOGIC */
-        function calculateFormDuration() {
-            const start = document.getElementById('taskStartTime').value;
-            const end = document.getElementById('taskEndTime').value;
-            const durationDisplay = document.getElementById('durationDisplay');
-            if(start && end) {
-                const durationStr = calculateDurationString(start, end);
-                document.getElementById('durationText').innerText = durationStr;
-                durationDisplay.classList.remove('hidden');
-            } else {
-                durationDisplay.classList.add('hidden');
-            }
-        }
-
-        function openAddTaskModal(spaceId = '', projectId = '', taskId = '') {
-            populateSpaceDropdown('taskSpaceSelect', spaceId || currentSelectedSpaceId);
-            updateProjectDropdownForSpace(spaceId || currentSelectedSpaceId, projectId);
-            
-            const form = document.getElementById('formTask');
-            form.reset();
-            document.getElementById('durationDisplay').classList.add('hidden');
-            
-            if (taskId) {
-                const task = appState.tasks.find(t => t.id === taskId);
-                document.getElementById('taskModalTitle').innerText = "Modifier la Tâche 📝";
-                document.getElementById('editingTaskId').value = taskId;
-                document.getElementById('taskTitle').value = task.title;
-                document.getElementById('taskDate').value = task.date;
-                document.getElementById('taskStartTime').value = task.startTime;
-                document.getElementById('taskEndTime').value = task.endTime;
-                document.getElementById('taskStatusSelect').value = task.status;
-                document.getElementById('taskRecurrenceSelect').value = task.recurrence || 'none';
-                document.getElementById('taskDescription').value = task.description || '';
-                selectColor(task.color || '#f3e8ff');
-                calculateFormDuration();
-            } else {
-                document.getElementById('taskModalTitle').innerText = "Ajouter une Tâche 📝";
-                document.getElementById('editingTaskId').value = "";
-                document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
-                selectColor('#f3e8ff');
-            }
-            document.getElementById('taskModal').classList.remove('hidden');
-        }
-
-        function closeTaskModal() {
-            document.getElementById('taskModal').classList.add('hidden');
-        }
-
-        function handleSaveTask(event) {
-            event.preventDefault();
-            const id = document.getElementById('editingTaskId').value;
-            const title = document.getElementById('taskTitle').value;
-            const spaceId = document.getElementById('taskSpaceSelect').value;
-            const projectId = document.getElementById('taskProjectSelect').value;
-            const date = document.getElementById('taskDate').value;
-            const startTime = document.getElementById('taskStartTime').value;
-            const endTime = document.getElementById('taskEndTime').value;
-            const status = document.getElementById('taskStatusSelect').value;
-            const desc = document.getElementById('taskDescription').value;
-            const recurrence = document.getElementById('taskRecurrenceSelect').value;
-
-            if (id) {
-                // UPDATE
-                const task = appState.tasks.find(t => t.id === id);
-                if (task) {
-                    task.title = title;
-                    task.spaceId = spaceId;
-                    task.projectId = projectId;
-                    task.date = date;
-                    task.startTime = startTime;
-                    task.endTime = endTime;
-                    task.status = status;
-                    task.description = desc;
-                    task.recurrence = recurrence;
-                    task.color = selectedColorHex;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.innerText = dict[key];
                 }
+            });
+
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (dict[key]) {
+                    el.placeholder = dict[key];
+                }
+            });
+
+            // Adjust document text direction for Arabic / Darija
+            if (lang === 'ar' || lang === 'ary') {
+                document.documentElement.dir = 'rtl';
             } else {
-                // CREATE
-                const newTask = {
-                    id: 'task-' + Date.now(),
-                    title, spaceId, projectId, date, startTime, endTime, status,
-                    description: desc,
-                    recurrence,
-                    color: selectedColorHex,
-                    subtasks: [],
-                    createdAt: Date.now(),
-                    pinned: false
-                };
-                appState.tasks.push(newTask);
+                document.documentElement.dir = 'ltr';
             }
+
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) langSelect.value = lang;
+        }
+
+        function changeLanguage(newLang) {
+            appState.lang = newLang;
             saveState();
-            closeTaskModal();
+            applyTranslations();
             renderAll();
         }
 
-        function editTaskFromDetail() {
-            if (!selectedDetailTaskId) return;
-            const task = appState.tasks.find(t => t.id === selectedDetailTaskId);
-            if (!task) return;
-            closeTaskDetailModal();
-            openAddTaskModal(task.spaceId, task.projectId, task.id);
-        }
-
-        /* TIMER (COUNTDOWN WITH NEGATIVE) */
-        function initTimerForTask(taskId) {
-            const task = appState.tasks.find(t => t.id === taskId);
-            if (!task) return;
-            if (task.startTime && task.endTime) {
-                const [h1, m1] = task.startTime.split(':').map(Number);
-                const [h2, m2] = task.endTime.split(':').map(Number);
-                let mins = (h2 * 60 + m2) - (h1 * 60 + m1);
-                if (mins < 0) mins += 24 * 60;
-                minuteurSeconds = mins * 60;
-            } else {
-                minuteurSeconds = 25 * 60; // default 25m
-            }
-            updateTimerDisplay();
-        }
-
-        function toggleMinuteur() {
-            if (minuteurRunning) {
-                clearInterval(minuteurTimer);
-                minuteurRunning = false;
-                document.getElementById('btnStartMinuteur').innerText = "▶️ Démarrer";
-            } else {
-                minuteurRunning = true;
-                document.getElementById('btnStartMinuteur').innerText = "⏸️ Pause";
-                minuteurTimer = setInterval(() => {
-                    minuteurSeconds--; // COUNTDOWN (decrements)
-                    if (minuteurSeconds === 0) {
-                        playSuccessSound(); // Rings!
-                    }
-                    updateTimerDisplay();
-                }, 1000);
-            }
-        }
-
-        function resetMinuteur() {
-            clearInterval(minuteurTimer);
-            minuteurRunning = false;
-            document.getElementById('btnStartMinuteur').innerText = "▶️ Démarrer";
-            initTimerForTask(selectedDetailTaskId);
-        }
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('minuteurDisplay');
-            let absSec = Math.abs(minuteurSeconds);
-            const h = Math.floor(absSec / 3600);
-            const m = Math.floor((absSec % 3600) / 60);
-            const s = absSec % 60;
-            const sign = minuteurSeconds < 0 ? '-' : '';
-            
-            display.innerText = `${sign}${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            
-            if (minuteurSeconds < 0) {
-                display.classList.add('text-red-500');
-                display.classList.remove('text-purple-700', 'dark:text-purple-300');
-            } else {
-                display.classList.remove('text-red-500');
-                display.classList.add('text-purple-700', 'dark:text-purple-300');
-            }
-        }
-
-        /* DETAIL MODAL */
-        function openTaskDetailModal(taskId) {
-            const task = appState.tasks.find(t => t.id === taskId);
-            if(!task) return;
-            selectedDetailTaskId = taskId;
-            
-            document.getElementById('detailTaskTitle').innerText = task.title;
-            document.getElementById('detailTaskDate').innerText = task.date;
-            document.getElementById('detailTaskDuration').innerText = task.startTime && task.endTime ? calculateDurationString(task.startTime, task.endTime) : '-';
-            document.getElementById('detailTaskDescription').innerText = task.description || 'Aucune description.';
-            document.getElementById('detailTaskModal').classList.remove('hidden');
-            
-            initTimerForTask(taskId);
-        }
-
-        function closeTaskDetailModal() {
-            if(minuteurRunning) resetMinuteur();
-            document.getElementById('taskDetailModal').classList.add('hidden');
-        }
-
-        /* UTILITIES & OTHERS */
-        function toggleTaskComplete(taskId) {
-            const task = appState.tasks.find(t => t.id === taskId);
-            if(task) {
-                if(task.status !== 'done') {
-                    task.status = 'done';
-                    triggerCelebration();
-                } else {
-                    task.status = 'pending';
-                }
-                saveState();
-                renderAll();
-            }
-        }
-
-        function selectColor(hex) {
-            selectedColorHex = hex;
-            document.getElementById('customColorPicker').value = hex;
-        }
-        
-        function populateSpaceDropdown(selectId, selectedId) {
-            const select = document.getElementById(selectId);
-            select.innerHTML = appState.spaces.map(s => `<option value="${s.id}">${s.icon} ${escapeHtml(s.name)}</option>`).join('');
-            if(selectedId) select.value = selectedId;
-        }
-
-        function updateProjectDropdownForSpace(spaceId, selectedProjectId) {
-            const select = document.getElementById('taskProjectSelect');
-            const projs = appState.projects.filter(p => p.spaceId === spaceId);
-            select.innerHTML = `<option value="">(Indépendant)</option>` + projs.map(p => `<option value="${p.id}">📁 ${escapeHtml(p.name)}</option>`).join('');
-            if(selectedProjectId) select.value = selectedProjectId;
-        }
-
-        function updateStats() {
-            const activeTasks = appState.tasks.filter(t => t.status !== 'done' && t.status !== 'cancelled');
-            const totalTasks = appState.tasks.length;
-            const completedTasks = appState.tasks.filter(t => t.status === 'done').length;
-
-            document.getElementById('statTasksCount').innerText = activeTasks.length;
-            document.getElementById('statProjectsCount').innerText = appState.projects.length;
-            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-            document.getElementById('statProgress').innerText = `${progress}%`;
-        }
-
-        /* MODALS (GUIDE, AUTH, CONFIRM) */
-        function openGuideModal() { document.getElementById('guideModal').classList.remove('hidden'); }
-        function closeGuideModal() { document.getElementById('guideModal').classList.add('hidden'); }
-        function openAuthModal() { document.getElementById('authModal').classList.remove('hidden'); }
-        function closeAuthModal() { document.getElementById('authModal').classList.add('hidden'); }
-        function closeConfirmModal() { document.getElementById('confirmDeleteModal').classList.add('hidden'); pendingDeleteAction = null; }
-
-        function askDeleteProject(projectId) {
-            pendingDeleteAction = { type: 'project', id: projectId };
-            document.getElementById('confirmDeleteTitle').innerText = "Confirmer la suppression";
-            document.getElementById('confirmDeleteMsg').innerText = "Voulez-vous supprimer ce projet ? Ses tâches deviendront indépendantes.";
-            document.getElementById('confirmDeleteModal').classList.remove('hidden');
-        }
-
-        function askDeleteTask(taskId) {
-            pendingDeleteAction = { type: 'task', id: taskId };
-            document.getElementById('confirmDeleteTitle').innerText = "Confirmer la suppression";
-            document.getElementById('confirmDeleteMsg').innerText = "Êtes-vous sûr de vouloir supprimer cette tâche ?";
-            document.getElementById('confirmDeleteModal').classList.remove('hidden');
-        }
-
-        function executeDelete() {
-            playUiSound();
-            if (!pendingDeleteAction) return;
-            const { type, id } = pendingDeleteAction;
-            if (type === 'project') {
-                appState.projects = appState.projects.filter(p => p.id !== id);
-                appState.tasks.forEach(t => { if (t.projectId === id) t.projectId = ''; });
-            } else if (type === 'task') {
-                appState.tasks = appState.tasks.filter(t => t.id !== id);
-                closeTaskDetailModal();
-            }
-            saveState();
-            closeConfirmModal();
-            renderAll();
-        }
-
+        /* THEME TOGGLE */
         function toggleTheme() {
             appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
             saveState();
             applyTheme();
         }
+
         function applyTheme() {
-            if (appState.theme === 'dark') {
+            const isDark = appState.theme === 'dark';
+            if (isDark) {
                 document.documentElement.classList.add('dark');
                 document.getElementById('themeIcon').innerText = '🌙';
             } else {
@@ -1268,20 +1415,1137 @@
                 document.getElementById('themeIcon').innerText = '☀️';
             }
         }
-        
-        // Initial load
-        window.onload = renderAll;
+
+        /* VIEW NAVIGATION */
+        function switchView(viewName) {
+            currentView = viewName;
+            
+            const views = ['viewHome', 'viewSpaces', 'viewToday', 'viewCalendar', 'viewStatuses', 'viewArchive', 'viewNotes'];
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (el) el.classList.add('hidden');
+            });
+
+            const activeViewMap = {
+                'home': 'viewHome',
+                'spaces': 'viewSpaces',
+                'today': 'viewToday',
+                'calendar': 'viewCalendar',
+                'statuses': 'viewStatuses',
+                'archive': 'viewArchive',
+                'notes': 'viewNotes'
+            };
+
+            const targetId = activeViewMap[viewName];
+            if (targetId) {
+                document.getElementById(targetId).classList.remove('hidden');
+            }
+
+            // Navigation bar icons active styling
+            ['navHome', 'navSpaces', 'navToday', 'navCalendar', 'navNotes'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.classList.remove('text-purple-600');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+
+            const activeNavMap = {
+                'home': 'navHome',
+                'spaces': 'navSpaces',
+                'today': 'navToday',
+                'calendar': 'navCalendar',
+                'notes': 'navNotes'
+            };
+
+            if (activeNavMap[viewName]) {
+                const activeBtn = document.getElementById(activeNavMap[viewName]);
+                if (activeBtn) {
+                    activeBtn.classList.add('text-purple-600');
+                    activeBtn.classList.remove('text-slate-400');
+                }
+            }
+
+            renderView(viewName);
+        }
+
+        function renderAll() {
+            applyTheme();
+            updateSoundIcon();
+            applyTranslations();
+            renderView(currentView);
+        }
+
+        function renderView(viewName) {
+            updateStats();
+            switch (viewName) {
+                case 'home':
+                    renderHomeView();
+                    break;
+                case 'spaces':
+                    renderSpacesView();
+                    break;
+                case 'today':
+                    renderTodayView();
+                    break;
+                case 'calendar':
+                    renderCalendarView();
+                    break;
+                case 'statuses':
+                    renderStatusesView();
+                    break;
+                case 'archive':
+                    renderArchive();
+                    break;
+                case 'notes':
+                    renderStickyNotesView();
+                    break;
+            }
+        }
+
+        /* STATS COUNTER */
+        function updateStats() {
+            const activeTasks = appState.tasks.filter(t => t.status !== 'done' && t.status !== 'cancelled');
+            const totalTasks = appState.tasks.length;
+            const completedTasks = appState.tasks.filter(t => t.status === 'done').length;
+
+            document.getElementById('statTasksCount').innerText = activeTasks.length;
+            document.getElementById('statProjectsCount').innerText = appState.projects.length;
+            
+            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            document.getElementById('statProgress').innerText = `${progress}%`;
+        }
+
+        /* TASK CARD HTML RENDERER (Full background color styling) */
+        function generateTaskCardHTML(task, showRestore = false) {
+            const isDone = task.status === 'done';
+            const isCancelled = task.status === 'cancelled';
+            const color = task.color || '#f3e8ff';
+
+            // Calculate subtask progress
+            const totalSub = task.subtasks ? task.subtasks.length : 0;
+            const completedSub = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
+
+            const isDark = appState.theme === 'dark';
+            
+            // Background & Border styling for full colored cards
+            const cardBgStyle = isDark 
+                ? `background-color: rgba(30, 41, 59, 0.85); border: 1.5px solid ${color};`
+                : `background-color: ${color}; border: 1.5px solid rgba(0,0,0,0.06);`;
+            const statusKey = {
+                pending: 'statusPending',
+                in_progress: 'statusInProgress',
+                done: 'statusDone',
+                cancelled: 'statusCancelled'
+            }[task.status] || 'statusPending';
+            const statusLabel = (i18n[appState.lang] || i18n.fr)[statusKey];
+            const restoreLabel = (i18n[appState.lang] || i18n.fr).restoreTask;
+            const dateLabel = task.scheduleType === 'continuous' && task.startDate && task.endDate
+                ? `${task.startDate} - ${task.endDate}`
+                : (task.date || task.startDate || '—');
+            const timeLabel = task.startTime && task.endTime
+                ? `${task.startTime} - ${task.endTime} · ${formatDuration(task.startTime, task.endTime)}`
+                : 'Journée entière';
+            const space = appState.spaces.find(s => s.id === task.spaceId);
+            const project = appState.projects.find(p => p.id === task.projectId);
+            const locationLabel = [space ? `${space.icon || '📂'} ${space.name}` : '', project ? `📁 ${project.name}` : '']
+                .filter(Boolean).join(' / ') || '🌸 Indépendante';
+
+            return `
+                <div data-id="${task.id}" style="${cardBgStyle}" class="task-card p-3.5 rounded-2xl shadow-sm transition-all hover:shadow-md relative space-y-2 group">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+                            <!-- Status Checkbox -->
+                            <button onclick="event.stopPropagation(); toggleTaskComplete('${task.id}')" class="w-5 h-5 rounded-lg border-2 border-slate-400 dark:border-slate-500 flex items-center justify-center transition ${isDone ? 'bg-purple-600 border-purple-600 text-white' : 'hover:border-purple-600'}">
+                                ${isDone ? '✓' : ''}
+                            </button>
+
+                            <div class="flex-1 min-w-0 cursor-pointer" onclick="openTaskDetailModal('${task.id}')">
+                                <h4 class="font-extrabold text-xs text-slate-900 dark:text-slate-100 truncate ${isDone || isCancelled ? 'strike-through' : ''}">
+                                    ${task.pinned ? '📌 ' : ''}${escapeHtml(task.title)}
+                                </h4>
+                                
+                                ${task.description ? `<p class="text-[11px] text-slate-600 dark:text-slate-300 truncate font-medium mt-0.5">${escapeHtml(task.description)}</p>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Status Badge & Menu -->
+                        <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-black bg-white/70 dark:bg-slate-800/80 px-2 py-0.5 rounded-lg text-slate-700 dark:text-slate-200">${statusLabel}</span>
+                            <button onclick="openTaskDetailModal('${task.id}')" class="text-slate-400 hover:text-purple-600 p-1 text-xs">✏️</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-1 text-[10px] font-bold text-slate-600 dark:text-slate-300">
+                        <span class="bg-white/60 dark:bg-slate-800/60 px-2 py-0.5 rounded-md">📅 ${dateLabel}</span>
+                        <span class="bg-white/60 dark:bg-slate-800/60 px-2 py-0.5 rounded-md">⏰ ${timeLabel}</span>
+                    </div>
+
+                    <!-- Footer: Space/Project tag & Subtask count -->
+                    <div class="flex items-center justify-between text-[10px] font-bold text-slate-600 dark:text-slate-300 pt-1 border-t border-black/5 dark:border-white/10">
+                        <span class="truncate max-w-[180px] bg-white/50 dark:bg-slate-800/50 px-2 py-0.5 rounded-md">
+                            ${escapeHtml(locationLabel)}
+                        </span>
+
+                        <span class="flex items-center gap-1">
+                            ${totalSub > 0 ? `<span class="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-md font-black">☑️ ${completedSub}/${totalSub}</span>` : ''}
+                            ${showRestore ? `<button onclick="event.stopPropagation(); restoreArchivedTask('${task.id}')" class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 px-2 py-0.5 rounded-md font-black">${restoreLabel}</button>` : ''}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatDuration(startTime, endTime) {
+            if (!startTime || !endTime) return '—';
+            const [startHours, startMinutes] = startTime.split(':').map(Number);
+            const [endHours, endMinutes] = endTime.split(':').map(Number);
+            if (![startHours, startMinutes, endHours, endMinutes].every(Number.isFinite)) return '—';
+            let minutes = (endHours * 60 + endMinutes) - (startHours * 60 + startMinutes);
+            if (minutes < 0) minutes += 24 * 60;
+            return `${Math.floor(minutes / 60)}h${String(minutes % 60).padStart(2, '0')}min`;
+        }
+
+        function renderProjectProgress(project) {
+            const projectTasks = appState.tasks.filter(t => t.projectId === project.id && t.status !== 'cancelled');
+            const completed = projectTasks.filter(t => t.status === 'done').length;
+            const percentage = projectTasks.length ? Math.round((completed / projectTasks.length) * 100) : 0;
+            return `
+                <div class="space-y-1">
+                    <div class="flex justify-between text-[10px] font-black text-slate-500 dark:text-slate-400">
+                        <span>📈 ${completed}/${projectTasks.length}</span><span>${percentage}%</span>
+                    </div>
+                    <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                        <div class="h-full rounded-full bg-purple-500 transition-all duration-300" style="width:${percentage}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getSpaceProjectName(spaceId, projectId) {
+            const space = appState.spaces.find(s => s.id === spaceId);
+            const project = appState.projects.find(p => p.id === projectId);
+            
+            let name = space ? `${space.icon} ${space.name}` : '';
+            if (project) {
+                name += ` / 📁 ${project.name}`;
+            }
+            return name || '🌸 Indépendante';
+        }
+
+        /* HOME VIEW RENDERER */
+        function renderHomeView() {
+            // Pinned Notes
+            const pinnedNotes = appState.notes.filter(n => n.pinned);
+            const pinnedSec = document.getElementById('pinnedNotesSection');
+            const pinnedCont = document.getElementById('pinnedNotesContainer');
+            
+            if (pinnedNotes.length > 0) {
+                pinnedSec.classList.remove('hidden');
+                pinnedCont.innerHTML = pinnedNotes.map(n => `
+                    <div class="bg-amber-100/90 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 p-2.5 rounded-2xl text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xs relative">
+                        <p class="truncate">${escapeHtml(n.content)}</p>
+                        <button onclick="togglePinNote('${n.id}')" class="absolute top-1 right-1 text-[10px] text-amber-700">📌</button>
+                    </div>
+                `).join('');
+            } else {
+                pinnedSec.classList.add('hidden');
+            }
+
+            // Projects List with Deletion functionality
+            const projContainer = document.getElementById('projectsContainer');
+            projContainer.innerHTML = appState.projects.map(p => {
+                const projTasks = appState.tasks.filter(t => t.projectId === p.id && t.status !== 'done' && t.status !== 'cancelled');
+                
+                return `
+                    <div class="bg-white/80 dark:bg-slate-800/80 p-4 rounded-3xl border border-purple-100/60 dark:border-slate-700 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-2">
+                            <h3 class="text-xs font-black text-purple-900 dark:text-purple-300 flex items-center gap-1.5">
+                                <span>📁</span> <span>${escapeHtml(p.name)}</span>
+                                <span class="bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300 px-2 py-0.5 rounded-full text-[10px] font-extrabold">${projTasks.length}</span>
+                            </h3>
+                            <div class="flex items-center gap-1">
+                                <button onclick="playUiSound(); openAddTaskModal('${p.spaceId}', '${p.id}')" class="text-purple-600 hover:text-purple-700 text-xs font-bold px-2 py-1 bg-purple-50 dark:bg-purple-900/40 rounded-xl">+ Tâche</button>
+                                <button onclick="playUiSound(); editProject('${p.id}')" class="text-slate-400 hover:text-purple-600 text-xs p-1">✏️</button>
+                                <!-- PROJECT DELETE BUTTON FIX -->
+                                <button onclick="playUiSound(); askDeleteProject('${p.id}')" class="text-slate-400 hover:text-red-500 text-xs p-1" title="Supprimer le projet">🗑️</button>
+                            </div>
+                        </div>
+
+                        ${renderProjectProgress(p)}
+                        <div id="project-list-${p.id}" class="space-y-2 min-h-[10px]">
+                            ${projTasks.length > 0 ? projTasks.map(generateTaskCardHTML).join('') : `<p class="text-[11px] text-slate-400 font-bold py-1 text-center" data-i18n="noTasksYet">Aucune tâche active ✨</p>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Standalone Tasks Section
+            const standaloneTasks = appState.tasks.filter(t => (!t.projectId || t.projectId === '') && t.status !== 'done' && t.status !== 'cancelled');
+            const standaloneContainer = document.getElementById('standaloneTasksContainer');
+            document.getElementById('standaloneTasksCountBadge').innerText = standaloneTasks.length;
+
+            if (standaloneTasks.length > 0) {
+                standaloneContainer.innerHTML = standaloneTasks.map(generateTaskCardHTML).join('');
+            } else {
+                const dict = i18n[appState.lang] || i18n['fr'];
+                standaloneContainer.innerHTML = `<p class="text-[11px] text-slate-400 font-bold py-2 text-center bg-white/50 dark:bg-slate-800/50 rounded-2xl">${dict.noTasksYet}</p>`;
+            }
+
+            // Initialize Sortable Drag & Drop if manual sort is enabled
+            if (appState.sortMode === 'manual') {
+                initDragAndDrop();
+            }
+        }
+
+        /* PROJECT DELETION IMPLEMENTATION */
+        function askDeleteProject(projectId) {
+            const project = appState.projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const dict = i18n[appState.lang] || i18n['fr'];
+            pendingDeleteAction = { type: 'project', id: projectId };
+            
+            document.getElementById('confirmDeleteTitle').innerText = dict.confirmDeleteTitle;
+            document.getElementById('confirmDeleteMsg').innerText = dict.confirmDeleteProjectMsg || `Voulez-vous supprimer le projet "${project.name}" ?`;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+        }
+
+        function askDeleteTask(taskId) {
+            pendingDeleteAction = { type: 'task', id: taskId };
+            const dict = i18n[appState.lang] || i18n['fr'];
+            document.getElementById('confirmDeleteTitle').innerText = dict.confirmDeleteTitle;
+            document.getElementById('confirmDeleteMsg').innerText = dict.confirmDeleteMsg;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+        }
+
+        function askDeleteSpace() {
+            if (!currentSelectedSpaceId) return;
+            pendingDeleteAction = { type: 'space', id: currentSelectedSpaceId };
+            const dict = i18n[appState.lang] || i18n['fr'];
+            document.getElementById('confirmDeleteTitle').innerText = dict.confirmDeleteTitle;
+            document.getElementById('confirmDeleteMsg').innerText = dict.confirmDeleteMsg;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmDeleteModal').classList.add('hidden');
+            pendingDeleteAction = null;
+        }
+
+        function executeDelete() {
+            playUiSound();
+            if (!pendingDeleteAction) return;
+
+            const { type, id } = pendingDeleteAction;
+
+            if (type === 'project') {
+                // Delete project and release tasks as standalone
+                appState.projects = appState.projects.filter(p => p.id !== id);
+                appState.tasks.forEach(t => {
+                    if (t.projectId === id) t.projectId = '';
+                });
+            } else if (type === 'task') {
+                appState.tasks = appState.tasks.filter(t => t.id !== id);
+                closeTaskDetailModal();
+            } else if (type === 'space') {
+                appState.spaces = appState.spaces.filter(s => s.id !== id);
+                appState.projects = appState.projects.filter(p => p.spaceId !== id);
+                appState.tasks.forEach(t => {
+                    if (t.spaceId === id) {
+                        t.spaceId = '';
+                        t.projectId = '';
+                    }
+                });
+                if (appState.spaces.length > 0) currentSelectedSpaceId = appState.spaces[0].id;
+            } else if (type === 'note') {
+                appState.notes = appState.notes.filter(n => n.id !== id);
+            }
+
+            saveState();
+            closeConfirmModal();
+            renderAll();
+        }
+
+        /* TASK COMPLETION TOGGLE */
+        function toggleTaskComplete(taskId) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            if (task.status === 'done') {
+                task.status = 'pending';
+            } else {
+                task.status = 'done';
+                // Trigger celebration audio and confetti!
+                triggerCelebration();
+            }
+
+            saveState();
+            renderAll();
+        }
+
+        function changeTaskStatus(taskId, newStatus) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            task.status = newStatus;
+            if (newStatus === 'done') {
+                triggerCelebration();
+            } else {
+                playUiSound();
+            }
+
+            saveState();
+            renderAll();
+        }
+
+        /* SPACES VIEW RENDERER */
+        function renderSpacesView() {
+            const spacesGrid = document.getElementById('spacesCardsGrid');
+            spacesGrid.innerHTML = appState.spaces.map(s => {
+                const isSelected = s.id === currentSelectedSpaceId;
+                return `
+                    <div onclick="selectSpace('${s.id}')" class="p-3.5 rounded-3xl border cursor-pointer transition-all ${isSelected ? 'bg-purple-600 text-white border-purple-600 shadow-md shadow-purple-500/20' : 'bg-white dark:bg-slate-800 border-purple-100 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-purple-300'}">
+                        <div class="text-2xl mb-1">${s.icon || '📂'}</div>
+                        <h4 class="font-extrabold text-xs truncate">${escapeHtml(s.name)}</h4>
+                    </div>
+                `;
+            }).join('');
+
+            // Render details of current space
+            const currentSpace = appState.spaces.find(s => s.id === currentSelectedSpaceId);
+            if (currentSpace) {
+                document.getElementById('spaceDetailTitle').innerText = currentSpace.name;
+                document.getElementById('spaceDetailIcon').innerText = currentSpace.icon || '📂';
+
+                const spaceProjects = appState.projects.filter(p => p.spaceId === currentSpace.id);
+                const spaceInner = document.getElementById('spaceInnerContent');
+
+                if (spaceProjects.length > 0) {
+                    spaceInner.innerHTML = spaceProjects.map(p => {
+                        const projTasks = appState.tasks.filter(t => t.projectId === p.id && t.status !== 'done' && t.status !== 'cancelled');
+                        return `
+                            <div class="bg-slate-50 dark:bg-slate-700/40 p-3 rounded-2xl space-y-2 border border-slate-100 dark:border-slate-600">
+                                <div class="flex justify-between items-center">
+                                    <h5 class="font-extrabold text-xs text-purple-900 dark:text-purple-300 flex items-center gap-1">
+                                        📁 ${escapeHtml(p.name)}
+                                    </h5>
+                                    <div class="flex items-center gap-1">
+                                        <button onclick="playUiSound(); openAddTaskModal('${currentSpace.id}', '${p.id}')" class="text-purple-600 text-[11px] font-bold">+ Tâche</button>
+                                        <button onclick="playUiSound(); askDeleteProject('${p.id}')" class="text-slate-400 hover:text-red-500 text-xs p-1">🗑️</button>
+                                    </div>
+                                </div>
+                                ${renderProjectProgress(p)}
+                                <div class="space-y-2">
+                                    ${projTasks.length > 0 ? projTasks.map(generateTaskCardHTML).join('') : `<p class="text-[10px] text-slate-400 font-bold">Pas de tâches active</p>`}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    spaceInner.innerHTML = `<p class="text-xs text-slate-400 text-center py-3 font-bold">Aucun projet dans cet espace.</p>`;
+                }
+            }
+        }
+
+        function selectSpace(spaceId) {
+            playUiSound();
+            currentSelectedSpaceId = spaceId;
+            renderSpacesView();
+        }
+
+        /* TODAY VIEW RENDERER */
+        function renderTodayView() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('todayFormattedDate').innerText = new Date().toLocaleDateString(appState.lang === 'ar' || appState.lang === 'ary' ? 'ar-MA' : 'fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+            const todayTasks = appState.tasks.filter(t => t.date === todayStr && t.status !== 'done' && t.status !== 'cancelled');
+            const cont = document.getElementById('todayTasksContainer');
+
+            if (todayTasks.length > 0) {
+                cont.innerHTML = todayTasks.map(generateTaskCardHTML).join('');
+            } else {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 font-bold bg-white dark:bg-slate-800 rounded-3xl">Aucune tâche prévue aujourd'hui ! ☀️</p>`;
+            }
+        }
+
+        /* CALENDAR VIEW RENDERER */
+        function renderCalendarView() {
+            const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+            document.getElementById('calendarMonthLabel').innerText = `${monthNames[calendarMonth]} ${calendarYear}`;
+
+            const daysArr = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+            document.getElementById('calendarHeaderDays').innerHTML = daysArr.map(d => `<div>${d}</div>`).join('');
+
+            const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+            const daysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+
+            let gridHTML = '';
+            for (let i = 0; i < firstDay; i++) {
+                gridHTML += `<div></div>`;
+            }
+
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDateStr = `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const hasTasks = appState.tasks.some(t => t.date === dayDateStr);
+                const isToday = dayDateStr === todayStr;
+
+                gridHTML += `
+                    <div onclick="selectCalendarDate('${dayDateStr}')" class="p-2 rounded-2xl cursor-pointer transition ${isToday ? 'bg-purple-600 text-white font-black' : 'hover:bg-purple-50 dark:hover:bg-slate-700'} relative">
+                        <span>${day}</span>
+                        ${hasTasks ? `<span class="w-1.5 h-1.5 rounded-full bg-pink-500 absolute bottom-1 left-1/2 -translate-x-1/2"></span>` : ''}
+                    </div>
+                `;
+            }
+
+            document.getElementById('calendarGrid').innerHTML = gridHTML;
+            selectCalendarDate(todayStr);
+        }
+
+        function changeMonth(delta) {
+            playUiSound();
+            calendarMonth += delta;
+            if (calendarMonth > 11) {
+                calendarMonth = 0;
+                calendarYear++;
+            } else if (calendarMonth < 0) {
+                calendarMonth = 11;
+                calendarYear--;
+            }
+            renderCalendarView();
+        }
+
+        function selectCalendarDate(dateStr) {
+            document.getElementById('selectedDateDisplay').innerText = dateStr;
+            const dateTasks = appState.tasks.filter(t => t.date === dateStr);
+            const cont = document.getElementById('calendarSelectedDateTasks');
+
+            if (dateTasks.length > 0) {
+                cont.innerHTML = dateTasks.map(generateTaskCardHTML).join('');
+            } else {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-3 font-bold">Aucune tâche pour cette date.</p>`;
+            }
+        }
+
+        /* STATUSES VIEW RENDERER */
+        function renderStatusesView() {
+            const pending = appState.tasks.filter(t => t.status === 'pending');
+            const inProgress = appState.tasks.filter(t => t.status === 'in_progress');
+            const done = appState.tasks.filter(t => t.status === 'done');
+            const cancelled = appState.tasks.filter(t => t.status === 'cancelled');
+
+            document.getElementById('statusPendingCount').innerText = pending.length;
+            document.getElementById('statusInProgressCount').innerText = inProgress.length;
+            document.getElementById('statusDoneCount').innerText = done.length;
+            document.getElementById('statusCancelledCount').innerText = cancelled.length;
+
+            document.getElementById('statusPendingList').innerHTML = pending.length > 0 ? pending.map(generateTaskCardHTML).join('') : '<p class="text-[10px] text-slate-400 font-bold px-2">Aucune</p>';
+            document.getElementById('statusInProgressList').innerHTML = inProgress.length > 0 ? inProgress.map(generateTaskCardHTML).join('') : '<p class="text-[10px] text-slate-400 font-bold px-2">Aucune</p>';
+            document.getElementById('statusDoneList').innerHTML = done.length > 0 ? done.map(generateTaskCardHTML).join('') : '<p class="text-[10px] text-slate-400 font-bold px-2">Aucune</p>';
+            document.getElementById('statusCancelledList').innerHTML = cancelled.length > 0 ? cancelled.map(generateTaskCardHTML).join('') : '<p class="text-[10px] text-slate-400 font-bold px-2">Aucune</p>';
+        }
+
+        /* ARCHIVE VIEW RENDERER */
+        function renderArchive() {
+            const query = (document.getElementById('archiveSearchInput')?.value || '').toLowerCase();
+            const archivedTasks = appState.tasks.filter(t => (t.status === 'done' || t.status === 'cancelled') && t.title.toLowerCase().includes(query));
+
+            const doneCount = appState.tasks.filter(t => t.status === 'done').length;
+            const cancelCount = appState.tasks.filter(t => t.status === 'cancelled').length;
+
+            document.getElementById('archivedDoneCount').innerText = `✅ ${doneCount}`;
+            document.getElementById('archivedCancelledCount').innerText = `❌ ${cancelCount}`;
+
+            const cont = document.getElementById('archiveTasksContainer');
+            if (archivedTasks.length > 0) {
+                cont.innerHTML = archivedTasks.map(task => generateTaskCardHTML(task, true)).join('');
+            } else {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-6 font-bold bg-white dark:bg-slate-800 rounded-3xl">Aucune tâche archivée.</p>`;
+            }
+        }
+
+        function restoreArchivedTask(taskId) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (!task || (task.status !== 'done' && task.status !== 'cancelled')) return;
+            task.status = 'pending';
+            saveState();
+            playUiSound();
+            renderAll();
+        }
+
+        /* STICKY NOTES RENDERER */
+        function renderStickyNotesView() {
+            const grid = document.getElementById('stickyNotesGrid');
+            grid.innerHTML = appState.notes.map(n => `
+                <div class="bg-amber-100/90 dark:bg-amber-950/60 p-3.5 rounded-3xl border border-amber-200 dark:border-amber-800 shadow-sm relative flex flex-col justify-between min-h-[100px]">
+                    <p class="text-xs font-bold text-slate-800 dark:text-slate-100 whitespace-pre-line">${escapeHtml(n.content)}</p>
+                    <div class="flex justify-between items-center pt-2 mt-2 border-t border-amber-200/60">
+                        <button onclick="togglePinNote('${n.id}')" class="text-xs">${n.pinned ? '📌' : '📍'}</button>
+                        <button onclick="askDeleteNote('${n.id}')" class="text-xs text-red-500">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function askDeleteNote(noteId) {
+            pendingDeleteAction = { type: 'note', id: noteId };
+            const dict = i18n[appState.lang] || i18n['fr'];
+            document.getElementById('confirmDeleteTitle').innerText = dict.confirmDeleteTitle;
+            document.getElementById('confirmDeleteMsg').innerText = dict.confirmDeleteMsg;
+            document.getElementById('confirmDeleteModal').classList.remove('hidden');
+        }
+
+        function togglePinNote(noteId) {
+            playUiSound();
+            const note = appState.notes.find(n => n.id === noteId);
+            if (note) {
+                note.pinned = !note.pinned;
+                saveState();
+                renderAll();
+            }
+        }
+
+        /* TASK MODALS & EDITORS */
+        function openAddTaskModal(spaceId = '', projectId = '') {
+            document.getElementById('taskModalTitle').innerText = i18n[appState.lang]?.tabAddTask || "Ajouter une Tâche 📝";
+            document.getElementById('editingTaskId').value = '';
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('taskStartTime').value = '09:00';
+            document.getElementById('taskEndTime').value = '10:00';
+            document.getElementById('taskStartDate').value = '';
+            document.getElementById('taskEndDate').value = '';
+            document.getElementById('taskScheduleType').value = 'single';
+            document.getElementById('taskRecurrenceSelect').value = 'none';
+            document.getElementById('taskStatusSelect').value = 'pending';
+            selectedColorHex = '#f3e8ff';
+            document.getElementById('customColorPicker').value = selectedColorHex;
+            populateSpaceAndProjectDropdowns(spaceId, projectId);
+            toggleScheduleFields();
+            calculateDuration();
+            document.getElementById('taskModal').classList.remove('hidden');
+        }
+
+        function editTaskFromDetail() {
+            const task = appState.tasks.find(t => t.id === selectedDetailTaskId);
+            if (!task) return;
+            closeTaskDetailModal();
+            document.getElementById('taskModalTitle').innerText = i18n[appState.lang]?.editTaskBtn || 'Modifier';
+            document.getElementById('editingTaskId').value = task.id;
+            document.getElementById('taskTitle').value = task.title || '';
+            document.getElementById('taskDescription').value = task.description || '';
+            document.getElementById('taskDate').value = task.date || task.startDate || '';
+            document.getElementById('taskStartDate').value = task.startDate || task.date || '';
+            document.getElementById('taskEndDate').value = task.endDate || task.date || '';
+            document.getElementById('taskStartTime').value = task.startTime || '';
+            document.getElementById('taskEndTime').value = task.endTime || '';
+            document.getElementById('taskScheduleType').value = task.scheduleType || 'single';
+            document.getElementById('taskRecurrenceSelect').value = task.recurrence || 'none';
+            document.getElementById('taskStatusSelect').value = task.status || 'pending';
+            selectedColorHex = task.color || '#f3e8ff';
+            document.getElementById('customColorPicker').value = selectedColorHex;
+            populateSpaceAndProjectDropdowns(task.spaceId || '', task.projectId || '');
+            toggleScheduleFields();
+            calculateDuration();
+            document.getElementById('taskModal').classList.remove('hidden');
+        }
+
+        function populateSpaceAndProjectDropdowns(selectedSpaceId = '', selectedProjectId = '') {
+            const spaceSelect = document.getElementById('taskSpaceSelect');
+            spaceSelect.innerHTML = appState.spaces.map(s => `<option value="${s.id}">${s.icon || '📂'} ${s.name}</option>`).join('');
+            
+            if (selectedSpaceId && appState.spaces.some(s => s.id === selectedSpaceId)) {
+                spaceSelect.value = selectedSpaceId;
+            }
+
+            updateProjectDropdownForSpace(spaceSelect.value, selectedProjectId);
+        }
+
+        function updateProjectDropdownForSpace(spaceId, selectedProjectId = '') {
+            const projSelect = document.getElementById('taskProjectSelect');
+            const spaceProjects = appState.projects.filter(p => p.spaceId === spaceId);
+            
+            projSelect.innerHTML = `<option value="">(Tâche Indépendante)</option>` + spaceProjects.map(p => `<option value="${p.id}">📁 ${p.name}</option>`).join('');
+            
+            if (selectedProjectId) {
+                projSelect.value = selectedProjectId;
+            }
+        }
+
+        function selectColor(hex) {
+            selectedColorHex = hex;
+            const picker = document.getElementById('customColorPicker');
+            if (picker) picker.value = hex;
+        }
+
+        function handleSaveTask(e) {
+            e.preventDefault();
+            const editingId = document.getElementById('editingTaskId').value;
+            const title = document.getElementById('taskTitle').value.trim();
+            if (!title) return;
+
+            const spaceId = document.getElementById('taskSpaceSelect').value;
+            const projectId = document.getElementById('taskProjectSelect').value;
+            const description = document.getElementById('taskDescription').value.trim();
+            const scheduleType = document.getElementById('taskScheduleType').value;
+            const date = scheduleType === 'continuous'
+                ? (document.getElementById('taskStartDate').value || document.getElementById('taskDate').value)
+                : document.getElementById('taskDate').value;
+            const startDate = document.getElementById('taskStartDate').value;
+            const endDate = document.getElementById('taskEndDate').value;
+            const startTime = document.getElementById('taskStartTime').value;
+            const endTime = document.getElementById('taskEndTime').value;
+            const recurrence = document.getElementById('taskRecurrenceSelect').value;
+            const status = document.getElementById('taskStatusSelect').value;
+
+            if (editingId) {
+                const task = appState.tasks.find(t => t.id === editingId);
+                if (task) {
+                    task.title = title;
+                    task.spaceId = spaceId;
+                    task.projectId = projectId;
+                    task.description = description;
+                    task.date = date;
+                    task.scheduleType = scheduleType;
+                    task.startDate = scheduleType === 'continuous' ? startDate : '';
+                    task.endDate = scheduleType === 'continuous' ? endDate : '';
+                    task.startTime = startTime;
+                    task.endTime = endTime;
+                    task.recurrence = recurrence;
+                    task.status = status;
+                    task.color = selectedColorHex;
+                }
+            } else {
+                const newTask = {
+                    id: 'task-' + Date.now(),
+                    title,
+                    description,
+                    spaceId,
+                    projectId,
+                    scheduleType,
+                    date: date || new Date().toISOString().split('T')[0],
+                    startDate: scheduleType === 'continuous' ? startDate : '',
+                    endDate: scheduleType === 'continuous' ? endDate : '',
+                    startTime,
+                    endTime,
+                    recurrence,
+                    status,
+                    color: selectedColorHex,
+                    subtasks: [],
+                    createdAt: Date.now(),
+                    pinned: false
+                };
+                appState.tasks.push(newTask);
+            }
+
+            saveState();
+            closeTaskModal();
+            renderAll();
+        }
+
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.add('hidden');
+        }
+
+        /* TASK DETAIL MODAL & TIMER */
+        function openTaskDetailModal(taskId) {
+            selectedDetailTaskId = taskId;
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (!task) return;
+
+            document.getElementById('detailTaskTitle').innerText = task.title;
+            document.getElementById('detailSpaceProjBadge').innerText = getSpaceProjectName(task.spaceId, task.projectId);
+            document.getElementById('detailTaskDate').innerText = task.date || '-';
+            document.getElementById('detailTaskDuration').innerText = task.startTime
+                ? `${task.startTime} - ${task.endTime} · ${formatDuration(task.startTime, task.endTime)}`
+                : 'Journée entière';
+            document.getElementById('detailRecurrenceText').innerText = task.recurrence || 'Aucune';
+            document.getElementById('detailTaskDescription').innerText = task.description || 'Aucune description fournie.';
+
+            renderDetailSubtasks(task);
+            renderLinkedNotes(task.id);
+
+            document.getElementById('taskDetailModal').classList.remove('hidden');
+        }
+
+        function closeTaskDetailModal() {
+            document.getElementById('taskDetailModal').classList.add('hidden');
+            selectedDetailTaskId = null;
+            resetMinuteur();
+        }
+
+        function renderDetailSubtasks(task) {
+            const container = document.getElementById('detailSubtasksList');
+            const total = task.subtasks ? task.subtasks.length : 0;
+            const completed = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
+
+            document.getElementById('subtasksProgressText').innerText = `${completed}/${total}`;
+            const pct = total > 0 ? (completed / total) * 100 : 0;
+            document.getElementById('subtasksProgressBar').style.width = `${pct}%`;
+
+            if (total > 0) {
+                container.innerHTML = task.subtasks.map(s => `
+                    <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-700/40 p-2 rounded-xl text-xs font-bold">
+                        <label class="flex items-center gap-2 cursor-pointer flex-1">
+                            <input type="checkbox" ${s.completed ? 'checked' : ''} onchange="toggleSubtask('${task.id}', '${s.id}')" class="rounded text-purple-600">
+                            <span class="${s.completed ? 'strike-through' : ''}">${escapeHtml(s.title)}</span>
+                        </label>
+                        <button onclick="deleteSubtask('${task.id}', '${s.id}')" class="text-slate-400 hover:text-red-500">✕</button>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `<p class="text-[11px] text-slate-400 font-bold">Pas de sous-tâches.</p>`;
+            }
+        }
+
+        function addSubtaskFromDetail() {
+            if (!selectedDetailTaskId) return;
+            const task = appState.tasks.find(t => t.id === selectedDetailTaskId);
+            const input = document.getElementById('newSubtaskInput');
+            const val = input.value.trim();
+            if (val && task) {
+                if (!task.subtasks) task.subtasks = [];
+                task.subtasks.push({ id: 'sub-' + Date.now(), title: val, completed: false });
+                input.value = '';
+                saveState();
+                renderDetailSubtasks(task);
+            }
+        }
+
+        function toggleSubtask(taskId, subId) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (task && task.subtasks) {
+                const sub = task.subtasks.find(s => s.id === subId);
+                if (sub) {
+                    sub.completed = !sub.completed;
+                    if (sub.completed) playSuccessSound();
+                    saveState();
+                    renderDetailSubtasks(task);
+                }
+            }
+        }
+
+        function deleteSubtask(taskId, subId) {
+            const task = appState.tasks.find(t => t.id === taskId);
+            if (task && task.subtasks) {
+                task.subtasks = task.subtasks.filter(s => s.id !== subId);
+                saveState();
+                renderDetailSubtasks(task);
+            }
+        }
+
+        function renderLinkedNotes(taskId) {
+            const notes = appState.notes.filter(n => n.taskId === taskId);
+            const container = document.getElementById('linkedNotesList');
+            if (notes.length > 0) {
+                container.innerHTML = notes.map(n => `<div class="bg-amber-50 dark:bg-amber-950/40 p-2 rounded-xl text-xs font-bold border border-amber-200/50">${escapeHtml(n.content)}</div>`).join('');
+            } else {
+                container.innerHTML = `<p class="text-[11px] text-slate-400 font-bold">Aucune note liée.</p>`;
+            }
+        }
+
+        /* POMODORO TIMER */
+        function toggleMinuteur() {
+            if (minuteurRunning) {
+                clearInterval(minuteurTimer);
+                minuteurRunning = false;
+                document.getElementById('btnStartMinuteur').innerText = (i18n[appState.lang] || i18n.fr).btnStartTimer;
+            } else {
+                if (!minuteurOvertime && minuteurSeconds <= 0) minuteurSeconds = 60;
+                document.getElementById('timerFinishedActions').classList.add('hidden');
+                minuteurRunning = true;
+                document.getElementById('btnStartMinuteur').innerText = '⏸️ Pause';
+                minuteurTimer = setInterval(() => {
+                    if (minuteurOvertime) {
+                        minuteurSeconds--;
+                    } else {
+                        minuteurSeconds = Math.max(0, minuteurSeconds - 1);
+                    }
+                    updateMinuteurDisplay();
+                    if (!minuteurOvertime && minuteurSeconds === 0) {
+                        clearInterval(minuteurTimer);
+                        minuteurRunning = false;
+                        document.getElementById('btnStartMinuteur').innerText = (i18n[appState.lang] || i18n.fr).btnStartTimer;
+                        document.getElementById('timerFinishedActions').classList.remove('hidden');
+                        playSuccessSound();
+                    }
+                }, 1000);
+            }
+        }
+
+        function continueMinuteur() {
+            minuteurOvertime = true;
+            document.getElementById('timerFinishedActions').classList.add('hidden');
+            toggleMinuteur();
+        }
+
+        function finishMinuteur() {
+            clearInterval(minuteurTimer);
+            minuteurRunning = false;
+            minuteurOvertime = false;
+            minuteurSeconds = 0;
+            document.getElementById('timerFinishedActions').classList.add('hidden');
+            const btn = document.getElementById('btnStartMinuteur');
+            if (btn) btn.innerText = (i18n[appState.lang] || i18n.fr).btnStartTimer;
+            updateMinuteurDisplay();
+        }
+
+        function resetMinuteur() {
+            clearInterval(minuteurTimer);
+            minuteurRunning = false;
+            minuteurOvertime = false;
+            minuteurSeconds = 60;
+            updateMinuteurDisplay();
+            document.getElementById('timerFinishedActions').classList.add('hidden');
+            const btn = document.getElementById('btnStartMinuteur');
+            if (btn) btn.innerText = (i18n[appState.lang] || i18n.fr).btnStartTimer;
+        }
+
+        function updateMinuteurDisplay() {
+            const remainingSeconds = Math.abs(minuteurSeconds);
+            const mins = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
+            const secs = String(remainingSeconds % 60).padStart(2, '0');
+            const disp = document.getElementById('minuteurDisplay');
+            if (disp) disp.innerText = `${minuteurSeconds < 0 ? '-' : ''}${mins}:${secs}`;
+        }
+
+        /* PROJECT & SPACE MODALS */
+        function openAddProjectModal(spaceId = '') {
+            document.getElementById('editingProjectId').value = '';
+            document.getElementById('projectTitle').value = '';
+            
+            const spaceSelect = document.getElementById('projectSpaceSelect');
+            spaceSelect.innerHTML = appState.spaces.map(s => `<option value="${s.id}">${s.icon || '📂'} ${s.name}</option>`).join('');
+            if (spaceId) spaceSelect.value = spaceId;
+
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function editProject(projId) {
+            const proj = appState.projects.find(p => p.id === projId);
+            if (!proj) return;
+
+            document.getElementById('editingProjectId').value = proj.id;
+            document.getElementById('projectTitle').value = proj.name;
+
+            const spaceSelect = document.getElementById('projectSpaceSelect');
+            spaceSelect.innerHTML = appState.spaces.map(s => `<option value="${s.id}">${s.icon || '📂'} ${s.name}</option>`).join('');
+            spaceSelect.value = proj.spaceId;
+
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function handleAddProject(e) {
+            e.preventDefault();
+            const editingId = document.getElementById('editingProjectId').value;
+            const name = document.getElementById('projectTitle').value.trim();
+            const spaceId = document.getElementById('projectSpaceSelect').value;
+
+            if (!name) return;
+
+            if (editingId) {
+                const proj = appState.projects.find(p => p.id === editingId);
+                if (proj) {
+                    proj.name = name;
+                    proj.spaceId = spaceId;
+                }
+            } else {
+                appState.projects.push({
+                    id: 'proj-' + Date.now(),
+                    spaceId,
+                    name
+                });
+            }
+
+            saveState();
+            closeProjectModal();
+            renderAll();
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+        }
+
+        /* SPACE MODAL */
+        function openNewSpaceModal() {
+            document.getElementById('editingSpaceId').value = '';
+            document.getElementById('spaceNameInput').value = '';
+            document.getElementById('spaceIconInput').value = '📂';
+            document.getElementById('spaceModal').classList.remove('hidden');
+        }
+
+        function editCurrentSpace() {
+            const space = appState.spaces.find(s => s.id === currentSelectedSpaceId);
+            if (!space) return;
+
+            document.getElementById('editingSpaceId').value = space.id;
+            document.getElementById('spaceNameInput').value = space.name;
+            document.getElementById('spaceIconInput').value = space.icon || '📂';
+            document.getElementById('spaceModal').classList.remove('hidden');
+        }
+
+        function handleSaveSpace() {
+            const editingId = document.getElementById('editingSpaceId').value;
+            const name = document.getElementById('spaceNameInput').value.trim();
+            const icon = document.getElementById('spaceIconInput').value.trim() || '📂';
+
+            if (!name) return;
+
+            if (editingId) {
+                const space = appState.spaces.find(s => s.id === editingId);
+                if (space) {
+                    space.name = name;
+                    space.icon = icon;
+                }
+            } else {
+                const newSpace = {
+                    id: 'space-' + Date.now(),
+                    name,
+                    icon
+                };
+                appState.spaces.push(newSpace);
+                currentSelectedSpaceId = newSpace.id;
+            }
+
+            saveState();
+            closeSpaceModal();
+            renderAll();
+        }
+
+        function closeSpaceModal() {
+            document.getElementById('spaceModal').classList.add('hidden');
+        }
+
+        /* STICKY NOTES MODAL */
+        function openNewStickyModal() {
+            document.getElementById('stickyContent').value = '';
+            const taskLink = document.getElementById('stickyLinkTaskId');
+            taskLink.innerHTML = `<option value="">(Sans lien)</option>` + appState.tasks.map(t => `<option value="${t.id}">${escapeHtml(t.title)}</option>`).join('');
+            document.getElementById('stickyModal').classList.remove('hidden');
+        }
+
+        function closeStickyModal() {
+            document.getElementById('stickyModal').classList.add('hidden');
+        }
+
+        function saveStickyNote() {
+            const content = document.getElementById('stickyContent').value.trim();
+            const pinned = document.getElementById('stickyPinHome').checked;
+            const taskId = document.getElementById('stickyLinkTaskId').value;
+
+            if (content) {
+                appState.notes.push({
+                    id: 'note-' + Date.now(),
+                    content,
+                    pinned,
+                    taskId
+                });
+                saveState();
+                closeStickyModal();
+                renderAll();
+            }
+        }
+
+        /* DRAG AND DROP INITIALIZATION */
+        function initDragAndDrop() {
+            if (typeof Sortable === 'undefined') return;
+
+            // Enable sorting on standalone container
+            const standaloneEl = document.getElementById('standaloneTasksContainer');
+            if (standaloneEl) {
+                new Sortable(standaloneEl, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    onEnd: function () {
+                        // Reorder standalone tasks in state
+                        saveState();
+                    }
+                });
+            }
+
+            // Enable sorting on project task lists
+            appState.projects.forEach(p => {
+                const projEl = document.getElementById(`project-list-${p.id}`);
+                if (projEl) {
+                    new Sortable(projEl, {
+                        animation: 150,
+                        ghostClass: 'sortable-ghost',
+                        onEnd: function () {
+                            saveState();
+                        }
+                    });
+                }
+            });
+        }
+
+        function changeSortMode(mode) {
+            playUiSound();
+            appState.sortMode = mode;
+            saveState();
+            renderAll();
+        }
+
+        function openGuideModal() {
+            document.getElementById('guideModal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.add('hidden');
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            closeAuthModal();
+        }
+
+        function handleGoogleLogin() {
+            closeAuthModal();
+        }
+
+        function toggleScheduleFields() {
+            const type = document.getElementById('taskScheduleType').value;
+            if (type === 'continuous') {
+                document.getElementById('singleDayFields').classList.add('hidden');
+                document.getElementById('multiDayFields').classList.remove('hidden');
+                document.getElementById('durationDisplay').classList.add('hidden');
+            } else {
+                document.getElementById('singleDayFields').classList.remove('hidden');
+                document.getElementById('multiDayFields').classList.add('hidden');
+                calculateDuration();
+            }
+        }
+
+        function calculateDuration() {
+            const start = document.getElementById('taskStartTime').value;
+            const end = document.getElementById('taskEndTime').value;
+            if (start && end) {
+                document.getElementById('durationDisplay').classList.remove('hidden');
+                document.getElementById('durationText').innerText = formatDuration(start, end);
+            } else {
+                document.getElementById('durationDisplay').classList.add('hidden');
+            }
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        /* APPLICATION BOOTSTRAP */
+        window.onload = function () {
+            updateMinuteurDisplay();
+            renderAll();
+        };
     </script>
 </body>
 </html>
-```eof
-
-### Les améliorations apportées :
-1. **Durée calculée sur la carte & formulaire** : Dès que vous renseignez l'heure de début et l'heure de fin sur le formulaire de modification/création d'une tâche, la durée (ex: *2h30min*) s'affiche à l'écran. Elle est ensuite affichée bien lisiblement sur le bord inférieur des détails de la carte de la tâche en externe (sur l'accueil).
-2. **Édition Réparée (Tâche complète)** : La modification fonctionne. En cliquant sur le bouton "✏️ Modifier", le formulaire s'ouvre, se remplit automatiquement avec toutes les données de la tâche sélectionnée. L'enregistrement mettra à jour la tâche au lieu d'en créer une nouvelle.
-3. **Barre de progression de Projets** : Une jolie barre de chargement s'affiche en dessous du titre de chaque projet dans l'Accueil. Elle est générée en calculant en temps réel le ratio (*Tâches Terminées / Total des Tâches du projet*) pour vous donner un bel aperçu visuel (ex: *60% complété*).
-4. **Minuteur avec un compte à rebours & négatif** : Quand vous ouvrez les détails d'une tâche et que vous lancez le minuteur, il commence désormais un compte à rebours basé sur la durée estimée de la tâche. Lorsqu'il arrive à `00:00:00`, le son des confettis 🎉 retentit pour signaler la fin. Si vous le laissez tourner, il continue en temps négatif et devient rouge (ex: `-00:00:05`) !
-5. **Détails poussés sur les cartes (Extérieur)** : La petite carte à l'accueil affiche désormais la date, le statut (avec un petit tag coloré/traduite), l'heure de début et fin, la durée, le dossier et le projet. C'est compact et hyper professionnel (tag gris opaque avec émojis).
-6. **Restauration de l'archive (Restaurer)** : Sur l'onglet Archive, j'ai ajouté un bouton "🔄 Restaurer" sur chaque tâche pour vous permettre de la renvoyer vers les tâches actives/en attente en un seul clic ! 
-
-*(PS : Les confettis et les sons de victoire sont restés parfaitement intacts. Ne vous inquiétez pas !)*
